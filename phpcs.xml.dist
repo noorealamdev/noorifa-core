@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<ruleset name="NoorTemplates">
+	<description>Coding standards for the NoorTemplates plugin.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/build/*</exclude-pattern>
+
+	<!-- Show progress, use colors, and show sniff names. -->
+	<arg value="ps"/>
+	<arg name="colors"/>
+	<arg name="extensions" value="php"/>
+	<arg name="parallel" value="8"/>
+
+	<rule ref="WordPress">
+		<!-- PSR-4 file names (Plugin.php, Blocks/Manager.php) instead of class-*.php. -->
+		<exclude name="WordPress.Files.FileName"/>
+	</rule>
+
+	<!-- Hook names use a slash-delimited namespace: noortemplates/hook_name. -->
+	<rule ref="WordPress.NamingConventions.ValidHookName">
+		<properties>
+			<property name="additionalWordDelimiters" value="/"/>
+		</properties>
+	</rule>
+
+	<!-- Verify that everything is prefixed and the correct text domain is used. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="NoorTemplates"/>
+				<element value="NOORTEMPLATES"/>
+				<element value="noortemplates"/>
+			</property>
+		</properties>
+	</rule>
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="noortemplates"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- WooCommerce registers its own capabilities beyond WordPress core's. -->
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="manage_product_terms"/>
+				<element value="manage_woocommerce"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Minimum supported PHP version for compatibility checks. -->
+	<rule ref="PHPCompatibilityWP"/>
+	<config name="testVersion" value="7.4-"/>
+	<config name="minimum_wp_version" value="6.5"/>
+</ruleset>

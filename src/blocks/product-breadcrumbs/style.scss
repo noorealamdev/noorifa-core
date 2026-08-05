@@ -1,0 +1,22 @@
+// woocommerce_breadcrumb() renders its own `.woocommerce-breadcrumb` element
+// nested inside our wrapper — the block's Typography/Color supports land as
+// an inline style on the wrapper, so the actual rendered element needs to
+// explicitly inherit rather than pick up whatever the theme's own generic
+// breadcrumb/link styling does instead.
+.wp-block-noorifa-core-product-breadcrumbs {
+
+	.woocommerce-breadcrumb {
+		font-size: inherit;
+		line-height: inherit;
+		font-family: inherit;
+		font-weight: inherit;
+		letter-spacing: inherit;
+		text-transform: inherit;
+		color: inherit;
+
+		a {
+			color: inherit;
+			text-decoration: underline;
+		}
+	}
+}

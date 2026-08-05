@@ -1,0 +1,113 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "noorifa-core/hero",
+	"title": "Hero",
+	"category": "noorifa-core",
+	"icon": "cover-image",
+	"description": "A full-width hero section with a heading, subheading, call-to-action button and an optional background image or video.",
+	"keywords": [ "hero", "banner", "section", "cover" ],
+	"version": "1.0.0",
+	"textdomain": "noorifa-core",
+	"attributes": {
+		"heading": {
+			"type": "string",
+			"source": "html",
+			"selector": ".noorifa-core-hero__heading",
+			"default": "Your Hero Heading"
+		},
+		"subheading": {
+			"type": "string",
+			"source": "html",
+			"selector": ".noorifa-core-hero__subheading",
+			"default": ""
+		},
+		"backgroundType": {
+			"type": "string",
+			"default": "image"
+		},
+		"backgroundImage": {
+			"type": "object",
+			"default": {
+				"url": "",
+				"id": 0
+			}
+		},
+		"backgroundVideo": {
+			"type": "object",
+			"default": {
+				"url": "",
+				"id": 0
+			}
+		},
+		"overlayColor": {
+			"type": "string",
+			"default": "#000000"
+		},
+		"overlayOpacity": {
+			"type": "number",
+			"default": 0
+		},
+		"textAlign": {
+			"type": "string",
+			"default": "center"
+		},
+		"headingFontSize": {
+			"type": "string",
+			"default": ""
+		},
+		"subheadingFontSize": {
+			"type": "string",
+			"default": ""
+		},
+		"align": {
+			"type": "string"
+		},
+		"boxed": {
+			"type": "boolean",
+			"default": true
+		},
+		"boxedWidth": {
+			"type": "number",
+			"default": 700
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"spacing": {
+					"padding": {
+						"top": "5rem",
+						"right": "1.5rem",
+						"bottom": "5rem",
+						"left": "1.5rem"
+					}
+				}
+			}
+		}
+	},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"anchor": true,
+		"html": false,
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true,
+			"enableContrastChecker": false
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": true
+		},
+		"__experimentalBorder": {
+			"radius": true,
+			"width": true,
+			"color": true
+		},
+		"shadow": true
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"editorStyle": "file:./index.css"
+}

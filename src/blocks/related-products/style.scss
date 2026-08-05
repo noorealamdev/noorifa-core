@@ -1,0 +1,156 @@
+// woocommerce_related_products() renders WooCommerce's own default product
+// loop markup (`.related.products > ul.products > li.product`) — the same
+// image/title/price/add-to-cart structure product-grid builds and styles
+// by hand, given the same defensive treatment here so it doesn't look
+// unstyled/inconsistent on themes with weak or absent WooCommerce CSS.
+// Doubled root class (not `!important`): Astra ships its own
+// `ul.products` column-count breakpoints (e.g. `.tablet-columns-3 ul.products`)
+// at the same specificity as this file's nested selectors, and its
+// stylesheet happens to print after this block's inline styles — on a
+// specificity tie, source order decides, so Astra's rule was winning and
+// silently overriding our grid-template-columns at tablet widths. Repeating
+// the wrapper class raises every selector below by one class, enough to
+// always win regardless of where a theme's own CSS lands in the page.
+.wp-block-noorifa-core-related-products.wp-block-noorifa-core-related-products {
+
+	.noorifa-core-related-products__inner.is-boxed {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.related.products {
+
+		> h2 {
+			font-size: inherit;
+			font-weight: inherit;
+			color: inherit;
+			margin: 0 0 1.5rem;
+		}
+
+		ul.products {
+			display: grid;
+			gap: 1.25rem 1rem;
+			grid-template-columns: repeat(2, 1fr);
+			list-style: none;
+			margin: 0;
+			padding: 0;
+
+			@media (min-width: 900px) {
+				// A fixed 4-column grid, not auto-fill/auto-fit: WooCommerce's
+				// own related-products query already caps out at 4 items, so
+				// a fixed column count gives each card a generous, consistent
+				// share of the row (large cards) instead of shrinking toward
+				// a small minmax() floor, and never grows a lone card to fill
+				// the whole row the way auto-fit's track-collapse did.
+				grid-template-columns: repeat(4, 1fr);
+			}
+		}
+
+		li.product {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			gap: 0.3rem;
+
+			// Astra (and themes with similar markup) wrap the thumbnail
+			// and the text content in their own divs instead of
+			// WooCommerce's flatter default markup — flatten them so this
+			// block's own rules reach the real content either way, and
+			// nothing here depends on which structure a given theme uses.
+			.astra-shop-thumbnail-wrap,
+			.astra-shop-summary-wrap {
+				display: contents;
+			}
+
+			a.woocommerce-loop-product__link,
+			a.ast-loop-product__link {
+				display: block;
+				color: inherit;
+				text-decoration: none;
+			}
+
+			img {
+				display: block;
+				width: 100%;
+				aspect-ratio: 1 / 1;
+				object-fit: contain;
+				background: #f4f3f0;
+				border-radius: 6px;
+				padding: 1.25rem;
+				box-sizing: border-box;
+			}
+
+			// Astra's own "Sale!" badge shares its `ast-on-card-button`
+			// base class with its quick-add overlay button (only
+			// `ast-onsale-card` distinguishes the two), so it has to be
+			// styled explicitly rather than caught by the blanket
+			// `.ast-on-card-button` hide rule below.
+			.onsale,
+			.ast-onsale-card {
+				display: block;
+				position: absolute;
+				top: 0.75rem;
+				left: 0.75rem;
+				z-index: 1;
+				margin: 0;
+				padding: 0.45rem 0.8rem;
+				border-radius: 999px;
+				background: #1c1c1c;
+				color: #fff;
+				font-weight: 600;
+				line-height: 1;
+				// The "Sale!" text is hardcoded (WooCommerce core or Astra's
+				// own on-card badge, not always filterable from here) —
+				// collapse the real text and swap in a clean label via
+				// ::after instead of relying on its exact source string.
+				// Padding above uses rem, not em, since this element's own
+				// font-size is zeroed and would otherwise collapse it too.
+				font-size: 0;
+
+				&::after {
+					content: 'Sale';
+					font-size: 0.7rem;
+				}
+			}
+
+			.woocommerce-loop-product__title {
+				margin: 0.15rem 0 0;
+				font-family: Georgia, 'Times New Roman', serif;
+				font-size: 1.05em;
+				font-weight: 400;
+				color: inherit;
+			}
+
+			.price {
+				margin-top: 0;
+				font-size: 0.95em;
+				color: inherit;
+
+				del {
+					margin-right: 0.4em;
+					font-weight: 400;
+					opacity: 0.5;
+				}
+
+				ins {
+					font-weight: 600;
+					text-decoration: none;
+				}
+			}
+
+			// The reference design shows no star rating, category label,
+			// or Add to cart button — hide them (including theme
+			// "quick add" overlay variants) rather than strip the
+			// underlying markup, so nothing here depends on JS/AJAX
+			// add-to-cart still being wired up.
+			.star-rating,
+			.review-rating,
+			.ast-woo-product-category,
+			.ast-on-card-button:not(.ast-onsale-card),
+			a.button,
+			a.add_to_cart_button {
+				display: none;
+			}
+		}
+	}
+}

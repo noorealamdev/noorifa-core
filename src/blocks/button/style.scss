@@ -1,0 +1,30 @@
+.wp-block-noorifa-core-button {
+
+	&.has-text-align-left {
+		text-align: left;
+	}
+
+	&.has-text-align-center {
+		text-align: center;
+	}
+
+	&.has-text-align-right {
+		text-align: right;
+	}
+
+	.noorifa-core-button__link {
+		display: inline-block;
+		padding: 0.6em 1.4em;
+		background-color: #2c6ecb;
+		border-radius: 4px;
+		color: #fff;
+		text-decoration: none;
+		transition: opacity 0.15s ease-in-out;
+
+		&:hover,
+		&:focus {
+			opacity: 0.9;
+			color: #fff;
+		}
+	}
+}

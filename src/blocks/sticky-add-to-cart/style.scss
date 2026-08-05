@@ -1,0 +1,147 @@
+// Hidden by default (slid below the viewport) — view.js adds `.is-visible`
+// once the main Add to Cart block scrolls out of view. z-index sits below
+// WordPress's admin bar (99999) but above ordinary page content.
+.wp-block-noorifa-core-sticky-add-to-cart {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	// Hard height, not min-height — kept to exactly 62px even if a large
+	// custom Font Size setting would otherwise make the content taller;
+	// overflow is clipped rather than growing the bar.
+	height: 62px;
+	overflow: hidden;
+	box-sizing: border-box;
+	padding: 8px 1.25rem;
+	// Extra bottom padding on notched devices (iPhone home-indicator area),
+	// eating into the fixed height rather than growing it.
+	padding-bottom: env(safe-area-inset-bottom);
+	background: #fff;
+	border-top: 1px solid #e5e5e6;
+	box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+	transform: translateY(100%);
+	transition: transform 0.25s ease-in-out;
+
+	&.is-visible {
+		transform: translateY(0);
+	}
+
+	.noorifa-core-sticky-add-to-cart__media {
+		flex-shrink: 0;
+		width: 3rem;
+		height: 3rem;
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 8px;
+		}
+	}
+
+	.noorifa-core-sticky-add-to-cart__details {
+		display: flex;
+		// No longer `flex: 1` — the __center element below now owns the
+		// flexible middle space, so the badge/hook content it holds can
+		// sit centered in the bar instead of packed right against details.
+		flex: 0 1 auto;
+		min-width: 0;
+		flex-direction: column;
+		// Without this, a column flex container's children default to
+		// `stretch` — the name/price spans would fill the full width of
+		// this container instead of sizing to their own content, which is
+		// otherwise invisible for left-aligned text but affects anything
+		// relying on the element's actual box size.
+		align-items: flex-start;
+		gap: 0;
+	}
+
+	// Takes the remaining flexible space between details and the button,
+	// centering whatever it holds (the badge and/or anything added via the
+	// noorifa-core/sticky_add_to_cart_details hook) in the middle of the bar.
+	.noorifa-core-sticky-add-to-cart__center {
+		display: flex;
+		flex: 1;
+		justify-content: center;
+		align-items: center;
+	}
+
+	// Color intentionally `inherit`, not hardcoded — the block's own Color
+	// support applies on the wrapper, and a directly-targeted rule here
+	// would always beat that inherited value.
+	.noorifa-core-sticky-add-to-cart__name {
+		overflow: hidden;
+		color: inherit;
+		font-weight: 600;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.noorifa-core-sticky-add-to-cart__price {
+		color: inherit;
+		font-size: 0.9em;
+		opacity: 0.8;
+
+		.price {
+			color: inherit;
+		}
+
+		del {
+			opacity: 0.6;
+		}
+	}
+
+	// Small pill, kept out of the way of the price/name — a merchant sets
+	// this text via the block's own "Badge" panel, or it's populated
+	// programmatically via the noorifa-core/sticky_add_to_cart_details hook.
+	.noorifa-core-sticky-add-to-cart__badge {
+		display: inline-flex;
+		align-items: center;
+		width: fit-content;
+		padding: 12px 20px;
+		border-radius: 999px;
+		background: rgba(0, 0, 0, 0.06);
+		color: inherit;
+		font-size: 0.75em;
+		font-weight: 600;
+		line-height: 1;
+	}
+
+	// Deliberately a fixed accent (not `inherit`), matching the main
+	// block's own .noorifa-core-buy-now-button look for visual
+	// consistency between the two.
+	.noorifa-core-sticky-add-to-cart__button {
+		flex-shrink: 0;
+		padding: 0.5em 1.25em;
+		background-color: #6b7280;
+		border: 0;
+		border-radius: 8px;
+		color: #fff;
+		font: inherit;
+		font-size: 1.1rem;
+		font-weight: 600;
+		letter-spacing: 0.01em;
+		cursor: pointer;
+		transition: opacity 0.15s ease-in-out;
+
+		&:hover,
+		&:focus {
+			color: #fff;
+			opacity: 0.9;
+		}
+	}
+
+	// Drops the product name on very small screens — thumbnail, price and
+	// the button are the essentials or the bar stops fitting comfortably.
+	@media (max-width: 480px) {
+
+		.noorifa-core-sticky-add-to-cart__name {
+			display: none;
+		}
+	}
+}

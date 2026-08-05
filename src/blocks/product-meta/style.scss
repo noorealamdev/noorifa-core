@@ -1,0 +1,30 @@
+// woocommerce_template_single_meta() renders its own `.product_meta` element
+// nested inside our wrapper — the block's Typography/Color supports land as
+// an inline style on the wrapper, so the actual rendered element needs to
+// explicitly inherit rather than pick up whatever the theme's own generic
+// meta-row styling does instead.
+.wp-block-noorifa-core-product-meta {
+
+	.product_meta {
+		font-size: inherit;
+		line-height: inherit;
+		font-family: inherit;
+		font-weight: inherit;
+		letter-spacing: inherit;
+		text-transform: inherit;
+		color: inherit;
+
+		> span {
+			display: block;
+			margin: 0 0 0.4rem;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+		a {
+			color: inherit;
+		}
+	}
+}

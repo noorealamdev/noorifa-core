@@ -1,0 +1,47 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "noorifa-core/tabs",
+	"title": "Tabs",
+	"category": "noorifa-core",
+	"icon": "table-row-after",
+	"description": "Organize content into switchable tabs. Powered by the WordPress Interactivity API with full keyboard support.",
+	"keywords": [ "tabs", "tabbed", "toggle" ],
+	"version": "1.0.0",
+	"textdomain": "noorifa-core",
+	"attributes": {
+		"boxed": {
+			"type": "boolean",
+			"default": true
+		},
+		"boxedWidth": {
+			"type": "number",
+			"default": 1200
+		}
+	},
+	"supports": {
+		"align": [ "wide" ],
+		"anchor": true,
+		"html": false,
+		"interactivity": true,
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"__experimentalBorder": {
+			"radius": true,
+			"width": true,
+			"color": true
+		},
+		"shadow": true
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"editorStyle": "file:./index.css",
+	"render": "file:./render.php",
+	"viewScriptModule": "file:./view.js"
+}

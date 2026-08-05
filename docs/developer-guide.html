@@ -1,0 +1,868 @@
+<title>Noorifa Core Developer Guide</title>
+<meta name="description" content="Architecture, codebase map, and extension guide for Noorifa Core — including how the Pro companion plugin actually works." />
+<style>
+  :root {
+    --bg: #f7f7fb;
+    --surface: #ffffff;
+    --surface-sunken: #f0f0f6;
+    --text: #18181b;
+    --text-muted: #6b6b76;
+    --border: #e4e4e7;
+    --accent: #4f46e5;
+    --accent-deep: #3730a3;
+    --accent-soft: #eef0ff;
+    --tip: #0f766e;
+    --tip-bg: #ecfdf9;
+    --tip-border: #b7e8de;
+    --warn: #b45309;
+    --warn-bg: #fffaeb;
+    --warn-border: #f3dfae;
+    --code-bg: #14142b;
+    --code-text: #e3e1f7;
+    --tok-keyword: #a5b4fc;
+    --tok-string: #86e3ce;
+    --tok-comment: #7d7d9c;
+    --tok-variable: #ffb086;
+    --tok-number: #86e3ce;
+    --shadow: 0 1px 2px rgba(24, 24, 27, 0.04), 0 8px 24px -8px rgba(24, 24, 27, 0.10);
+    --sidebar-w: 272px;
+    --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #101018;
+    --surface: #17171f;
+    --surface-sunken: #1d1d28;
+    --text: #f1f0f5;
+    --text-muted: #9b99a8;
+    --border: #2a2a38;
+    --accent: #8681ff;
+    --accent-deep: #b3aeff;
+    --accent-soft: #23223f;
+    --tip: #5eead4;
+    --tip-bg: #103430;
+    --tip-border: #1f5b51;
+    --warn: #fbbf6d;
+    --warn-bg: #3a2a10;
+    --warn-border: #6b4c1e;
+    --code-bg: #0b0b1a;
+    --code-text: #e3e1f7;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #101018;
+      --surface: #17171f;
+      --surface-sunken: #1d1d28;
+      --text: #f1f0f5;
+      --text-muted: #9b99a8;
+      --border: #2a2a38;
+      --accent: #8681ff;
+      --accent-deep: #b3aeff;
+      --accent-soft: #23223f;
+      --tip: #5eead4;
+      --tip-bg: #103430;
+      --tip-border: #1f5b51;
+      --warn: #fbbf6d;
+      --warn-bg: #3a2a10;
+      --warn-border: #6b4c1e;
+      --code-bg: #0b0b1a;
+      --code-text: #e3e1f7;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16.5px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); }
+  a:hover { color: var(--accent-deep); }
+
+  .layout { display: flex; align-items: flex-start; max-width: 1280px; margin: 0 auto; }
+
+  .sidebar {
+    position: sticky; top: 0; height: 100vh; width: var(--sidebar-w); flex: 0 0 var(--sidebar-w);
+    overflow-y: auto; padding: 28px 22px 40px; border-right: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+  .brand-mark { font-family: var(--font-display); font-weight: 700; font-size: 21px; letter-spacing: -0.01em; }
+  .brand-version {
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+    background: var(--surface-sunken); border-radius: 999px; padding: 2px 8px;
+  }
+  .brand-tag { font-size: 13px; color: var(--text-muted); margin: 0 0 26px; }
+
+  .nav-group { margin-bottom: 22px; }
+  .nav-eyebrow {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); margin: 0 0 8px;
+  }
+  .nav-group ul { list-style: none; margin: 0; padding: 0; }
+  .nav-group a {
+    display: block; padding: 5px 10px; margin: 1px 0; border-radius: 8px; font-size: 14px;
+    color: var(--text); text-decoration: none; border-left: 2px solid transparent;
+  }
+  .nav-group a:hover { background: var(--surface-sunken); }
+  .nav-group a.active {
+    color: var(--accent); background: var(--accent-soft); border-left-color: var(--accent); font-weight: 600;
+  }
+
+  .sidebar-toggle { display: none; }
+
+  .content { flex: 1 1 auto; min-width: 0; padding: 48px clamp(24px, 5vw, 72px) 120px; max-width: 900px; }
+
+  .doc-title-block { margin-bottom: 56px; }
+  .doc-eyebrow {
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent); margin: 0 0 10px;
+  }
+  .doc-title {
+    font-family: var(--font-display); font-weight: 700; font-size: clamp(32px, 5vw, 44px);
+    line-height: 1.12; margin: 0 0 14px; letter-spacing: -0.02em; text-wrap: balance;
+  }
+  .doc-lede { font-size: 18px; color: var(--text-muted); max-width: 66ch; margin: 0; }
+
+  section.doc-section { margin-bottom: 64px; scroll-margin-top: 24px; }
+  section.doc-section > .doc-eyebrow-section {
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); margin: 0 0 8px;
+  }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 700; font-size: 29px; line-height: 1.25;
+    letter-spacing: -0.015em; margin: 0 0 18px; text-wrap: balance; scroll-margin-top: 24px;
+  }
+  h3 {
+    font-family: var(--font-display); font-weight: 600; font-size: 21px; line-height: 1.3;
+    margin: 36px 0 14px; letter-spacing: -0.01em; scroll-margin-top: 24px;
+  }
+  h3:first-child { margin-top: 0; }
+  h4 { font-size: 15.5px; font-weight: 700; margin: 22px 0 8px; }
+
+  p { margin: 0 0 16px; max-width: 72ch; }
+  ul, ol { margin: 0 0 16px; padding-left: 1.3em; max-width: 70ch; }
+  li { margin-bottom: 6px; }
+  li:last-child { margin-bottom: 0; }
+  strong { font-weight: 650; }
+
+  code {
+    font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-sunken);
+    border: 1px solid var(--border); border-radius: 5px; padding: 0.1em 0.4em;
+  }
+
+  .code-block { margin: 0 0 22px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+  .code-label {
+    background: #0a0a18; color: #8b88a8; font-family: var(--font-mono); font-size: 12px;
+    padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  pre {
+    background: var(--code-bg); color: var(--code-text); margin: 0; padding: 16px 18px;
+    overflow-x: auto; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.65;
+  }
+  pre code { background: none; border: none; padding: 0; color: inherit; font-size: 1em; }
+  .tok-keyword { color: var(--tok-keyword); }
+  .tok-string { color: var(--tok-string); }
+  .tok-comment { color: var(--tok-comment); font-style: italic; }
+  .tok-variable { color: var(--tok-variable); }
+  .tok-number { color: var(--tok-number); }
+
+  .callout {
+    display: flex; gap: 12px; border-radius: 10px; padding: 14px 16px; margin: 0 0 20px;
+    max-width: 72ch; border: 1px solid var(--border);
+  }
+  .callout-icon { flex: 0 0 auto; font-size: 16px; line-height: 1.5; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout.tip { background: var(--tip-bg); border-color: var(--tip-border); }
+  .callout.tip .callout-icon { color: var(--tip); }
+  .callout.warn { background: var(--warn-bg); border-color: var(--warn-border); }
+  .callout.warn .callout-icon { color: var(--warn); }
+
+  .table-wrap { overflow-x: auto; margin: 0 0 24px; max-width: 100%; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; white-space: nowrap; }
+  td code { white-space: nowrap; }
+
+  .method { font-family: var(--font-mono); font-size: 11px; font-weight: 700; border-radius: 5px; padding: 2px 7px; }
+  .method.get { background: var(--accent-soft); color: var(--accent-deep); }
+  .method.post { background: var(--tip-bg); color: var(--tip); }
+  .method.delete { background: var(--warn-bg); color: var(--warn); }
+
+  .tree {
+    font-family: var(--font-mono); font-size: 13px; line-height: 1.9; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin: 0 0 24px;
+    overflow-x: auto; white-space: pre;
+  }
+  .tree .dir { color: var(--accent-deep); font-weight: 700; }
+  :root[data-theme="dark"] .tree .dir { color: var(--accent); }
+  .tree .note { color: var(--text-muted); font-family: var(--font-body); font-style: italic; }
+
+  .arch { display: flex; flex-direction: column; gap: 10px; margin: 0 0 28px; }
+  .arch-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .arch-box {
+    flex: 1 1 200px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 16px; font-size: 13.5px;
+  }
+  .arch-box strong { display: block; font-size: 14px; margin-bottom: 2px; }
+  .arch-box.root { background: var(--accent); color: #fff; border-color: var(--accent); flex-basis: 100%; text-align: center; }
+  .arch-box.root strong { color: #fff; }
+  .arch-arrow { text-align: center; color: var(--text-muted); font-size: 13px; }
+  .arch-box.core { border-left: 3px solid var(--accent); }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin: 0 0 24px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .card h4 { margin: 0 0 6px; font-size: 15px; }
+  .card p { font-size: 13.5px; color: var(--text-muted); margin: 0; max-width: none; }
+  .card code { font-size: 0.82em; }
+
+  .chip {
+    display: inline-block; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; color: var(--accent); background: var(--accent-soft);
+    border-radius: 999px; padding: 2px 8px; margin-left: 6px;
+  }
+
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 0 0 24px; max-width: 72ch; }
+  .steps li { counter-increment: step; position: relative; padding-left: 40px; margin-bottom: 18px; }
+  .steps li::before {
+    content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px;
+    border-radius: 50%; background: var(--accent-soft); color: var(--accent-deep);
+    font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .steps li strong { display: block; margin-bottom: 2px; }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 56px 0; }
+
+  footer.doc-footer {
+    max-width: 72ch; padding-top: 24px; border-top: 1px solid var(--border);
+    color: var(--text-muted); font-size: 13.5px;
+  }
+
+  a:focus-visible, .nav-group a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  @media (max-width: 900px) {
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; z-index: 20; background: var(--bg);
+      transform: translateX(-100%); transition: transform 0.2s ease; box-shadow: var(--shadow);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .content { padding-top: 76px; }
+    .sidebar-toggle {
+      display: flex; position: fixed; top: 14px; left: 14px; z-index: 21; align-items: center; gap: 8px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+      padding: 8px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+      box-shadow: var(--shadow); cursor: pointer;
+    }
+  }
+</style>
+
+<button class="sidebar-toggle" id="sidebarToggle" aria-expanded="false" aria-controls="sidebar">&#9776; Menu</button>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="Table of contents">
+    <div class="brand">
+      <span class="brand-mark">Noorifa Core</span>
+      <span class="brand-version">v1.1.0</span>
+    </div>
+    <p class="brand-tag">Developer Guide</p>
+
+    <div class="nav-group">
+      <p class="nav-eyebrow">Architecture</p>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#codebase-map">Codebase map</a></li>
+        <li><a href="#boot-sequence">Boot sequence</a></li>
+        <li><a href="#layout-system">The Layout system</a></li>
+        <li><a href="#templates-system">Templates &amp; Patterns system</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-eyebrow">Reference</p>
+      <ul>
+        <li><a href="#rest-api">REST API</a></li>
+        <li><a href="#hooks">Hooks reference</a></li>
+        <li><a href="#licensing">Licensing &amp; the Pro gate</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-eyebrow">Extending Noorifa Core</p>
+      <ul>
+        <li><a href="#extension-points">Extension points at a glance</a></li>
+        <li><a href="#pro-addon">Building a companion add-on</a></li>
+        <li><a href="#other-extensions">Other extension recipes</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-eyebrow">Working in this codebase</p>
+      <ul>
+        <li><a href="#dev-environment">Development environment</a></li>
+        <li><a href="#creating-a-block">Creating a new block</a></li>
+        <li><a href="#conventions">Conventions &amp; gotchas</a></li>
+        <li><a href="#build-tooling">Build tooling &amp; shipping</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="content">
+    <div class="doc-title-block">
+      <p class="doc-eyebrow">Developer Guide</p>
+      <h1 class="doc-title">Noorifa Core architecture &amp; extension guide</h1>
+      <p class="doc-lede">How the plugin is put together, how a WooCommerce product page actually gets rendered, and how to extend it safely — including exactly how the Pro companion plugin unlocks things.</p>
+    </div>
+
+    <section class="doc-section" id="overview">
+      <h2>Overview</h2>
+      <p>Noorifa Core builds WooCommerce single-product pages out of Gutenberg blocks. A "Layout" is just a normal WordPress post (custom post type <code>noorifa_core_layout</code>) whose block content wraps WooCommerce's own rendering — title, price, gallery, add-to-cart, reviews — each as its own block. Nothing is hand-coded per theme; a Layout is resolved fresh on every request and swapped in for the product template.</p>
+      <p>Three architectural decisions shape almost everything else in the codebase:</p>
+      <ul>
+        <li><strong>A Layout is content, not a template file.</strong> Store owners build it in the ordinary block editor, the same surface they already know. <code>Layouts\Resolver</code> decides which Layout post applies to which product at request time (see <a href="#layout-system">The Layout system</a>) — there's no per-product PHP template to hand-edit.</li>
+        <li><strong>Free/Pro is one codebase plus one filter, not two builds.</strong> <code>Licensing\Gate</code> is a plain static class whose <code>is_pro()</code>/<code>has_feature()</code> methods are pure filter lookups, defaulting to <code>false</code>. Nothing Pro-only is physically stripped from the free plugin — a separate companion plugin, <strong>Noorifa Core Pro</strong>, hooks those filters once a real license is active. See <a href="#licensing">Licensing &amp; the Pro gate</a>.</li>
+        <li><strong>Overriding the product template never breaks WooCommerce's own hooks.</strong> The override happens at the whole-template level (<code>template_include</code>), and the fallback template still fires every one of WooCommerce's structural actions (<code>woocommerce_before_single_product</code>, etc.) in their normal positions — so themes and other plugins hooked to those actions keep working around a Layout exactly as they would around WooCommerce's own template.</li>
+      </ul>
+      <div class="arch">
+        <div class="arch-row"><div class="arch-box root"><strong>noorifa-core.php</strong> constants, autoloader, activation hooks, boots on <code style="background:rgba(255,255,255,.15);border-color:transparent;color:#fff;">plugins_loaded</code></div></div>
+        <div class="arch-arrow">&#8595;</div>
+        <div class="arch-row"><div class="arch-box core"><strong>Plugin</strong> singleton orchestrator — wires every service below, fires <code>noorifa-core/loaded</code></div></div>
+        <div class="arch-arrow">&#8595;</div>
+        <div class="arch-row">
+          <div class="arch-box"><strong>Layouts</strong><br />Resolver, Meta Box, Template Override</div>
+          <div class="arch-box"><strong>Blocks</strong><br />29 blocks + cross-cutting Extensions (visibility/animation)</div>
+          <div class="arch-box"><strong>REST</strong><br />Templates + Product Reviews, under <code>noorifa-core/v1</code></div>
+        </div>
+        <div class="arch-row">
+          <div class="arch-box"><strong>Admin</strong><br />Dashboard</div>
+          <div class="arch-box"><strong>Templates library</strong><br />Repository aggregating Local + Cloud sources</div>
+          <div class="arch-box"><strong>Licensing</strong><br />Gate (filter-based) + Noorifa Core Pro add-on</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="codebase-map">
+      <h2>Codebase map</h2>
+      <div class="tree">noorifa-core/
+├── noorifa-core.php          <span class="note"># bootstrap: constants, autoloader, activation hooks, noorifa-core() accessor</span>
+├── includes/
+│   ├── Install.php            <span class="note"># activation/deactivation, versioned migrations</span>
+│   ├── Plugin.php              <span class="note"># singleton orchestrator — wires every service, fires noorifa-core/loaded</span>
+│   ├── <span class="dir">Admin/</span>                <span class="note"># Dashboard (settings + default layout)</span>
+│   ├── <span class="dir">Assets/</span>                <span class="note"># Manager — enqueues editor + front-end scripts</span>
+│   ├── <span class="dir">Blocks/</span>                <span class="note"># Manager (auto-discovery + registration), Extensions, Interactivity, Buy_Now</span>
+│   ├── <span class="dir">Layouts/</span>               <span class="note"># Post_Type, Resolver, Meta_Box, Template_Override, Duplicate, Preview</span>
+│   ├── <span class="dir">Licensing/</span>             <span class="note"># Gate — the free/pro filter gate</span>
+│   ├── <span class="dir">Patterns/</span>               <span class="note"># Manager — scans templates/library/*.json, registers block patterns</span>
+│   ├── <span class="dir">Rest/</span>                   <span class="note"># Templates_Controller, Product_Reviews_Controller</span>
+│   ├── <span class="dir">Templates/</span>              <span class="note"># Repository, Source/Lazy_Source interfaces, Sources/Local_Source + Cloud_Source</span>
+│   └── <span class="dir">Traits/</span>                 <span class="note"># Singleton — shared instance() accessor</span>
+├── src/
+│   ├── <span class="dir">blocks/</span>                 <span class="note"># 29 blocks' source (block.json, edit.js, save.js/render.php, view.js)</span>
+│   ├── <span class="dir">library/</span>                <span class="note"># Template Library editor app (toolbar modal, export/import JSON)</span>
+│   ├── <span class="dir">extensions/</span>              <span class="note"># Visibility/Animation panel applied to every Noorifa Core block</span>
+│   └── <span class="dir">utils/</span>                   <span class="note"># icon-picker, licensing, useUniqueId, WooPlaceholder</span>
+├── templates/
+│   ├── single-product-layout.php  <span class="note"># fallback template a resolved Layout renders through</span>
+│   └── <span class="dir">library/</span>*.json           <span class="note"># bundled premade Layout/section templates</span>
+└── build/                     <span class="note"># compiled JS/CSS — ships in the plugin, src/ does not</span></div>
+      <p>Everything under <code>includes/</code> is PSR-4 autoloaded under the <code>Noorifa\Core\</code> namespace by <code>includes/Autoloader.php</code>, which maps <code>Noorifa\Core\Sub\ClassName</code> to <code>includes/Sub/ClassName.php</code> and guards each <code>require</code> with <code>is_readable()</code> — safe to call <code>class_exists()</code> against a class whose file doesn't exist, with no fatal error.</p>
+    </section>
+
+    <section class="doc-section" id="boot-sequence">
+      <h2>Boot sequence</h2>
+      <ol class="steps">
+        <li><strong><code>plugins_loaded</code></strong> &mdash; <code>noorifa-core()</code> resolves <code>Plugin::instance()</code>, which constructs the singleton (protected constructor, only reachable through the <code>Singleton</code> trait).</li>
+        <li><strong>WooCommerce presence is checked first.</strong> If <code>class_exists( 'WooCommerce' )</code> is false, an admin notice is hooked and the constructor <strong>returns immediately</strong> &mdash; nothing else in the plugin boots at all without WooCommerce active.</li>
+        <li><strong><code>init_services()</code> instantiates every service</strong>, in this order: <code>Install</code>, <code>Blocks\Manager</code>, <code>Blocks\Interactivity</code>, <code>Blocks\Extensions</code>, <code>Blocks\Buy_Now</code>, <code>Patterns\Manager</code>, <code>Assets\Manager</code>, <code>Rest\Templates_Controller</code>, <code>Rest\Product_Reviews_Controller</code>, <code>Layouts\Post_Type</code>, <code>Layouts\Meta_Box</code>, <code>Layouts\Template_Override</code>, <code>Layouts\Duplicate</code>, <code>Layouts\Preview</code> &mdash; then, only <code>if ( is_admin() )</code>: <code>Admin\Dashboard</code>.</li>
+        <li><strong>Every service is a singleton</strong> constructed via its own <code>::instance()</code>, each registering its own hooks in its constructor rather than being wired externally &mdash; there's no central "add_action" list to maintain in <code>Plugin</code> itself.</li>
+        <li><strong><code>do_action( 'noorifa-core/loaded', $this )</code> fires</strong> once every service above exists &mdash; the hook a Pro or third-party add-on should use to register its own services, rather than hooking <code>plugins_loaded</code> directly and risking a load-order race.</li>
+        <li><strong><code>init</code> handles textdomain, migrations, and registration</strong> that must wait for other plugins to have finished their own <code>plugins_loaded</code>: <code>Plugin::load_textdomain()</code>, <code>Install::maybe_upgrade()</code> (priority 5), <code>Layouts\Post_Type::register()</code>, <code>Blocks\Manager::register_blocks()</code>, <code>Patterns\Manager::register_patterns()</code>.</li>
+      </ol>
+    </section>
+
+    <section class="doc-section" id="layout-system">
+      <h2>The Layout system</h2>
+      <p>A Layout is a post of type <code>noorifa_core_layout</code>, edited in the ordinary block editor. Nothing renders it directly &mdash; on every product-page request, <code>Layouts\Resolver::get_layout_id()</code> decides which Layout (if any) applies, checking each of these in order and stopping at the first match:</p>
+      <ol class="steps">
+        <li><strong>Preview override</strong> &mdash; a nonce-verified <code>?noorifa_core_preview=ID</code> query var from the Layout list's "Preview" row action. Works even for an unpublished Layout, gated by <code>edit_post</code> on that specific post.</li>
+        <li><strong>Product-level choice</strong> &mdash; post meta <code>_noorifa_core_layout_id</code>, set from the "Product Page Template" meta box on the product edit screen, if it points at a published Layout.</li>
+        <li><strong>Category-level default</strong> &mdash; term meta <code>noorifa_core_layout_id</code> on the product's <code>product_cat</code> terms, first match wins.</li>
+        <li><strong>Site-wide default</strong> &mdash; option <code>noorifa_core_default_layout_id</code>, set on the Noorifa Core Dashboard admin page.</li>
+        <li><strong>Nothing resolves</strong> &mdash; falls through to <code>0</code>, and the product page renders exactly as WooCommerce/the active theme would without this plugin at all.</li>
+      </ol>
+      <h3>How the swap actually happens</h3>
+      <p><code>Layouts\Template_Override</code> hooks <code>add_filter( 'template_include', ..., 100 )</code>. Priority <strong>100</strong> is deliberate: WooCommerce's own <code>class-wc-template-loader.php</code> recomputes <code>$template</code> for product pages at its own priority, so this filter has to run after it to win. On <code>is_product()</code> requests where <code>Resolver::get_layout_id()</code> returns non-zero, <code>$template</code> is swapped for the plugin's own <code>templates/single-product-layout.php</code>.</p>
+      <p>That fallback template deliberately mirrors WooCommerce's real <code>templates/single-product.php</code> structure &mdash; same <code>get_header('shop')</code>/<code>get_footer('shop')</code>, same <code>woocommerce_before_main_content</code> / <code>woocommerce_before_single_product</code> / <code>woocommerce_after_single_product</code> / <code>woocommerce_after_main_content</code> / <code>woocommerce_sidebar</code> action firing, same <code>$product</code> global set via <code>wc_get_product()</code>. Where WooCommerce would normally render <code>content-single-product.php</code>, it instead does:</p>
+      <div class="code-block">
+        <div class="code-label">templates/single-product-layout.php</div>
+        <pre><code class="lang-php">echo do_blocks( $layout->post_content );</code></pre>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">&#9432;</span>
+        <p>Because every other WooCommerce structural hook still fires in its normal position, third-party plugins that hook <code>woocommerce_before_single_product</code> etc. (structured data, "recently viewed" trackers, upsell widgets) keep working identically around a Noorifa Core Layout &mdash; the override is a whole-template swap via <code>template_include</code>, never a <code>the_content</code> filter.</p>
+      </div>
+      <h3>The "Product Page Template" meta box</h3>
+      <p><code>Layouts\Meta_Box</code> adds a side meta box to the Product edit screen: a dropdown of every published Layout (plus "— Default (theme/WooCommerce) —"), saved to <code>_noorifa_core_layout_id</code> on <code>save_post_product</code>. It also adds a "Default Product Page Template" field to the product category add/edit screens, saved as term meta and requiring <code>manage_product_terms</code>.</p>
+    </section>
+
+    <section class="doc-section" id="templates-system">
+      <h2>Templates &amp; Patterns system</h2>
+      <p>Bundled premade templates are plain JSON files under <code>templates/library/</code>, e.g. <code>templates/library/bold-product-layout.json</code>:</p>
+      <div class="code-block">
+        <div class="code-label">templates/library/bold-product-layout.json</div>
+        <pre><code class="lang-php">{
+    "title": "Bold Product Layout",
+    "description": "…",
+    "type": "layout",
+    "category": "bold",
+    "is_pro": true,
+    "content": "&lt;!-- wp:noorifa-core/product-title /--&gt;…"
+}</code></pre>
+      </div>
+      <p><code>type</code> is required (<code>layout</code> or <code>section</code>); <code>description</code>, <code>category</code>, and <code>is_pro</code> are optional (<code>category</code> falls back to <code>type</code>, <code>is_pro</code> falls back to <code>false</code>). <code>content</code> always ships in full &mdash; this is a single codebase, nothing is stripped for a "Free" build. A thumbnail is auto-detected from <code>{dir}/thumbnails/{filename}.{png,jpg,webp}</code>, no JSON field needed.</p>
+      <p><code>Patterns\Manager</code> scans every configured directory (<code>get_pattern_dirs()</code>, filterable via <code>noorifa-core/pattern_dirs</code> &mdash; see below), caching the parsed result per-request and in a 1-day transient invalidated by an mtime fingerprint over every template + thumbnail file. Registration as native block patterns only happens where patterns are actually consulted (<code>is_admin()</code>, ajax, REST, or the <code>noorifa-core/patterns_are_needed</code> filter) &mdash; skipped on plain front-end requests.</p>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;</span>
+        <p><strong>Any directory other than the plugin's own <code>templates/library/</code> has every template in it force-set to <code>is_pro = true</code></strong>, regardless of that JSON's own <code>is_pro</code> field. That folder only exists on a site because some add-on contributed it, so nothing in it is ever free by definition &mdash; see <a href="#licensing">Licensing &amp; the Pro gate</a>.</p>
+      </div>
+      <h3>Where a directory can come from</h3>
+      <p>The base directory list is just <code>array( NOORIFA_CORE_DIR . 'templates/library' )</code>, run through <code>apply_filters( 'noorifa-core/pattern_dirs', $dirs )</code>. <strong>Noorifa Core Pro</strong> is the one real example today &mdash; it appends its own <code>templates/</code> folder (see <a href="#pro-addon">Building a companion add-on</a>).</p>
+      <h3>Source aggregation (<code>Templates\Repository</code>)</h3>
+      <p>The REST layer doesn't talk to <code>Patterns\Manager</code> directly &mdash; it goes through <code>Templates\Repository</code>, which merges every registered <code>Source</code>:</p>
+      <div class="card-grid">
+        <div class="card"><h4>Local_Source</h4><p>Wraps <code>Patterns\Manager</code> &mdash; the bundled (+ Pro add-on) JSON templates above. Implements <code>Lazy_Source</code> (fetches full content on demand).</p></div>
+        <div class="card"><h4>Cloud_Source</h4><p>Fetches a JSON array of templates from a remote URL (<code>NOORIFA_CORE_CLOUD_URL</code> or the <code>noorifa-core/cloud_api_url</code> filter), transient-cached 12h on success / 5min on failure. Inactive if no URL is configured.</p></div>
+      </div>
+      <p>Sources are filterable via <code>noorifa-core/template_sources</code>. On a name collision, the first source wins (bundled beats remote). The final merged, filterable-by-args collection is exposed via <code>noorifa-core/library_templates</code>.</p>
+    </section>
+
+    <hr class="divider" />
+
+    <section class="doc-section" id="rest-api">
+      <p class="doc-eyebrow-section">Reference</p>
+      <h2>REST API</h2>
+      <p>Every route lives under the <code>noorifa-core/v1</code> namespace.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Route</th><th>Controller</th><th>Capability</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><span class="method get">GET</span></td><td><code>/templates</code></td><td>Templates_Controller</td><td>edit_posts</td><td>List template-library metadata, filterable by <code>type</code>/<code>category</code>/<code>search</code>.</td></tr>
+            <tr><td><span class="method post">POST</span></td><td><code>/templates/sync</code></td><td>Templates_Controller</td><td>manage_options</td><td>Flush every source's cache and re-fetch.</td></tr>
+            <tr><td><span class="method get">GET</span></td><td><code>/templates/{name}</code></td><td>Templates_Controller</td><td>edit_posts</td><td>Full template incl. content. 404 if unknown; 403 <code>noorifa_core_pro_required</code> if <code>is_pro</code> and unlicensed.</td></tr>
+            <tr><td><span class="method get">GET</span></td><td><code>/product-reviews/{id}</code></td><td>Product_Reviews_Controller</td><td>public</td><td>Paginated rendered HTML of a product's reviews, for the Product Reviews block's "Load more".</td></tr>
+            <tr><td><span class="method get">GET</span></td><td><code>/product-reviews/{id}/list</code></td><td>Product_Reviews_Controller</td><td>edit_posts</td><td>Raw review data for the Review Carousel block's editor-side picker.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="hooks">
+      <h2>Hooks reference</h2>
+      <h3>Extension points (filters)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Filter</th><th>Signature</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>noorifa_core_is_pro</code></td><td><code>( bool $is_pro = false )</code></td><td>The global Pro/Free gate — see <a href="#licensing">Licensing</a>.</td></tr>
+            <tr><td><code>noorifa_core_feature_{feature}</code></td><td><code>( bool $enabled = self::is_pro() )</code></td><td>Per-feature gate, defaults to the global flag. See <code>Gate::feature_keys()</code>.</td></tr>
+            <tr><td><code>noorifa-core/pattern_dirs</code></td><td><code>( string[] $dirs )</code></td><td>Directories scanned for bundled JSON templates.</td></tr>
+            <tr><td><code>noorifa-core/block_dirs</code></td><td><code>( string[] $dirs )</code></td><td>Block directories to register (each must contain a <code>block.json</code>).</td></tr>
+            <tr><td><code>noorifa-core/disabled_blocks</code></td><td><code>( string[] $disabled )</code></td><td>Block names to skip registering.</td></tr>
+            <tr><td><code>noorifa-core/template_sources</code></td><td><code>( Source[] $sources )</code></td><td>Registered template <code>Source</code> implementations.</td></tr>
+            <tr><td><code>noorifa-core/library_templates</code></td><td><code>( array[] $templates )</code></td><td>Final merged template collection, after aggregation, before args-filtering.</td></tr>
+            <tr><td><code>noorifa-core/cloud_api_url</code></td><td><code>( string $url )</code></td><td>Remote template API URL; empty disables the Cloud source.</td></tr>
+            <tr><td><code>noorifa-core/patterns_are_needed</code></td><td><code>( bool $needed = false )</code></td><td>Whether to register block patterns on requests that are neither admin, ajax, nor REST.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Lifecycle (actions)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Action</th><th>Signature</th><th>Fires</th></tr></thead>
+          <tbody>
+            <tr><td><code>noorifa-core/loaded</code></td><td><code>( Plugin $plugin )</code></td><td>After every core service has booted — see <a href="#pro-addon">Building a companion add-on</a>.</td></tr>
+            <tr><td><code>noorifa-core/upgraded</code></td><td><code>( string $previous_version )</code></td><td>After version migrations are applied (empty string on first install).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Key WooCommerce hooks consumed</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Hook</th><th>Consumer</th><th>Priority</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>template_include</code></td><td><code>Layouts\Template_Override</code></td><td>100</td><td>Swaps in the fallback template when a Layout resolves — see <a href="#layout-system">The Layout system</a>.</td></tr>
+            <tr><td><code>woocommerce_add_to_cart_redirect</code></td><td><code>Blocks\Buy_Now</code></td><td>default</td><td>Redirects to checkout when the Buy Now button was used.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="licensing">
+      <h2>Licensing &amp; the Pro gate</h2>
+      <p><code>Licensing\Gate</code> is the single source of truth for every free/pro decision in the codebase — a plain static utility, not a singleton, because every check is a pure filter lookup with nothing to instantiate:</p>
+      <div class="code-block">
+        <div class="code-label">includes/Licensing/Gate.php</div>
+        <pre><code class="lang-php">class Gate {
+
+    public static function is_pro() {
+        return (bool) apply_filters( 'noorifa_core_is_pro', false );
+    }
+
+    public static function has_feature( $feature ) {
+        return (bool) apply_filters( "noorifa_core_feature_{$feature}", self::is_pro() );
+    }
+
+    public static function feature_keys() {
+        return array();
+    }
+}</code></pre>
+      </div>
+      <p><code>is_pro()</code> defaults <code>false</code> — the real, permanent Free behavior. <code>has_feature($key)</code> defaults to the global flag but lets a future tiered license override one feature independently, without changing any call site. <code>feature_keys()</code> is currently empty — see the callout below for why, before adding anything to it.</p>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;</span>
+        <p><strong>This class must never be used to lock code that ships in this WP.org-hosted free plugin.</strong> The first submission was rejected under WP.org's Guideline 5 (Trialware) for exactly that: Split Testing and the Hero block's video background were fully implemented here but gated behind <code>Gate::has_feature()</code>, defaulting to disabled — WP.org's own words: "Even if the locked feature is present in the code 'just in case the user upgrades,' it's still not allowed," even as a dimmed/disabled upsell control. Both features were removed from this codebase (Hero's video background was simply unlocked for everyone instead, since it was a client-only static-block control with nothing server-side to re-gate). <code>has_feature()</code>/<code>feature_keys()</code> only remain valid for gating code that lives entirely in the separate <strong>Noorifa Core Pro</strong> plugin — never for anything physically shipped here.</p>
+      </div>
+      <h3>How Noorifa Core Pro unlocks things</h3>
+      <p>Noorifa Core Pro (a separate, sibling plugin, <code>Requires Plugins: noorifa-core</code>) never touches this plugin's internals directly — it only hooks the two extension points built for this purpose:</p>
+      <div class="code-block">
+        <div class="code-label">noorifa-core-pro/includes/Plugin.php</div>
+        <pre><code class="lang-php">class Plugin {
+
+    public static function init() {
+        add_filter( 'noorifa_core_is_pro', array( __CLASS__, 'is_pro' ) );
+        add_filter( 'noorifa-core/pattern_dirs', array( __CLASS__, 'add_template_dir' ) );
+    }
+
+    public static function is_pro() {
+        return function_exists( 'nt_pro_fs' ) && nt_pro_fs()->can_use_premium_code();
+    }
+
+    public static function add_template_dir( $dirs ) {
+        $dirs[] = NOORIFA_CORE_PRO_DIR . 'templates';
+        return $dirs;
+    }
+}</code></pre>
+      </div>
+      <p><code>nt_pro_fs()</code> is the vendored Freemius SDK's accessor (initialized in <code>noorifa-core-pro/includes/freemius-bootstrap.php</code> against the plugin's own Freemius product). <code>can_use_premium_code()</code> is Freemius's own check for "this site has a valid license or active trial." The moment that's true, <code>Gate::is_pro()</code> flips to <code>true</code> everywhere in the free plugin — currently that only affects <code>Rest\Templates_Controller</code>/<code>Patterns\Manager</code>, which refuse to serve Pro-tier template content contributed by <code>noorifa-core-pro</code>'s own <code>templates/</code> directory (added via the <code>noorifa-core/pattern_dirs</code> filter above) unless licensed. That content physically lives only in the Pro plugin, never in this one — see the callout below for why that distinction matters.</p>
+      <div class="callout tip">
+        <span class="callout-icon">&#9432;</span>
+        <p>This mirrors the sibling plugin NoorQuiz's own <code>Core\Licensing</code> design: the free plugin only ever exposes filter points, and a Pro add-on's entire job is hooking them with a real license check — nothing in the free codebase needs to know Freemius (or any licensing vendor) exists.</p>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;</span>
+        <p><strong>The only WP.org-compliant way to gate a feature is to keep its implementation entirely out of this repo.</strong> The Pro-templates pattern above (content lives only in <code>noorifa-core-pro/templates/</code>, contributed via a filter) is correct. Gating a feature that's <em>physically present</em> in this free plugin behind <code>Gate::has_feature()</code> — even just dimming/disabling its UI — is not, regardless of how solid the server-side enforcement is. See the callout in <a href="#licensing">Licensing &amp; the Pro gate</a> above for what happened the one time this codebase did that.</p>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section class="doc-section" id="extension-points">
+      <p class="doc-eyebrow-section">Extending Noorifa Core</p>
+      <h2>Extension points at a glance</h2>
+      <p>Every extension point follows the same shape: a filter that returns an array (or a boolean), into which your own plugin pushes one more entry. Nothing requires editing Noorifa Core's own files.</p>
+      <div class="card-grid">
+        <div class="card"><h4>New block<span class="chip">filter</span></h4><p>Add a directory containing a <code>block.json</code> to <code>noorifa-core/block_dirs</code>. <code>Blocks\Manager</code> auto-discovers and registers it the same way it registers the 29 built-in blocks.</p></div>
+        <div class="card"><h4>New bundled template<span class="chip">filter</span></h4><p>Add your own directory to <code>noorifa-core/pattern_dirs</code>, matching the JSON shape in <a href="#templates-system">Templates &amp; Patterns system</a>. Every template found there is automatically treated as Pro-tier.</p></div>
+        <div class="card"><h4>New template source<span class="chip">filter + class</span></h4><p>Implement <code>Templates\Source</code> (or <code>Lazy_Source</code> for on-demand content) and add it via <code>noorifa-core/template_sources</code> — same shape as the bundled <code>Cloud_Source</code>.</p></div>
+        <div class="card"><h4>Gate an add-on's own feature<span class="chip">filter</span></h4><p><code>Gate::has_feature('your_key')</code>/<code>noorifa_core_feature_your_key</code> exist for an add-on to gate a feature <em>it</em> implements and ships in its own plugin — never for locking code that physically lives in this free plugin. See the warning in <a href="#licensing">Licensing &amp; the Pro gate</a>.</p></div>
+        <div class="card"><h4>Disable a block<span class="chip">filter</span></h4><p>Add its name to <code>noorifa-core/disabled_blocks</code> — the same filter the Dashboard's block-toggle settings write to.</p></div>
+        <div class="card"><h4>Full companion add-on<span class="chip">filter + plugin</span></h4><p>Hook <code>noorifa-core/loaded</code> from a separate plugin to register your own services once Noorifa Core has fully booted — see below.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="pro-addon">
+      <h2>Building a companion add-on</h2>
+      <p>Noorifa Core Pro is a real, working example of this pattern — not a hypothetical. It's a separate plugin folder, <code>noorifa-core-pro</code>, that does nothing but vendor the Freemius SDK and hook two filters.</p>
+
+      <h3>1. Plugin skeleton</h3>
+      <p>A companion plugin, not a modification of Noorifa Core itself — <code>Requires Plugins</code> lets WordPress core handle the dependency check (deactivation/warning if the free plugin is missing) with no custom code.</p>
+      <div class="code-block">
+        <div class="code-label">noorifa-core-pro.php</div>
+        <pre><code class="lang-php">&lt;?php
+/**
+ * Plugin Name:       Noorifa Core Pro
+ * Description:       Unlocks Pro templates and Pro features for Noorifa Core.
+ * Requires Plugins:  noorifa-core
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+define( 'NOORIFA_CORE_PRO_DIR', plugin_dir_path( __FILE__ ) );
+
+require_once NOORIFA_CORE_PRO_DIR . 'includes/freemius-bootstrap.php';
+
+require_once NOORIFA_CORE_PRO_DIR . 'includes/Autoloader.php';
+\NoorifaCorePro\Autoloader::register();
+
+add_action( 'plugins_loaded', array( '\NoorifaCorePro\Plugin', 'init' ) );</code></pre>
+      </div>
+
+      <h3>2. Hook the two filters</h3>
+      <p>Shown in full in <a href="#licensing">Licensing &amp; the Pro gate</a> above — <code>noorifa_core_is_pro</code> to unlock every <code>Gate::has_feature()</code> check at once, and <code>noorifa-core/pattern_dirs</code> to contribute the add-on's own <code>templates/</code> folder so real Pro template content physically lives in the Pro plugin, never in the free one.</p>
+
+      <h3>3. A more targeted alternative: hook a single feature</h3>
+      <p><code>Gate::feature_keys()</code> is currently empty (see <a href="#licensing">Licensing &amp; the Pro gate</a> for why), but the mechanism stays available for an add-on gating a feature <em>it</em> ships itself. If an add-on should unlock <em>one</em> such feature rather than everything, it hooks the feature-specific filter instead of the global one:</p>
+      <div class="code-block">
+        <div class="code-label">PHP</div>
+        <pre><code class="lang-php">add_filter( 'noorifa_core_feature_your_key', function () {
+    return my_addon_has_a_valid_license();
+} );</code></pre>
+      </div>
+      <p>This leaves <code>Gate::is_pro()</code> itself untouched (so templates and any other global gate stay unaffected) while unlocking just that one feature.</p>
+
+      <h3>4. Registering your own service once Noorifa Core has booted</h3>
+      <p>For anything beyond the two filters above — a new admin page, a new block, a background job — hook <code>noorifa-core/loaded</code> rather than <code>plugins_loaded</code>, so every core service is guaranteed to already exist:</p>
+      <div class="code-block">
+        <div class="code-label">PHP</div>
+        <pre><code class="lang-php">add_action( 'noorifa-core/loaded', function ( \Noorifa\Core\Plugin $plugin ) {
+    \My_Addon\Service::instance();
+} );</code></pre>
+      </div>
+    </section>
+
+    <section class="doc-section" id="other-extensions">
+      <h2>Other extension recipes</h2>
+
+      <h3>A new block</h3>
+      <div class="code-block">
+        <div class="code-label">PHP</div>
+        <pre><code class="lang-php">add_filter( 'noorifa-core/block_dirs', function ( array $dirs ) {
+    $dirs[] = __DIR__ . '/build/blocks/my-block';
+    return $dirs;
+} );</code></pre>
+      </div>
+      <p>The directory needs a <code>block.json</code>, same as any of the 29 built-in blocks under <code>src/blocks/</code> — <code>Blocks\Manager</code> doesn't care whether the directory belongs to this plugin or an add-on.</p>
+
+      <h3>A new bundled template</h3>
+      <div class="code-block">
+        <div class="code-label">PHP</div>
+        <pre><code class="lang-php">add_filter( 'noorifa-core/pattern_dirs', function ( array $dirs ) {
+    $dirs[] = __DIR__ . '/templates';
+    return $dirs;
+} );</code></pre>
+      </div>
+      <p>Drop <code>.json</code> files matching the schema in <a href="#templates-system">Templates &amp; Patterns system</a> into that directory, plus optional thumbnails in a <code>thumbnails/</code> subfolder. Remember: every template found in an add-on-contributed directory is automatically Pro-tier, regardless of its own <code>is_pro</code> field.</p>
+
+      <h3>A new remote template source</h3>
+      <div class="code-block">
+        <div class="code-label">PHP</div>
+        <pre><code class="lang-php">use Noorifa\Core\Templates\Lazy_Source;
+
+class MyRemoteSource implements Lazy_Source {
+    public function get_id() {
+        return 'my-remote-source';
+    }
+
+    public function get_templates() {
+        // Return an array of template metadata (no content).
+    }
+
+    public function get_template( $name ) {
+        // Return one template's full content, or null.
+    }
+}
+
+add_filter( 'noorifa-core/template_sources', function ( array $sources ) {
+    $sources[] = new MyRemoteSource();
+    return $sources;
+} );</code></pre>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section class="doc-section" id="dev-environment">
+      <p class="doc-eyebrow-section">Working in this codebase</p>
+      <h2>Development environment</h2>
+      <p>You need a working WordPress site with WooCommerce active — Noorifa Core refuses to boot without it (see <a href="#boot-sequence">Boot sequence</a>), so there's no way to work on it against a bare WordPress install.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Requirement</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>WordPress</td><td>6.6+ (<code>Requires at least</code> in the plugin header).</td></tr>
+            <tr><td>PHP</td><td>7.4+ (<code>Requires PHP</code> in the plugin header).</td></tr>
+            <tr><td>WooCommerce</td><td>Active on the same site — a hard dependency, not optional.</td></tr>
+            <tr><td>Node.js</td><td>Whatever current <code>@wordpress/scripts</code> requires (check its own <code>engines</code> field) — there's no <code>.nvmrc</code> pinned in this repo, so match your Node version to the installed <code>@wordpress/scripts</code> version if you hit build errors.</td></tr>
+            <tr><td>Composer</td><td>Optional — only needed for the PHP linting tools (<code>wp-coding-standards/wpcs</code>, PHPCompatibility), not for running the plugin itself.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ol class="steps">
+        <li><strong>Place the plugin</strong> at <code>wp-content/plugins/noorifa-core</code> in a WordPress install that already has WooCommerce active (a product with at least one review is useful for testing the Reviews/Review Carousel blocks).</li>
+        <li><strong>Install JS dependencies:</strong> <code>npm install</code>.</li>
+        <li><strong>(Optional) install PHP dev tooling:</strong> <code>composer install</code> — only needed to run <code>composer lint</code>/<code>lint:fix</code> (PHPCS against WordPress Coding Standards).</li>
+        <li><strong>Start the watcher:</strong> <code>npm run start</code> — rebuilds <code>build/</code> on every save under <code>src/</code>. Activate the plugin in wp-admin as normal; there's no separate dev-server/proxy, you're editing the real plugin the real site loads.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="callout-icon">&#9432;</span>
+        <p>If you're also working on <strong>Noorifa Core Pro</strong> alongside the free plugin, install it as a normal sibling plugin at <code>wp-content/plugins/noorifa-core-pro</code> and activate both — it has no build step of its own (plain PHP + the vendored Freemius SDK), so there's nothing to <code>npm install</code> there.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="creating-a-block">
+      <h2>Creating a new block</h2>
+      <p>This walks through adding a block to this codebase directly (as opposed to <a href="#other-extensions">registering an external block from a separate add-on plugin</a>, which is a different recipe using the <code>noorifa-core/block_dirs</code> filter instead of the steps below). Every block lives in its own folder under <code>src/blocks/</code>; <code>Blocks\Manager::get_block_dirs()</code> auto-discovers every folder under the built <code>build/blocks/*</code> matching one via <code>glob()</code> and calls <code>register_block_type( $dir )</code> on each — so a new block only needs the right files in the right shape, no manual registration call anywhere in PHP.</p>
+      <h3>The minimum file set</h3>
+      <p>The simplest real block in this codebase, <strong>Advanced Button</strong> (<code>src/blocks/button/</code>), is a good template to copy:</p>
+      <div class="tree">src/blocks/button/
+├── block.json      <span class="note"># name, attributes, supports — the single source of truth WP reads at registration</span>
+├── index.js         <span class="note"># registerBlockType() — wires block.json + Edit + save together</span>
+├── edit.js           <span class="note"># the editor-side React component</span>
+├── save.js           <span class="note"># static markup serialized into post_content (omit entirely for a dynamic block)</span>
+├── style.scss        <span class="note"># front-end + editor styles</span>
+└── editor.scss       <span class="note"># editor-only styles</span></div>
+      <div class="code-block">
+        <div class="code-label">src/blocks/button/index.js</div>
+        <pre><code class="lang-php">import { registerBlockType } from '@wordpress/blocks';
+
+import metadata from './block.json';
+import Edit from './edit';
+import save from './save';
+import './style.scss';
+import './editor.scss';
+
+registerBlockType( metadata.name, {
+    edit: Edit,
+    save,
+} );</code></pre>
+      </div>
+      <ol class="steps">
+        <li><strong>Create the folder</strong> under <code>src/blocks/your-block/</code>.</li>
+        <li><strong>Write <code>block.json</code></strong> — set <code>"name": "noorifa-core/your-block"</code>, <code>"category": "noorifa-core"</code> (the plugin's own inserter category), and declare every attribute you need.</li>
+        <li><strong>Write <code>edit.js</code></strong> — the Inspector controls and in-canvas editing UI. If the block should get the plugin's own icon picker or unique-id helper, reuse the shared components in <code>src/utils/</code> rather than rebuilding them (<code>icon-picker.js</code>, <code>use-unique-id.js</code>). Don't wrap a control in a Pro-upsell gate unless the feature it controls ships entirely in a separate add-on — see <a href="#licensing">Licensing &amp; the Pro gate</a>.</li>
+        <li><strong>Choose static or dynamic rendering:</strong> a <strong>static</strong> block ships a <code>save.js</code> whose output is serialized straight into <code>post_content</code> (fine for pure layout/content blocks with nothing to compute at render time). A <strong>dynamic</strong> block (any block that needs live WooCommerce data — see every Product block in <a href="#codebase-map">Codebase map</a>) has <strong>no <code>save.js</code></strong> and instead declares <code>"render": "file:./render.php"</code> in <code>block.json</code>, which webpack copies alongside the built JS (<code>--webpack-copy-php</code> in the build script — see <a href="#build-tooling">Build tooling &amp; shipping</a>).</li>
+        <li><strong>Run <code>npm run start</code></strong> (or <code>build</code> for a one-off) — the block appears in the inserter under the "Noorifa Core" category as soon as <code>build/blocks/your-block/block.json</code> exists and the plugin's <code>init</code> hook re-runs (reload wp-admin).</li>
+      </ol>
+      <div class="callout tip">
+        <span class="callout-icon">&#9432;</span>
+        <p>Every Noorifa Core block automatically gains the shared Visibility/Animation Inspector panel and front-end behavior from <code>src/extensions/</code> — you don't opt in explicitly, it's applied to any block whose name starts with <code>noorifa-core/</code>. If your new block is <em>dynamic</em>, double-check its <code>render.php</code> actually applies the visibility classes/animation data-attributes itself; the extension's save-props filter only fires for static blocks' <code>save.js</code> output.</p>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section class="doc-section" id="conventions">
+      <p class="doc-eyebrow-section">Working in this codebase</p>
+      <h2>Conventions &amp; gotchas</h2>
+      <ul>
+        <li><strong>Every service is a singleton via the shared <code>Singleton</code> trait</strong> (protected constructor, cloning disabled) &mdash; access an already-booted service through its own <code>::instance()</code>, never <code>new</code>.</li>
+        <li><strong>Meta and option keys are always class constants</strong>, never inline string literals &mdash; e.g. <code>Resolver::PRODUCT_META_KEY</code>. Reference the constant, not the raw string, so a rename only touches one place.</li>
+        <li><strong>An add-on's contributed template directory is always Pro-tier</strong>, regardless of the JSON's own <code>is_pro</code> field &mdash; see the callout in <a href="#templates-system">Templates &amp; Patterns system</a>. Don't rely on setting <code>is_pro: false</code> in an add-on's own template to make it free; it won't work, by design.
+        </li>
+        <li><strong>Never lock a feature that's physically implemented in this repo</strong>, even editor-UX-only. This is the hard rule the first WP.org submission was rejected over &mdash; see the warning in <a href="#licensing">Licensing &amp; the Pro gate</a> before adding anything to <code>Gate::feature_keys()</code>.</li>
+        <li><strong>No <code>the_content</code> filtering anywhere.</strong> The single-product override is a whole-template swap via <code>template_include</code> at priority 100 &mdash; keep it that way if you're touching <code>Layouts\Template_Override</code>, since filtering content instead would break the WooCommerce structural hooks other plugins depend on.</li>
+        <li><strong><code>Blocks\WP_Icon_Registry</code> is generated, not hand-written</strong> &mdash; it mirrors the <code>@wordpress/icons</code> package via <code>scripts/generate-icon-registry.js</code>. Regenerate it rather than editing it directly if the icon set changes.</li>
+      </ul>
+    </section>
+
+    <section class="doc-section" id="build-tooling">
+      <h2>Build tooling &amp; shipping</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>npm run start</code></td><td>Watches <code>src/</code>, rebuilding <code>build/</code> on change.</td></tr>
+            <tr><td><code>npm run build</code></td><td>One-off production build of every block and editor script.</td></tr>
+            <tr><td><code>npm run lint:js</code> / <code>lint:css</code></td><td><code>wp-scripts</code> linting for JS and SCSS.</td></tr>
+            <tr><td><code>composer lint</code> / <code>lint:fix</code></td><td>PHPCS against WordPress Coding Standards (requires <code>composer install</code> first — see <a href="#dev-environment">Development environment</a>).</td></tr>
+            <tr><td><code>npm run plugin-zip</code></td><td>Packages the plugin into a distributable zip using the <code>files</code> list in <code>package.json</code>.</td></tr>
+            <tr><td><code>npm run release</code></td><td><code>build</code> then <code>plugin-zip</code> &mdash; the full release artifact.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Built with <code>@wordpress/scripts</code> (<code>--experimental-modules --webpack-copy-php</code>, since several blocks ship a <code>view.js</code> as a script module and a <code>render.php</code> alongside their JS). Noorifa Core Pro has no build step of its own today &mdash; it's plain PHP plus the vendored Freemius SDK, so shipping it is just zipping the folder directly.</p>
+
+      <h3>Shipping a release</h3>
+      <ol class="steps">
+        <li><strong>Bump the version in two places</strong>: the <code>Version:</code> header in <code>noorifa-core.php</code> (which also sets the <code>NOORIFA_CORE_VERSION</code> constant), and <code>Stable tag:</code> in <code>readme.txt</code>. Unlike NoorQuiz's release script, nothing in this codebase cross-checks these automatically today — they can silently drift, so bump both by hand every time.</li>
+        <li><strong>Run <code>npm run release</code></strong> &mdash; builds <code>build/</code> fresh, then zips exactly the paths listed in <code>package.json</code>'s <code>files</code> array (currently <code>noorifa-core.php</code>, <code>readme.txt</code>, <code>includes</code>, <code>patterns</code>, <code>templates</code>, <code>build</code>) via <code>wp-scripts plugin-zip</code>. <code>src/</code> and <code>node_modules/</code> are never included — only compiled output ships.</li>
+        <li><strong>Sanity-check <code>readme.txt</code></strong> separately from the version bump &mdash; it's a real wp.org-format readme (Requires at least, Tested up to, Requires PHP, feature list), not a stub, so keep its description in sync with what actually shipped.</li>
+      </ol>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;</span>
+        <p>As of this writing, <code>noorifa-core.php</code>'s header version and <code>readme.txt</code>'s <code>Stable tag</code>/<code>package.json</code>'s <code>version</code> are already out of sync (<code>1.1.0</code> vs <code>1.0.0</code>) &mdash; a concrete example of exactly the drift the step above warns about. Worth reconciling before the next release.</p>
+      </div>
+    </section>
+
+    <footer class="doc-footer">
+      <p>Noorifa Core Developer Guide &middot; v1.1.0</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var toggle = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('sidebar');
+    if (toggle && sidebar) {
+      toggle.addEventListener('click', function () {
+        var open = sidebar.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      sidebar.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          sidebar.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-group a'));
+    var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+
+    if ('IntersectionObserver' in window && sections.length) {
+      var current = null;
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { current = entry.target.id; }
+        });
+        links.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+        });
+      }, { rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+      sections.forEach(function (s) { observer.observe(s); });
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function highlight(code) {
+      var re = /(?<comment>\/\*[\s\S]*?\*\/|\/\/[^\n]*)|(?<string>"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|(?<variable>\$[A-Za-z_][A-Za-z0-9_]*)|(?<keyword>\b(?:namespace|use|class|interface|abstract|extends|implements|function|public|private|protected|static|return|if|else|elseif|foreach|for|while|as|new|const|array|true|false|null|void|int|string|float|bool|self|parent|echo|global|require_once|require|include|switch|case|break|continue|try|catch|finally|throw|instanceof)\b)|(?<number>\b\d+(?:\.\d+)?\b)/g;
+      var out = '';
+      var lastIndex = 0;
+      var m;
+      while ((m = re.exec(code)) !== null) {
+        out += escapeHtml(code.slice(lastIndex, m.index));
+        var type = Object.keys(m.groups).find(function (k) { return m.groups[k] !== undefined; });
+        out += '<span class="tok-' + type + '">' + escapeHtml(m[0]) + '</span>';
+        lastIndex = re.lastIndex;
+        if (m.index === re.lastIndex) { re.lastIndex++; }
+      }
+      out += escapeHtml(code.slice(lastIndex));
+      return out;
+    }
+
+    document.querySelectorAll('pre code.lang-php').forEach(function (block) {
+      block.innerHTML = highlight(block.textContent);
+    });
+  })();
+</script>

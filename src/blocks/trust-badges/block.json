@@ -1,0 +1,58 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "noorifa-core/trust-badges",
+	"title": "Trust Badges",
+	"category": "noorifa-core",
+	"icon": "shield-alt",
+	"description": "A row of icon + label badges (e.g. Third-Party Tested, Vegan Friendly) in a soft rounded card, divided by vertical lines.",
+	"keywords": [ "trust", "badges", "icons", "guarantee", "features" ],
+	"version": "2.0.0",
+	"textdomain": "noorifa-core",
+	"attributes": {
+		"items": {
+			"type": "array",
+			"default": [
+				{ "icon": "nt-shieldCheck", "label": "Third-Party Tested" },
+				{ "icon": "nt-leaf", "label": "No Artificial Sweeteners" },
+				{ "icon": "nt-capsule", "label": "Vegan Friendly" },
+				{ "icon": "nt-medal", "label": "GMP Certified" }
+			]
+		},
+		"boxed": {
+			"type": "boolean",
+			"default": true
+		},
+		"boxedWidth": {
+			"type": "number",
+			"default": 1200
+		}
+	},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"anchor": true,
+		"html": false,
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"typography": {
+			"fontSize": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": true
+		},
+		"__experimentalBorder": {
+			"radius": true,
+			"width": true,
+			"color": true
+		},
+		"shadow": true
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

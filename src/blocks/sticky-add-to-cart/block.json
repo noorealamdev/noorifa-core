@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "noorifa-core/sticky-add-to-cart",
+    "title": "Sticky Add to Cart Bar",
+    "category": "noorifa-core",
+    "icon": "cart",
+    "description": "A bar fixed to the bottom of the screen with the product thumbnail, name, price and a Buy Now button — appears once the visitor scrolls past the main Add to Cart block.",
+    "keywords": [
+        "woocommerce",
+        "product",
+        "sticky",
+        "cart",
+        "buy now",
+        "floating"
+    ],
+    "version": "1.0.0",
+    "textdomain": "noorifa-core",
+    "attributes": {
+        "badgeText": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true,
+            "gradients": true
+        },
+        "typography": {
+            "fontSize": true
+        },
+        "spacing": {
+            "padding": true
+        },
+        "__experimentalBorder": {
+            "radius": true,
+            "width": true,
+            "color": true
+        },
+        "shadow": true
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css",
+    "viewScript": "file:./view.js",
+    "render": "file:./render.php"
+}

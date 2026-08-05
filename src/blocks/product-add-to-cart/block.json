@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "noorifa-core/product-add-to-cart",
+    "title": "Product Add to Cart",
+    "category": "noorifa-core",
+    "icon": "cart",
+    "description": "Displays the WooCommerce add-to-cart form for the current product, including variations, quantity and stock handling.",
+    "keywords": [
+        "woocommerce",
+        "product",
+        "cart",
+        "buy",
+        "variations"
+    ],
+    "version": "1.0.0",
+    "textdomain": "noorifa-core",
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true,
+            "gradients": true
+        },
+        "typography": {
+            "fontSize": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        },
+        "__experimentalBorder": {
+            "radius": true,
+            "width": true,
+            "color": true
+        },
+        "shadow": true
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css",
+    "viewScript": "file:./view.js",
+    "render": "file:./render.php"
+}

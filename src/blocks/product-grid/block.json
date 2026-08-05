@@ -1,0 +1,112 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "noorifa-core/product-grid",
+    "title": "Product Grid",
+    "category": "noorifa-core",
+    "icon": "grid-view",
+    "description": "Display a responsive grid of WooCommerce products (latest, related, upsells or cross-sells), rendered dynamically so it always stays up to date.",
+    "keywords": [
+        "products",
+        "grid",
+        "related",
+        "upsells",
+        "cross-sells",
+        "woocommerce"
+    ],
+    "version": "1.0.0",
+    "textdomain": "noorifa-core",
+    "attributes": {
+        "relation": {
+            "type": "string",
+            "default": "latest"
+        },
+        "productsToShow": {
+            "type": "number",
+            "default": 4
+        },
+        "columns": {
+            "type": "number",
+            "default": 4
+        },
+        "order": {
+            "type": "string",
+            "default": "desc"
+        },
+        "orderBy": {
+            "type": "string",
+            "default": "date"
+        },
+        "showImage": {
+            "type": "boolean",
+            "default": true
+        },
+        "showPrice": {
+            "type": "boolean",
+            "default": true
+        },
+        "showAddToCart": {
+            "type": "boolean",
+            "default": true
+        },
+        "boxed": {
+            "type": "boolean",
+            "default": true
+        },
+        "boxedWidth": {
+            "type": "number",
+            "default": 1200
+        },
+        "noorifaCoreVisibility": {
+            "type": "object",
+            "default": {
+                "hideOnMobile": false,
+                "hideOnTablet": false,
+                "hideOnDesktop": false
+            }
+        },
+        "noorifaCoreAnimation": {
+            "type": "object",
+            "default": {
+                "type": "none",
+                "duration": 600,
+                "delay": 0
+            }
+        }
+    },
+    "supports": {
+        "align": [
+            "wide",
+            "full"
+        ],
+        "anchor": true,
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true,
+            "link": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        },
+        "typography": {
+            "fontSize": true
+        },
+        "__experimentalBorder": {
+            "radius": true,
+            "width": true,
+            "color": true
+        },
+        "shadow": true
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css",
+    "render": "file:./render.php",
+    "example": {
+        "attributes": {
+            "productsToShow": 3,
+            "columns": 3
+        }
+    }
+}

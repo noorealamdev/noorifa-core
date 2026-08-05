@@ -1,0 +1,76 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "noorifa-core/comparison-table",
+    "title": "Comparison Table",
+    "category": "noorifa-core",
+    "icon": "editor-table",
+    "description": "A feature-by-feature comparison table, useful for plans, variants, size guides or specs.",
+    "keywords": [
+        "comparison",
+        "table",
+        "specs",
+        "features",
+        "size guide"
+    ],
+    "version": "1.0.0",
+    "textdomain": "noorifa-core",
+    "attributes": {
+        "title": {
+            "type": "string",
+            "source": "html",
+            "selector": "h2",
+            "default": "Compare Options"
+        },
+        "boxed": {
+            "type": "boolean",
+            "default": true
+        },
+        "boxedWidth": {
+            "type": "number",
+            "default": 1000
+        },
+        "style": {
+            "type": "object",
+            "default": {
+                "spacing": {
+                    "padding": {
+                        "top": "3rem",
+                        "right": "1.5rem",
+                        "bottom": "3rem",
+                        "left": "1.5rem"
+                    }
+                }
+            }
+        }
+    },
+    "supports": {
+        "align": [
+            "wide",
+            "full"
+        ],
+        "anchor": true,
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true,
+            "gradients": true
+        },
+        "typography": {
+            "fontSize": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true,
+            "blockGap": true
+        },
+        "__experimentalBorder": {
+            "radius": true,
+            "width": true,
+            "color": true
+        },
+        "shadow": true
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css"
+}

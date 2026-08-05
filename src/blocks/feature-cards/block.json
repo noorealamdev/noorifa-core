@@ -1,0 +1,93 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "noorifa-core/feature-cards",
+    "title": "Feature Cards",
+    "category": "noorifa-core",
+    "icon": "grid-view",
+    "description": "A row or grid of cards, each with a heading and a line of supporting text — useful for ingredients, benefits, or feature highlights.",
+    "keywords": [
+        "cards",
+        "features",
+        "benefits",
+        "grid",
+        "list"
+    ],
+    "version": "1.0.0",
+    "textdomain": "noorifa-core",
+    "attributes": {
+        "items": {
+            "type": "array",
+            "default": [
+                {
+                    "heading": "Elderberry Extract",
+                    "text": "Strengthens your first line of defense against seasonal threats."
+                },
+                {
+                    "heading": "Echinacea Purpurea",
+                    "text": "Activates natural immune response for faster recovery."
+                },
+                {
+                    "heading": "Crystalline Ginger",
+                    "text": "Relieves internal inflammation and supports respiratory health."
+                }
+            ]
+        },
+        "columns": {
+            "type": "number",
+            "default": 1
+        },
+        "cardBackground": {
+            "type": "string",
+            "default": ""
+        },
+        "cardRadius": {
+            "type": "number",
+            "default": 0
+        },
+        "cardPadding": {
+            "type": "number",
+            "default": 0
+        },
+        "boxed": {
+            "type": "boolean",
+            "default": true
+        },
+        "boxedWidth": {
+            "type": "number",
+            "default": 1200
+        }
+    },
+    "supports": {
+        "align": [ "wide", "full" ],
+        "anchor": true,
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true,
+            "gradients": true
+        },
+        "typography": {
+            "fontSize": true,
+            "lineHeight": true,
+            "__experimentalFontFamily": true,
+            "__experimentalFontWeight": true,
+            "__experimentalLetterSpacing": true,
+            "__experimentalTextTransform": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true,
+            "blockGap": true
+        },
+        "__experimentalBorder": {
+            "radius": true,
+            "width": true,
+            "color": true
+        },
+        "shadow": true
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css",
+    "render": "file:./render.php"
+}

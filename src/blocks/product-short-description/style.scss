@@ -1,0 +1,15 @@
+.wp-block-noorifa-core-product-short-description {
+
+	.woocommerce-product-details__short-description {
+
+		p {
+			margin: 0 0 0.5rem;
+			line-height: 1.7;
+			color: #444;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}

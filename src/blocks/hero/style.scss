@@ -1,0 +1,95 @@
+.wp-block-noorifa-core-hero {
+	text-align: center;
+
+	// Sits behind the heading/subheading/actions as a full-bleed background
+	// — those three are given `position: relative` below specifically so
+	// they paint above this absolutely-positioned video (a statically
+	// positioned element always paints below a positioned sibling,
+	// regardless of source order).
+	.noorifa-core-hero__bg-video {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: 0;
+	}
+
+	// Rendered after the video (if any) in source order so it paints on top
+	// of it — same z-index tier as the video, but a later DOM position wins
+	// the paint order within that tier.
+	.noorifa-core-hero__overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	.noorifa-core-hero__content {
+		position: relative;
+		z-index: 1;
+
+		&.is-boxed {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	// Pre-"boxed width" content saved without the `.noorifa-core-hero__content`
+	// wrapper (see deprecated.js) still renders heading/subheading/actions
+	// as flat children — kept alongside the rule above so already-published
+	// Hero blocks don't lose their stacking above the video/overlay until
+	// they happen to be resaved.
+	.noorifa-core-hero__heading,
+	.noorifa-core-hero__subheading,
+	.noorifa-core-hero__actions {
+		position: relative;
+		z-index: 1;
+	}
+
+	// The theme's own CSS sets an explicit color directly on `h1` (and
+	// other heading levels) — a directly-targeted rule always wins over
+	// an inherited value, so the block's own Text Color setting (which
+	// necessarily applies to the wrapper) would otherwise never reach it.
+	.noorifa-core-hero__heading {
+		margin: 0 0 0.5rem;
+		color: inherit;
+	}
+
+	.noorifa-core-hero__subheading {
+		max-width: 40em;
+		margin: 0 auto 1.5rem;
+		color: inherit;
+	}
+
+	.noorifa-core-hero__actions {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	&.has-text-align-left {
+
+		.noorifa-core-hero__subheading {
+			margin-left: 0;
+			margin-right: auto;
+		}
+
+		.noorifa-core-hero__actions {
+			justify-content: flex-start;
+		}
+	}
+
+	&.has-text-align-right {
+
+		.noorifa-core-hero__subheading {
+			margin-left: auto;
+			margin-right: 0;
+		}
+
+		.noorifa-core-hero__actions {
+			justify-content: flex-end;
+		}
+	}
+}

@@ -1,0 +1,77 @@
+// Shared editor-only styles for the IconPicker component
+// (src/utils/icon-picker.js) — imported by every block that uses it, so
+// there's one picker UI look to maintain instead of one per block.
+
+.noorifa-core-icon-picker__toggle {
+	flex-shrink: 0;
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	background: #fff;
+	color: #4a4a4a;
+
+	// "No icon" selected — dashed border instead of a solid one, so it
+	// reads as "empty on purpose" rather than looking broken/unset.
+	&.is-empty {
+		border-style: dashed;
+		color: #aaa;
+	}
+}
+
+.noorifa-core-icon-picker__popover {
+	padding: 0.5rem;
+}
+
+.noorifa-core-icon-picker__content {
+	width: 15rem;
+}
+
+.noorifa-core-icon-picker__search {
+	margin-bottom: 0.5rem;
+}
+
+.noorifa-core-icon-picker__grid {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 0.25rem;
+	max-height: 14rem;
+	overflow-y: auto;
+}
+
+.noorifa-core-icon-picker__option {
+	width: 2.1rem;
+	height: 2.1rem;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	color: #4a4a4a;
+
+	&.is-pressed {
+		background: #2f6f62;
+		color: #fff;
+	}
+
+	&--none {
+		border: 1px dashed #ccc;
+		grid-column: span 2;
+
+		&.is-pressed {
+			border-color: #2f6f62;
+		}
+	}
+}
+
+.noorifa-core-icon-picker__empty,
+.noorifa-core-icon-picker__hint {
+	margin: 0.5rem 0 0;
+	font-size: 0.8rem;
+	color: #757575;
+	text-align: center;
+}

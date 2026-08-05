@@ -1,0 +1,15 @@
+.wp-block-noorifa-core-tabs {
+
+	.noorifa-core-tabs__tab {
+		cursor: pointer;
+	}
+
+	.noorifa-core-tabs__add.components-button {
+		align-self: center;
+	}
+
+	// Only the active tab panel is visible while editing.
+	.wp-block-noorifa-core-tab:not(.is-active) {
+		display: none;
+	}
+}

@@ -1,0 +1,101 @@
+.wp-block-noorifa-core-product-grid {
+	display: grid;
+	gap: 2rem;
+	grid-template-columns: 1fr;
+
+	&.is-boxed {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	@media ( min-width: 600px ) {
+
+		&.columns-2,
+		&.columns-3,
+		&.columns-4 {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media ( min-width: 900px ) {
+
+		&.columns-3 {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		&.columns-4 {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	.noorifa-core-product-grid__item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.noorifa-core-product-grid__image {
+		display: block;
+		overflow: hidden;
+		border-radius: 4px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+			aspect-ratio: 1 / 1;
+			object-fit: cover;
+		}
+	}
+
+	.noorifa-core-product-grid__title {
+		margin: 0;
+		font-size: 1.15em;
+
+		a {
+			color: inherit;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.noorifa-core-product-grid__price {
+		font-weight: 600;
+	}
+
+	.noorifa-core-product-grid__add-to-cart {
+		margin-top: auto;
+
+		// WooCommerce's own `woocommerce_loop_add_to_cart_link` filter only
+		// gives this a bare `.button` class — left unstyled, it's entirely at
+		// the mercy of whatever the active theme does with generic `.button`
+		// elements, which often clashes with this card's own custom look.
+		.button {
+			box-sizing: border-box;
+			display: inline-block;
+			width: 100%;
+			padding: 0.6em 1.2em;
+			border: 1px solid currentColor;
+			border-radius: 4px;
+			background: transparent;
+			color: inherit;
+			font: inherit;
+			text-align: center;
+			text-decoration: none;
+			cursor: pointer;
+			transition: opacity 0.15s ease-in-out;
+
+			&:hover,
+			&:focus {
+				opacity: 0.75;
+			}
+		}
+	}
+
+	.noorifa-core-product-grid__empty {
+		grid-column: 1 / -1;
+	}
+}

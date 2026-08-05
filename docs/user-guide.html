@@ -1,0 +1,614 @@
+<title>Noorifa Core User Guide</title>
+<meta name="description" content="Complete user guide to building WooCommerce product pages with Noorifa Core." />
+<style>
+  :root {
+    --bg: #f7f7fb;
+    --surface: #ffffff;
+    --surface-sunken: #f0f0f6;
+    --text: #18181b;
+    --text-muted: #6b6b76;
+    --border: #e4e4e7;
+    --accent: #4f46e5;
+    --accent-deep: #3730a3;
+    --accent-soft: #eef0ff;
+    --tip: #0f766e;
+    --tip-bg: #ecfdf9;
+    --tip-border: #b7e8de;
+    --warn: #b45309;
+    --warn-bg: #fffaeb;
+    --warn-border: #f3dfae;
+    --code-bg: #14142b;
+    --code-text: #e3e1f7;
+    --code-key: #a5b4fc;
+    --shadow: 0 1px 2px rgba(24, 24, 27, 0.04), 0 8px 24px -8px rgba(24, 24, 27, 0.10);
+    --radius: 14px;
+    --sidebar-w: 272px;
+    --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #101018;
+    --surface: #17171f;
+    --surface-sunken: #1d1d28;
+    --text: #f1f0f5;
+    --text-muted: #9b99a8;
+    --border: #2a2a38;
+    --accent: #8681ff;
+    --accent-deep: #b3aeff;
+    --accent-soft: #23223f;
+    --tip: #5eead4;
+    --tip-bg: #103430;
+    --tip-border: #1f5b51;
+    --warn: #fbbf6d;
+    --warn-bg: #3a2a10;
+    --warn-border: #6b4c1e;
+    --code-bg: #0b0b1a;
+    --code-text: #e3e1f7;
+    --code-key: #9fb0ff;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #101018;
+      --surface: #17171f;
+      --surface-sunken: #1d1d28;
+      --text: #f1f0f5;
+      --text-muted: #9b99a8;
+      --border: #2a2a38;
+      --accent: #8681ff;
+      --accent-deep: #b3aeff;
+      --accent-soft: #23223f;
+      --tip: #5eead4;
+      --tip-bg: #103430;
+      --tip-border: #1f5b51;
+      --warn: #fbbf6d;
+      --warn-bg: #3a2a10;
+      --warn-border: #6b4c1e;
+      --code-bg: #0b0b1a;
+      --code-text: #e3e1f7;
+      --code-key: #9fb0ff;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16.5px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); }
+  a:hover { color: var(--accent-deep); }
+
+  .layout { display: flex; align-items: flex-start; max-width: 1240px; margin: 0 auto; }
+
+  .sidebar {
+    position: sticky; top: 0; height: 100vh; width: var(--sidebar-w); flex: 0 0 var(--sidebar-w);
+    overflow-y: auto; padding: 28px 22px 40px; border-right: 1px solid var(--border);
+  }
+
+  .brand { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+  .brand-mark { font-family: var(--font-display); font-weight: 700; font-size: 21px; letter-spacing: -0.01em; }
+  .brand-version {
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+    background: var(--surface-sunken); border-radius: 999px; padding: 2px 8px;
+  }
+  .brand-tag { font-size: 13px; color: var(--text-muted); margin: 0 0 26px; }
+
+  .nav-group { margin-bottom: 22px; }
+  .nav-eyebrow {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); margin: 0 0 8px;
+  }
+  .nav-group ul { list-style: none; margin: 0; padding: 0; }
+  .nav-group li { margin: 0; }
+  .nav-group a {
+    display: block; padding: 5px 10px; margin: 1px 0; border-radius: 8px; font-size: 14px;
+    color: var(--text); text-decoration: none; border-left: 2px solid transparent;
+  }
+  .nav-group a:hover { background: var(--surface-sunken); }
+  .nav-group a.active {
+    color: var(--accent); background: var(--accent-soft); border-left-color: var(--accent); font-weight: 600;
+  }
+
+  .sidebar-toggle { display: none; }
+
+  .content { flex: 1 1 auto; min-width: 0; padding: 48px clamp(24px, 5vw, 72px) 120px; max-width: 840px; }
+
+  .doc-title-block { margin-bottom: 56px; }
+  .doc-eyebrow {
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent); margin: 0 0 10px;
+  }
+  .doc-title {
+    font-family: var(--font-display); font-weight: 700; font-size: clamp(32px, 5vw, 44px);
+    line-height: 1.12; margin: 0 0 14px; letter-spacing: -0.02em; text-wrap: balance;
+  }
+  .doc-lede { font-size: 18px; color: var(--text-muted); max-width: 62ch; margin: 0; }
+
+  section.doc-section { margin-bottom: 64px; scroll-margin-top: 24px; }
+  section.doc-section > .doc-eyebrow-section {
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); margin: 0 0 8px;
+  }
+
+  h2 {
+    font-family: var(--font-display); font-weight: 700; font-size: 29px; line-height: 1.25;
+    letter-spacing: -0.015em; margin: 0 0 18px; text-wrap: balance; scroll-margin-top: 24px;
+  }
+  h3 {
+    font-family: var(--font-display); font-weight: 600; font-size: 21px; line-height: 1.3;
+    margin: 36px 0 14px; letter-spacing: -0.01em; scroll-margin-top: 24px;
+  }
+  h3:first-child { margin-top: 0; }
+
+  p { margin: 0 0 16px; max-width: 68ch; }
+  ul, ol { margin: 0 0 16px; padding-left: 1.3em; max-width: 66ch; }
+  li { margin-bottom: 6px; }
+  li:last-child { margin-bottom: 0; }
+  strong { font-weight: 650; }
+
+  code {
+    font-family: var(--font-mono); font-size: 0.88em; background: var(--surface-sunken);
+    border: 1px solid var(--border); border-radius: 5px; padding: 0.1em 0.4em;
+  }
+
+  pre {
+    background: var(--code-bg); color: var(--code-text); border-radius: 10px; padding: 16px 18px;
+    overflow-x: auto; margin: 0 0 20px; font-family: var(--font-mono); font-size: 14px; line-height: 1.6;
+  }
+  pre code { background: none; border: none; padding: 0; color: inherit; }
+
+  .callout {
+    display: flex; gap: 12px; border-radius: 10px; padding: 14px 16px; margin: 0 0 20px;
+    max-width: 68ch; border: 1px solid var(--border);
+  }
+  .callout-icon { flex: 0 0 auto; font-size: 16px; line-height: 1.5; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout.tip { background: var(--tip-bg); border-color: var(--tip-border); }
+  .callout.tip .callout-icon { color: var(--tip); }
+  .callout.warn { background: var(--warn-bg); border-color: var(--warn-border); }
+  .callout.warn .callout-icon { color: var(--warn); }
+
+  .table-wrap { overflow-x: auto; margin: 0 0 24px; max-width: 100%; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; }
+  td code { white-space: nowrap; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; margin: 0 0 24px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .card h4 {
+    font-family: var(--font-body); font-size: 15px; font-weight: 650; margin: 0 0 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card p { font-size: 13.5px; color: var(--text-muted); margin: 0; max-width: none; }
+  .chip {
+    display: inline-block; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; color: var(--accent); background: var(--accent-soft);
+    border-radius: 999px; padding: 2px 8px;
+  }
+  .chip.pro { color: var(--warn); background: var(--warn-bg); }
+
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 0 0 24px; max-width: 68ch; }
+  .steps li { counter-increment: step; position: relative; padding-left: 40px; margin-bottom: 18px; }
+  .steps li::before {
+    content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px;
+    border-radius: 50%; background: var(--accent-soft); color: var(--accent-deep);
+    font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .steps li strong { display: block; margin-bottom: 2px; }
+
+  kbd {
+    font-family: var(--font-mono); font-size: 0.82em; background: var(--surface-sunken);
+    border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px;
+  }
+
+  .arch { display: flex; flex-direction: column; gap: 10px; margin: 0 0 28px; }
+  .arch-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .arch-box {
+    flex: 1 1 200px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 16px; font-size: 13.5px; text-align: center;
+  }
+  .arch-box strong { display: block; font-size: 14px; margin-bottom: 2px; }
+  .arch-arrow { text-align: center; color: var(--text-muted); font-size: 13px; }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 56px 0; }
+
+  .faq-item { margin-bottom: 22px; }
+  .faq-item summary { font-weight: 650; cursor: pointer; padding: 4px 0; list-style: none; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before {
+    content: "+"; display: inline-block; width: 18px; color: var(--accent); font-weight: 700;
+  }
+  .faq-item[open] summary::before { content: "\2212"; }
+  .faq-item .faq-body { padding: 8px 0 4px 18px; color: var(--text-muted); }
+  .faq-item .faq-body p:last-child { margin-bottom: 0; }
+
+  footer.doc-footer {
+    max-width: 68ch; padding-top: 24px; border-top: 1px solid var(--border);
+    color: var(--text-muted); font-size: 13.5px;
+  }
+
+  a:focus-visible, summary:focus-visible, .nav-group a:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; z-index: 20; background: var(--bg);
+      transform: translateX(-100%); transition: transform 0.2s ease; box-shadow: var(--shadow);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .content { padding-top: 76px; }
+    .sidebar-toggle {
+      display: flex; position: fixed; top: 14px; left: 14px; z-index: 21; align-items: center; gap: 8px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+      padding: 8px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+      box-shadow: var(--shadow); cursor: pointer;
+    }
+  }
+</style>
+
+<button class="sidebar-toggle" id="sidebarToggle" aria-expanded="false" aria-controls="sidebar">&#9776; Menu</button>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="Table of contents">
+    <div class="brand">
+      <span class="brand-mark">Noorifa Core</span>
+      <span class="brand-version">v1.1.0</span>
+    </div>
+    <p class="brand-tag">User Guide</p>
+
+    <div class="nav-group">
+      <p class="nav-eyebrow">Getting started</p>
+      <ul>
+        <li><a href="#what-is-noorifa-core">What is Noorifa Core</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#first-layout">Your first product layout</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-eyebrow">Building a layout</p>
+      <ul>
+        <li><a href="#layout-editor">The Layout editor</a></li>
+        <li><a href="#product-blocks">Product blocks</a></li>
+        <li><a href="#content-blocks">Content &amp; layout blocks</a></li>
+        <li><a href="#visibility-animation">Visibility &amp; animation</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-eyebrow">Templates</p>
+      <ul>
+        <li><a href="#using-templates">Using the template library</a></li>
+        <li><a href="#saving-templates">Saving your own template</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-eyebrow">Assigning layouts</p>
+      <ul>
+        <li><a href="#assigning">Per-product, per-category, site-wide</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-eyebrow">Going Pro</p>
+      <ul>
+        <li><a href="#going-pro">What's included</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-eyebrow">Reference</p>
+      <ul>
+        <li><a href="#blocks-reference">Blocks reference</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="content">
+    <div class="doc-title-block">
+      <p class="doc-eyebrow">User Guide</p>
+      <h1 class="doc-title">Building product pages with Noorifa Core</h1>
+      <p class="doc-lede">Everything you need to design and assign WooCommerce single-product pages — from your first layout to going live.</p>
+    </div>
+
+    <section class="doc-section" id="what-is-noorifa-core">
+      <h2>What is Noorifa Core</h2>
+      <p>Noorifa Core lets you design your WooCommerce product pages visually, using the same block editor you already use for posts and pages — instead of being stuck with whatever layout your theme happens to ship. A "Layout" is just a normal page you build with blocks: drag in a Product Title, a Gallery, a Price, an Add to Cart button, a Reviews section, and anything else you want (a Hero banner, an FAQ accordion, trust badges) around them, in whatever order and design you like.</p>
+      <p>Once a Layout is built, you assign it to one product, a whole category, or your entire store — and every visitor sees your design instead of the theme's default product page.</p>
+      <div class="arch">
+        <div class="arch-row">
+          <div class="arch-box"><strong>1. Build</strong>a Layout in the block editor</div>
+          <div class="arch-box"><strong>2. Assign</strong>it to a product, category, or the whole store</div>
+          <div class="arch-box"><strong>3. Visitors see it</strong>on the real product page, automatically</div>
+        </div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">&#9432;</span>
+        <p>Nothing about your theme's header, footer, or sidebar changes — a Layout only replaces the middle of the product page. Anything else your theme or other plugins add around the product (announcement bars, sidebars, structured data) keeps working exactly as before.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="installation">
+      <h2>Installation</h2>
+      <p>Noorifa Core requires WooCommerce to be installed and active — it won't do anything (and will show a notice) without it.</p>
+      <ol class="steps">
+        <li><strong>Install &amp; activate</strong> Noorifa Core like any other WordPress plugin (Plugins → Add New, or upload the zip).</li>
+        <li><strong>Make sure WooCommerce is active.</strong> If it isn't, you'll see an admin notice explaining that Noorifa Core needs it.</li>
+        <li><strong>Look for the new "Noorifa Core" menu</strong> in your WordPress admin sidebar — this is your Dashboard for settings and layouts.</li>
+      </ol>
+    </section>
+
+    <section class="doc-section" id="first-layout">
+      <h2>Your first product layout</h2>
+      <p>The fastest way to get a feel for Noorifa Core is to start from a premade template rather than a blank page — see <a href="#using-templates">Using the template library</a>. To start from scratch instead:</p>
+      <ol class="steps">
+        <li><strong>Go to Noorifa Core → Add New Layout.</strong> This opens the ordinary WordPress block editor, just like editing a page.</li>
+        <li><strong>Give it a title</strong> (for your own reference — visitors never see a Layout's title, only its content).</li>
+        <li><strong>Add blocks.</strong> Start with the WooCommerce data blocks you need (Product Title, Gallery, Price, Add to Cart) and build outward from there — see <a href="#product-blocks">Product blocks</a> and <a href="#content-blocks">Content &amp; layout blocks</a>.</li>
+        <li><strong>Publish the Layout.</strong> Publishing alone doesn't put it live on any product yet — a Layout only does something once it's assigned. See <a href="#assigning">Assigning layouts</a>.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="callout-icon">&#9432;</span>
+        <p>Use the <strong>"Preview"</strong> link on the Layouts list to see exactly how a Layout will look on a real product page before assigning it anywhere — this works even while the Layout is still a draft.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="layout-editor">
+      <h2>The Layout editor</h2>
+      <p>A Layout is edited in the same block editor as any WordPress page, with one addition: a <strong>"Noorifa Core"</strong> button in the toolbar that opens the template library modal (see <a href="#using-templates">Using the template library</a>), plus <strong>"Export as JSON"</strong> and <strong>"Import JSON"</strong> buttons next to it for sharing or reusing a layout as a template file.</p>
+      <p>Every WooCommerce data block (Product Title, Price, Gallery, and so on) shows a simple placeholder while you're editing — icon and label only — because its real content only exists on an actual product. What you see in the editor is the block's <em>position</em>; what a visitor sees is that block filled in with the real product's data.</p>
+    </section>
+
+    <section class="doc-section" id="product-blocks">
+      <h2>Product blocks</h2>
+      <p>These blocks pull live data from whichever product the page belongs to — you place them once in a Layout, and they automatically show the right title, price, images, and so on for every product that Layout is assigned to.</p>
+      <div class="card-grid">
+        <div class="card"><h4>Product Title</h4><p>The product's title.</p></div>
+        <div class="card"><h4>Product Price</h4><p>Regular/sale price, formatted the way WooCommerce always does.</p></div>
+        <div class="card"><h4>Product Category</h4><p>A small label showing the product's category — usually placed above the title.</p></div>
+        <div class="card"><h4>Product Rating</h4><p>The product's star rating.</p></div>
+        <div class="card"><h4>Product Breadcrumbs</h4><p>The WooCommerce breadcrumb trail.</p></div>
+        <div class="card"><h4>Product Gallery Carousel</h4><p>A swipeable image carousel, with an optional thumbnail strip you can toggle on/off.</p></div>
+        <div class="card"><h4>Product Short Description</h4><p>The product's short description/excerpt.</p></div>
+        <div class="card"><h4>Product Add to Cart</h4><p>The live quantity/variations/stock form — this is the button that actually adds the product to the cart.</p></div>
+        <div class="card"><h4>Product Meta</h4><p>SKU, categories, and tags.</p></div>
+        <div class="card"><h4>Product Specifications</h4><p>A spec table from the product's attributes — the same data as the classic "Additional Information" tab.</p></div>
+        <div class="card"><h4>Product Tabs</h4><p>The classic Description / Additional Information / Reviews tab set, all in one block.</p></div>
+        <div class="card"><h4>Product Reviews</h4><p>A rating summary plus a full grid of the product's reviews, with a "Load more" button. Choose a boxed max-width or full width.</p></div>
+        <div class="card"><h4>Review Carousel</h4><p>A curated carousel where <em>you</em> pick exactly which reviews to feature — search for a product, then check the specific reviews you want shown.</p></div>
+        <div class="card"><h4>Related Products</h4><p>WooCommerce's own "related products," with configurable count and columns.</p></div>
+        <div class="card"><h4>Product Grid</h4><p>A grid of products — latest, related, upsells, or cross-sells — with toggles for image/price/add-to-cart and full control over columns and count.</p></div>
+        <div class="card"><h4>Sticky Add to Cart Bar</h4><p>A bar that slides in at the bottom of the screen (with an optional badge like "Free shipping today") once a visitor scrolls past the main Add to Cart block.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="content-blocks">
+      <h2>Content &amp; layout blocks</h2>
+      <p>These are general-purpose design blocks — not tied to product data — for building the rest of the page around your product blocks: hero banners, trust signals, FAQs, comparisons, and structure.</p>
+      <div class="card-grid">
+        <div class="card"><h4>Hero</h4><p>Full-width banner with a heading, subheading, call-to-action button, and an image or video background with a color overlay.</p></div>
+        <div class="card"><h4>Advanced Heading</h4><p>A heading with a selectable level (H1&ndash;H6) and full styling control.</p></div>
+        <div class="card"><h4>Advanced Button</h4><p>A styleable call-to-action button/link, usable on its own or inside a Hero.</p></div>
+        <div class="card"><h4>Container</h4><p>A flexible wrapper for grouping and laying out other blocks.</p></div>
+        <div class="card"><h4>Icon List</h4><p>A list of short lines each with your own chosen icon instead of a bullet — great for shipping/trust info.</p></div>
+        <div class="card"><h4>Trust Badges</h4><p>A row of icon + label badges (e.g. "Vegan Friendly", "GMP Certified") in a soft card.</p></div>
+        <div class="card"><h4>Feature Cards</h4><p>A row or grid of editable cards (heading + text) — for ingredients, benefits, or feature highlights. Configurable columns, background, corner radius, and padding.</p></div>
+        <div class="card"><h4>Comparison Table</h4><p>A titled feature-comparison table, prefilled with a starter 3-column layout you edit directly.</p></div>
+        <div class="card"><h4>Tabs</h4><p>Organizes content into switchable tabs — add as many tabs as you like, each holding any other blocks.</p></div>
+        <div class="card"><h4>Accordion</h4><p>Collapsible FAQ-style panels — choose whether one panel can be open at a time, or several at once.</p></div>
+        <div class="card"><h4>FAQ Accordion</h4><p>A ready-made "Frequently Asked Questions" section — a titled Accordion prefilled with example shipping/returns questions, ready to edit.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="visibility-animation">
+      <h2>Visibility &amp; animation</h2>
+      <p>Every Noorifa Core block gets two extra Inspector panels automatically, no matter which block you're editing:</p>
+      <div class="card-grid">
+        <div class="card"><h4>Visibility</h4><p>Three toggles — "Hide on desktop", "Hide on tablet", "Hide on mobile" — for showing or hiding any block per device size.</p></div>
+        <div class="card"><h4>Animation</h4><p>An entrance animation (Fade in / Slide up / Zoom in) that plays once the block scrolls into view, with your own duration and delay in milliseconds.</p></div>
+      </div>
+      <p>Both live in the block's own Inspector panel (the sidebar that opens when a block is selected), below its normal settings.</p>
+    </section>
+
+    <hr class="divider" />
+
+    <section class="doc-section" id="using-templates">
+      <p class="doc-eyebrow-section">Templates</p>
+      <h2>Using the template library</h2>
+      <p>Click the <strong>"Noorifa Core"</strong> button in the Layout editor's toolbar to open the template library — a searchable, categorized gallery of ready-made designs.</p>
+      <ul>
+        <li><strong>Full Layouts</strong> are complete product-page designs, ready to use as-is or as a starting point.</li>
+        <li><strong>Sections</strong> are smaller, individual pieces (a hero banner, an FAQ block, a trust-badges row) you insert alongside whatever you've already built.</li>
+      </ul>
+      <p>Search or filter by category to narrow things down. Clicking a Full Layout card <strong>replaces</strong> your current content (you'll be asked to confirm if the Layout already has real content in it); clicking a Section card <strong>adds</strong> it alongside what's already there.</p>
+      <div class="callout tip">
+        <span class="callout-icon">&#9432;</span>
+        <p>A card marked <span class="chip pro">PRO</span> is a Pro-only template — you can still see its title, description, and thumbnail as a preview, but using it requires Noorifa Core Pro. Clicking it takes you to the upgrade page instead of inserting it. See <a href="#going-pro">Going Pro</a>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="saving-templates">
+      <h2>Saving your own template</h2>
+      <p>The <strong>"Export as JSON"</strong> toolbar button saves whatever you've currently built as a downloadable <code>.json</code> file — useful for backing up a design, sharing it with someone else, or reusing it on another site. Give it a title, choose whether it's a Full Layout or a Section, and optionally a category; the file downloads straight to your computer, no server round-trip involved.</p>
+      <p>Use <strong>"Import JSON"</strong> to bring a previously exported file back in — pick the file, and it's applied exactly like picking a template from the library (with the same replace-content confirmation for a Full Layout).</p>
+    </section>
+
+    <hr class="divider" />
+
+    <section class="doc-section" id="assigning">
+      <p class="doc-eyebrow-section">Assigning layouts</p>
+      <h2>Per-product, per-category, site-wide</h2>
+      <p>Building a Layout doesn't change anything on its own — it only takes effect once assigned. Noorifa Core checks these in order for every product page, and uses the first match it finds:</p>
+      <ol class="steps">
+        <li><strong>A single product's own choice.</strong> On the Product edit screen, the <strong>"Product Page Template"</strong> box (in the sidebar) lets you pick a Layout just for that one product.</li>
+        <li><strong>The product's category default.</strong> On a Product Category's edit screen, "Default Product Page Template" applies a Layout to every product in that category that hasn't chosen its own.</li>
+        <li><strong>Your site-wide default</strong>, set once on the Noorifa Core Dashboard, covering every product that doesn't match anything more specific.</li>
+        <li><strong>Nothing set anywhere?</strong> The product page looks exactly like it would without Noorifa Core installed.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="callout-icon">&#9432;</span>
+        <p>This lets you set one site-wide default for most products, override it for a specific category (say, all your "Supplements" get a longer, FAQ-heavy layout), and still hand-pick something completely different for one flagship product — all three can coexist.</p>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section class="doc-section" id="going-pro">
+      <p class="doc-eyebrow-section">Going Pro</p>
+      <h2>What's included</h2>
+      <p>Noorifa Core itself is fully free and doesn't stop working if you never upgrade — every block (including the Hero block's video background), the Layout system, and template library all work without a license. Noorifa Core Pro is a separate, small companion plugin that unlocks Pro-only template content once installed and licensed:</p>
+      <div class="card-grid">
+        <div class="card"><h4>Pro-only templates</h4><p>Additional premade Full Layouts and Sections in the template library, marked <span class="chip pro">PRO</span>.</p></div>
+      </div>
+      <ol class="steps">
+        <li><strong>Purchase a license</strong> through the checkout link shown next to any locked/Pro feature.</li>
+        <li><strong>Install the Noorifa Core Pro plugin</strong> (a separate download) alongside Noorifa Core — both need to be active.</li>
+        <li><strong>Activate your license</strong> from the connect screen or the Account page Noorifa Core Pro adds to your admin menu, using the license key from your purchase email.</li>
+        <li><strong>Everything unlocks immediately</strong> — no further setup. If you ever move your license to a different site, the Account page lets you deactivate it there and activate it elsewhere with the same key, without buying again.</li>
+      </ol>
+    </section>
+
+    <hr class="divider" />
+
+    <section class="doc-section" id="blocks-reference">
+      <p class="doc-eyebrow-section">Reference</p>
+      <h2>Blocks reference</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Block</th><th>Type</th><th>Pro?</th></tr></thead>
+          <tbody>
+            <tr><td>Product Title</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Price</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Category</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Rating</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Breadcrumbs</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Gallery Carousel</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Short Description</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Add to Cart</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Meta</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Specifications</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Tabs</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Reviews</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Review Carousel</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Related Products</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Product Grid</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Sticky Add to Cart Bar</td><td>Product data</td><td>&mdash;</td></tr>
+            <tr><td>Hero</td><td>Content</td><td>Video background only</td></tr>
+            <tr><td>Advanced Heading</td><td>Content</td><td>&mdash;</td></tr>
+            <tr><td>Advanced Button</td><td>Content</td><td>&mdash;</td></tr>
+            <tr><td>Container</td><td>Content</td><td>&mdash;</td></tr>
+            <tr><td>Icon List</td><td>Content</td><td>&mdash;</td></tr>
+            <tr><td>Trust Badges</td><td>Content</td><td>&mdash;</td></tr>
+            <tr><td>Feature Cards</td><td>Content</td><td>&mdash;</td></tr>
+            <tr><td>Comparison Table</td><td>Content</td><td>&mdash;</td></tr>
+            <tr><td>Tabs</td><td>Content</td><td>&mdash;</td></tr>
+            <tr><td>Accordion</td><td>Content</td><td>&mdash;</td></tr>
+            <tr><td>FAQ Accordion</td><td>Content</td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="faq">
+      <h2>Frequently asked questions</h2>
+
+      <details class="faq-item">
+        <summary>Do I need to know how to code?</summary>
+        <div class="faq-body"><p>No — everything is built with the same block editor you already use for pages and posts. Every block has plain-language settings in its Inspector panel.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Will this work with my theme?</summary>
+        <div class="faq-body"><p>Yes. A Layout only replaces the middle of the product page — your theme's header, footer, and sidebar stay exactly as they are, and anything else hooked into WooCommerce's normal product-page structure keeps working.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can I use different layouts for different products?</summary>
+        <div class="faq-body"><p>Yes — assign a Layout per product, per category, or set one site-wide default, and mix all three as needed. See <a href="#assigning">Per-product, per-category, site-wide</a>.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can I export a layout and use it on another site?</summary>
+        <div class="faq-body"><p>Yes — use "Export as JSON" to download it, then "Import JSON" on the other site to bring it back in. See <a href="#saving-templates">Saving your own template</a>.</p></div>
+      </details>
+    </section>
+
+    <section class="doc-section" id="troubleshooting">
+      <h2>Troubleshooting</h2>
+
+      <h3>Noorifa Core isn't doing anything</h3>
+      <p>Confirm WooCommerce is installed and active — Noorifa Core deliberately does nothing at all until it is, and shows an admin notice if it's missing.</p>
+
+      <h3>My layout isn't showing on the product page</h3>
+      <p>Make sure the Layout is actually <strong>assigned</strong> somewhere — building and publishing it isn't enough on its own. Check the product's own "Product Page Template" box first, then its category's default, then the site-wide default; see <a href="#assigning">Assigning layouts</a> for the exact order Noorifa Core checks.</p>
+
+      <h3>A product block shows nothing / looks empty</h3>
+      <p>Product blocks only render real data on an actual product page — in the Layout editor itself they show a plain placeholder by design. Use the "Preview" link on the Layouts list to see it with real data.</p>
+
+      <h3>A Pro template card won't apply when I click it</h3>
+      <p>Pro-tier templates are visible to everyone as a preview (title, description, thumbnail) but only actually apply once Noorifa Core Pro is installed and licensed — clicking one instead takes you to the upgrade page.</p>
+    </section>
+
+    <footer class="doc-footer">
+      <p>Noorifa Core User Guide &middot; v1.1.0</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var toggle = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('sidebar');
+    if (toggle && sidebar) {
+      toggle.addEventListener('click', function () {
+        var open = sidebar.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      sidebar.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          sidebar.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-group a'));
+    var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+
+    if ('IntersectionObserver' in window && sections.length) {
+      var current = null;
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { current = entry.target.id; }
+        });
+        links.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+        });
+      }, { rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+      sections.forEach(function (s) { observer.observe(s); });
+    }
+  })();
+</script>

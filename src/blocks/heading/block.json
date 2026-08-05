@@ -1,0 +1,61 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "noorifa-core/heading",
+    "title": "Advanced Heading",
+    "category": "noorifa-core",
+    "icon": "heading",
+    "description": "A heading block with adjustable level, alignment, colors and typography.",
+    "keywords": [
+        "title",
+        "heading",
+        "subtitle"
+    ],
+    "version": "1.0.0",
+    "textdomain": "noorifa-core",
+    "attributes": {
+        "content": {
+            "type": "string",
+            "source": "html",
+            "selector": "h1,h2,h3,h4,h5,h6",
+            "default": ""
+        },
+        "level": {
+            "type": "number",
+            "default": 2
+        },
+        "textAlign": {
+            "type": "string"
+        }
+    },
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true,
+            "gradients": true
+        },
+        "typography": {
+            "fontSize": true,
+            "lineHeight": true,
+            "__experimentalFontFamily": true,
+            "__experimentalFontWeight": true,
+            "__experimentalLetterSpacing": true,
+            "__experimentalTextTransform": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        },
+        "__experimentalBorder": {
+            "radius": true,
+            "width": true,
+            "color": true
+        },
+        "shadow": true
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css",
+    "editorStyle": "file:./index.css"
+}

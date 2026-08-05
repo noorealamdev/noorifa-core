@@ -1,0 +1,55 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "noorifa-core/icon-list",
+	"title": "Icon List",
+	"category": "noorifa-core",
+	"icon": "list-view",
+	"description": "A list of short lines, each with a picked icon instead of a bullet — e.g. shipping info, trust points, feature highlights.",
+	"keywords": [ "list", "icon", "trust", "shipping", "features" ],
+	"version": "1.0.0",
+	"textdomain": "noorifa-core",
+	"attributes": {
+		"rows": {
+			"type": "array",
+			"default": [
+				{ "icon": "calendar", "text": "Estimated Delivery : Up to 4 business days" },
+				{ "icon": "box", "text": "Free Shipping and Returns : On all orders over $200" }
+			]
+		},
+		"boxed": {
+			"type": "boolean",
+			"default": true
+		},
+		"boxedWidth": {
+			"type": "number",
+			"default": 800
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"html": false,
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"typography": {
+			"fontSize": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": true
+		},
+		"__experimentalBorder": {
+			"radius": true,
+			"width": true,
+			"color": true
+		},
+		"shadow": true
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

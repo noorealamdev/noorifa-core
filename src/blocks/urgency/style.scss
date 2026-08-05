@@ -1,0 +1,59 @@
+.wp-block-noorifa-core-urgency {
+	// Background, text color, border, and padding are never hardcoded here
+	// — they come entirely from the block's own Color/Border/Dimensions
+	// Inspector panels (applied to this same wrapper via
+	// get_block_wrapper_attributes()/useBlockProps()), with a sensible
+	// starting look set via block.json's `style` attribute default. Only
+	// structural layout (flex row, gap, boxed centering) lives in this file.
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+
+	&.is-boxed {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.noorifa-core-urgency__icon {
+		flex-shrink: 0;
+		width: 1.25rem;
+		height: 1.25rem;
+		color: inherit;
+	}
+
+	.noorifa-core-urgency__message,
+	.noorifa-core-urgency__label {
+		font-size: inherit;
+		color: inherit;
+		font-weight: 600;
+	}
+
+	.noorifa-core-urgency__timer {
+		display: flex;
+		gap: 0.75rem;
+	}
+
+	.noorifa-core-urgency__unit {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		min-width: 2.5rem;
+	}
+
+	.noorifa-core-urgency__value {
+		font-size: 1.25rem;
+		font-weight: 700;
+		line-height: 1.2;
+		color: inherit;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.noorifa-core-urgency__unit-label {
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: inherit;
+		opacity: 0.75;
+	}
+}

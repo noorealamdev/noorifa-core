@@ -1,0 +1,20 @@
+.wp-block-noorifa-core-product-title {
+
+	// The theme's own CSS sets an explicit font-size/weight/etc. directly
+	// on .product_title — a directly-targeted rule always wins over an
+	// inherited value, so this block's typography controls (which apply to
+	// the wrapper div) would otherwise never actually reach the heading.
+	.product_title {
+		font-size: inherit;
+		font-weight: inherit;
+		line-height: 42px;
+		font-family: inherit;
+		letter-spacing: inherit;
+		text-transform: inherit;
+		// The theme's own default heading margin, left over below the
+		// title regardless of this block's own (currently zero) margin
+		// setting — spacing here should come from the block's Spacing
+		// panel only, not a hidden extra margin baked into the heading.
+		margin: 0;
+	}
+}

@@ -1,0 +1,6 @@
+.wp-block-noorifa-core-container {
+	// Give an empty container a visible drop area in the editor.
+	&:empty {
+		min-height: 48px;
+	}
+}

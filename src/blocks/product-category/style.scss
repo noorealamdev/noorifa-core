@@ -1,0 +1,12 @@
+.wp-block-noorifa-core-product-category {
+
+	a {
+		color: inherit;
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			text-decoration: underline;
+		}
+	}
+}

@@ -1,0 +1,167 @@
+.wp-block-noorifa-core-product-gallery-carousel {
+
+	.noorifa-core-product-gallery-carousel__stage {
+		position: relative;
+	}
+
+	.noorifa-core-product-gallery-carousel__viewport {
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x mandatory;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+		cursor: grab;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		&.is-dragging {
+			cursor: grabbing;
+			scroll-snap-type: none;
+			user-select: none;
+
+			.noorifa-core-product-gallery-carousel__slide {
+				pointer-events: none;
+			}
+		}
+	}
+
+	.noorifa-core-product-gallery-carousel__track {
+		display: flex;
+	}
+
+	.noorifa-core-product-gallery-carousel__slide {
+		flex: 0 0 100%;
+		width: 100%;
+		scroll-snap-align: start;
+	}
+
+	.noorifa-core-product-gallery-carousel__image-wrap {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		aspect-ratio: 1 / 1;
+		overflow: hidden;
+		background: #f7f7f7;
+		border-radius: 12px;
+	}
+
+	.noorifa-core-product-gallery-carousel__image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		// Belt-and-braces alongside the `draggable="false"` attribute —
+		// stops the browser's native image-drag gesture from competing
+		// with the carousel's own pointer-based drag-to-scroll.
+		-webkit-user-drag: none;
+		user-select: none;
+	}
+
+	.noorifa-core-product-gallery-carousel__arrow {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		box-sizing: border-box;
+		flex-shrink: 0;
+		width: 2.75rem;
+		height: 2.75rem;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #fff;
+		color: #4a4a4a;
+		border: 1px solid #e2e2e2;
+		border-radius: 50%;
+		font-size: 1rem;
+		line-height: 1;
+		cursor: pointer;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+		transition: opacity 0.15s ease-in-out, background-color 0.15s ease-in-out;
+		z-index: 2;
+
+		&:hover,
+		&:focus {
+			background: #f5f5f5;
+			opacity: 1;
+		}
+
+		&--prev {
+			left: 0.75rem;
+		}
+
+		&--next {
+			right: 0.75rem;
+		}
+
+		@media (max-width: 599px) {
+			width: 2.25rem;
+			height: 2.25rem;
+		}
+	}
+
+	.noorifa-core-product-gallery-carousel__thumbs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+
+	.noorifa-core-product-gallery-carousel__thumb {
+		flex: 0 0 auto;
+		width: 6.5rem;
+		height: 6.5rem;
+		padding: 0;
+		background: none;
+		border: 2px solid transparent;
+		border-radius: 10px;
+		overflow: hidden;
+		cursor: pointer;
+		opacity: 0.6;
+		transition: opacity 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+		&:hover,
+		&:focus {
+			opacity: 0.85;
+		}
+
+		&.is-active {
+			opacity: 1;
+			border-color: #2f6f62;
+		}
+	}
+
+	.noorifa-core-product-gallery-carousel__thumb-image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.noorifa-core-product-gallery-carousel__dots {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.5rem;
+		margin-top: 0.75rem;
+	}
+
+	.noorifa-core-product-gallery-carousel__dot {
+		width: 8px;
+		height: 8px;
+		padding: 0;
+		background: #ddd;
+		border: 0;
+		border-radius: 50%;
+		cursor: pointer;
+		transition: background-color 0.15s ease-in-out, transform 0.15s ease-in-out;
+
+		&.is-active {
+			background: #2f6f62;
+			transform: scale(1.3);
+		}
+	}
+}

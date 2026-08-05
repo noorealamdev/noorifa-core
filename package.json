@@ -1,0 +1,31 @@
+{
+	"name": "noorifa-core",
+	"version": "1.0.0",
+	"description": "The business-logic layer of the Noorifa Commerce Platform: a WooCommerce product page builder (blocks, layouts and templates for the single product page) that pairs with the Noorifa theme.",
+	"author": "Noor E Alam",
+	"license": "GPL-2.0-or-later",
+	"files": [
+		"noorifa-core.php",
+		"readme.txt",
+		"includes",
+		"templates",
+		"build"
+	],
+	"scripts": {
+		"build": "wp-scripts build --experimental-modules --webpack-copy-php",
+		"start": "wp-scripts start --experimental-modules --webpack-copy-php",
+		"lint:js": "wp-scripts lint-js",
+		"lint:css": "wp-scripts lint-style",
+		"format": "wp-scripts format",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"release": "npm run build && npm run plugin-zip"
+	},
+	"devDependencies": {
+		"@wordpress/icons": "^15.1.0",
+		"@wordpress/interactivity": "^6.50.0",
+		"@wordpress/scripts": "^30.0.0",
+		"@wordpress/server-side-render": "^6.26.0",
+		"typescript": "~5.8.0"
+	}
+}

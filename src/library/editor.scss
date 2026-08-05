@@ -1,0 +1,154 @@
+.noorifa-core-library__toolbar-wrap {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-left: 8px;
+}
+
+.noorifa-core-library__import-input {
+	display: none;
+}
+
+.noorifa-core-library__modal {
+
+	.components-modal__content {
+		padding: 0 32px 32px;
+	}
+}
+
+.noorifa-core-library__loading {
+	display: flex;
+	justify-content: center;
+	padding: 64px 0;
+}
+
+.noorifa-core-library__toolbar {
+	display: flex;
+	gap: 16px;
+	align-items: flex-end;
+	padding-top: 24px;
+
+	.noorifa-core-library__search {
+		flex: 1;
+	}
+
+	.noorifa-core-library__category {
+		min-width: 200px;
+	}
+}
+
+.noorifa-core-library__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 300px);
+	gap: 32px;
+	padding-top: 24px;
+}
+
+.noorifa-core-library__card {
+	position: relative;
+}
+
+.noorifa-core-library__card-action {
+	position: absolute;
+	right: 0;
+	bottom: 16px;
+	left: 0;
+	width: max-content;
+	margin: 0 auto;
+	padding: 8px 16px;
+	background: var(--wp-admin-theme-color, #3858e9);
+	border-radius: 2px;
+	color: #fff;
+	font-size: 13px;
+	opacity: 0;
+	transition: opacity 0.15s ease-in-out;
+	pointer-events: none;
+}
+
+.noorifa-core-library__card-preview {
+	position: relative;
+	display: block;
+	width: 100%;
+	// Matches the recommended thumbnail shape (e.g. a 500x1000px screenshot
+	// of the top portion of a page) — a fixed height with object-fit:cover
+	// was cropping tall preview images down to a thin middle slice instead
+	// of showing what the layout actually looks like.
+	aspect-ratio: 1 / 2;
+	padding: 0;
+	overflow: hidden;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+	img {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	&:hover,
+	&:focus-visible {
+		border-color: var(--wp-admin-theme-color, #3858e9);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+		.noorifa-core-library__card-action {
+			opacity: 1;
+		}
+	}
+
+	&:disabled {
+		cursor: default;
+		opacity: 0.7;
+	}
+}
+
+.noorifa-core-library__card-placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	color: #ccc;
+
+	svg {
+		width: 48px;
+		height: 48px;
+	}
+}
+
+.noorifa-core-library__card-badge {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	padding: 2px 8px;
+	background: #1c1c1c;
+	border-radius: 999px;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.noorifa-core-library__card-spinner {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 255, 255, 0.6);
+}
+
+.noorifa-core-library__card-title {
+	margin-top: 12px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.noorifa-core-library__card-description {
+	margin-top: 4px;
+	color: #757575;
+	font-size: 12px;
+}

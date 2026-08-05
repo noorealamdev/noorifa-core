@@ -1,0 +1,116 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "noorifa-core/urgency",
+    "title": "Urgency & Countdown",
+    "category": "noorifa-core",
+    "icon": "warning",
+    "description": "A low-stock warning or countdown timer (sale end date or a custom deadline) that nudges shoppers toward buying now.",
+    "keywords": [
+        "urgency",
+        "scarcity",
+        "countdown",
+        "stock",
+        "timer",
+        "sale",
+        "woocommerce"
+    ],
+    "version": "1.0.0",
+    "textdomain": "noorifa-core",
+    "attributes": {
+        "type": {
+            "type": "string",
+            "default": "stock"
+        },
+        "stockThreshold": {
+            "type": "number",
+            "default": 10
+        },
+        "stockMessage": {
+            "type": "string",
+            "default": "Only {stock} left in stock — order soon!"
+        },
+        "showIcon": {
+            "type": "boolean",
+            "default": true
+        },
+        "countdownSource": {
+            "type": "string",
+            "default": "sale"
+        },
+        "customDate": {
+            "type": "string",
+            "default": ""
+        },
+        "countdownLabel": {
+            "type": "string",
+            "default": "Sale ends in:"
+        },
+        "hideWhenExpired": {
+            "type": "boolean",
+            "default": true
+        },
+        "expiredMessage": {
+            "type": "string",
+            "default": "This offer has ended."
+        },
+        "boxed": {
+            "type": "boolean",
+            "default": true
+        },
+        "boxedWidth": {
+            "type": "number",
+            "default": 800
+        },
+        "style": {
+            "type": "object",
+            "default": {
+                "color": {
+                    "background": "#fff4e5",
+                    "text": "#8a5a00"
+                },
+                "border": {
+                    "color": "#f5c98c",
+                    "width": "1px",
+                    "style": "solid"
+                },
+                "spacing": {
+                    "padding": {
+                        "top": "0.85rem",
+                        "right": "1.25rem",
+                        "bottom": "0.85rem",
+                        "left": "1.25rem"
+                    }
+                }
+            }
+        }
+    },
+    "supports": {
+        "align": [ "wide", "full" ],
+        "anchor": true,
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true,
+            "gradients": true
+        },
+        "typography": {
+            "fontSize": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        },
+        "__experimentalBorder": {
+            "radius": true,
+            "width": true,
+            "color": true,
+            "style": true
+        },
+        "shadow": true
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css",
+    "viewScript": "file:./view.js",
+    "render": "file:./render.php"
+}

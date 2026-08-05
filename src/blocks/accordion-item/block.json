@@ -1,0 +1,50 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "noorifa-core/accordion-item",
+	"title": "Accordion Item",
+	"category": "noorifa-core",
+	"icon": "menu-alt",
+	"description": "A single collapsible panel inside an Accordion.",
+	"keywords": [ "accordion", "item", "panel" ],
+	"version": "1.0.0",
+	"textdomain": "noorifa-core",
+	"parent": [ "noorifa-core/accordion" ],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"source": "html",
+			"selector": ".noorifa-core-accordion__title",
+			"default": ""
+		},
+		"uid": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"html": false,
+		"interactivity": true,
+		"reusable": false,
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"typography": {
+			"fontSize": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"__experimentalBorder": {
+			"radius": true,
+			"width": true,
+			"color": true
+		},
+		"shadow": true
+	},
+	"editorScript": "file:./index.js"
+}

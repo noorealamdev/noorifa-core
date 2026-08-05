@@ -1,0 +1,63 @@
+.wp-block-noorifa-core-feature-cards {
+
+	.noorifa-core-feature-cards__list {
+		display: grid;
+		grid-template-columns: repeat(var(--noorifa-core-feature-cards-columns, 1), 1fr);
+		gap: 1.25rem;
+
+		&.is-boxed {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	// Single column on mobile regardless of the desktop Columns setting —
+	// matches the plugin-wide 599px breakpoint (product-grid, product-tabs,
+	// review-carousel, etc.).
+	@media (max-width: 599px) {
+
+		.noorifa-core-feature-cards__list {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.noorifa-core-feature-cards__item {
+		position: relative;
+		box-sizing: border-box;
+	}
+
+	// Color intentionally `inherit`, not hardcoded — the block's own Color
+	// support applies on the wrapper, and a directly-targeted rule here
+	// would always beat that inherited value.
+	.noorifa-core-feature-cards__heading {
+		margin: 0 0 0.5rem;
+		color: inherit;
+		font-size: 1.15em;
+		font-weight: 700;
+	}
+
+	.noorifa-core-feature-cards__text {
+		color: inherit;
+		font-size: 0.9em;
+		line-height: 1.5;
+		opacity: 0.7;
+	}
+
+	// Editor-only "remove card" control — given its own explicit color
+	// rather than `inherit`, since it's a UI control, not part of the
+	// rendered cards, and shouldn't disappear against a dark card background.
+	.noorifa-core-feature-cards__remove.components-button {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.5rem;
+		z-index: 1;
+		color: #fff;
+		opacity: 0.6;
+
+		&:hover,
+		&:focus {
+			color: #fff;
+			opacity: 1;
+		}
+	}
+}

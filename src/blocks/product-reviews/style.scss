@@ -1,0 +1,452 @@
+.wp-block-noorifa-core-product-reviews {
+
+	// max-width itself is set inline (it's user-configurable via the
+	// block's Layout panel), this just centers the box once that width
+	// is narrower than its container.
+	.noorifa-core-product-reviews__inner.is-boxed {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	// Summary card: rating number + stars + count + CTA on the left,
+	// the star breakdown bars on the right.
+	.noorifa-core-product-reviews__summary {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+		align-items: center;
+		margin: 0 0 2rem;
+		padding: 2rem;
+		background: #f7f3ec;
+		border-radius: 16px;
+	}
+
+	.noorifa-core-product-reviews__summary-main {
+		flex: 0 0 auto;
+		min-width: 220px;
+	}
+
+	.noorifa-core-product-reviews__average {
+		font-size: 3.5rem;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	// WooCommerce's own CSS floats `.star-rating` right by default; forced
+	// to a plain block so it stacks predictably instead.
+	.star-rating {
+		display: block;
+		float: none;
+		margin: 0.5rem 0;
+	}
+
+	.noorifa-core-product-reviews__count {
+		margin: 0.5rem 0 1rem;
+		font-size: 0.8rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: #757575;
+	}
+
+	.noorifa-core-product-reviews__write-link {
+		display: inline-block;
+		padding: 0.65em 1.5em;
+		background: none;
+		border: 1px solid currentcolor;
+		border-radius: 999px;
+		color: inherit;
+		text-decoration: none;
+		font: inherit;
+		font-size: 0.8rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		font-weight: 600;
+		cursor: pointer;
+		transition: opacity 0.15s ease-in-out;
+
+		&:hover,
+		&:focus {
+			opacity: 0.7;
+		}
+	}
+
+	.noorifa-core-product-reviews__breakdown {
+		flex: 1 1 320px;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.noorifa-core-product-reviews__breakdown-row {
+		display: grid;
+		grid-template-columns: 4.5em 1fr 3em;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.noorifa-core-product-reviews__breakdown-label {
+		font-size: 0.8rem;
+		color: #4a4a4a;
+	}
+
+	.noorifa-core-product-reviews__breakdown-track {
+		display: block;
+		height: 8px;
+		border-radius: 999px;
+		background: #e4ddd0;
+		overflow: hidden;
+	}
+
+	.noorifa-core-product-reviews__breakdown-fill {
+		display: block;
+		height: 100%;
+		// Matches this theme's WooCommerce star-rating color (`.star-rating
+		// span::before`) so the bars and the stars above them read as one
+		// consistent rating color language.
+		background: #fda256;
+		border-radius: 999px;
+	}
+
+	.noorifa-core-product-reviews__breakdown-percentage {
+		font-size: 0.8rem;
+		color: #4a4a4a;
+		text-align: right;
+	}
+
+	// Review grid — same responsive column-reduction breakpoints already
+	// established in the Product Grid block, for consistency.
+	.noorifa-core-product-reviews__grid {
+		display: grid;
+		gap: 1.5rem;
+		grid-template-columns: 1fr;
+		margin: 0 0 2rem;
+
+		@media (min-width: 600px) {
+
+			&.columns-2,
+			&.columns-3,
+			&.columns-4 {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+
+		@media (min-width: 900px) {
+
+			&.columns-3 {
+				grid-template-columns: repeat(3, 1fr);
+			}
+
+			&.columns-4 {
+				grid-template-columns: repeat(4, 1fr);
+			}
+		}
+	}
+
+	.noorifa-core-product-reviews__card {
+		padding: 1.5rem;
+		background: #fff;
+		border: 1px solid #eee;
+		border-radius: 12px;
+
+		// WooCommerce's own CSS floats `.star-rating` right by default,
+		// which lets review text wrap up beside it instead of starting
+		// cleanly underneath — forced to a plain block above the text.
+		.star-rating {
+			display: block;
+			float: none;
+			margin: 0 0 0.75rem;
+		}
+	}
+
+	// Color intentionally `inherit`, not hardcoded — the block's own Color
+	// support applies on the wrapper, and a directly-targeted rule here
+	// would always beat that inherited value.
+	.noorifa-core-product-reviews__content {
+		margin: 0 0 1.25rem;
+		line-height: 1.6;
+		color: inherit;
+	}
+
+	.noorifa-core-product-reviews__footer {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding-top: 1rem;
+		border-top: 1px solid #f0f0f0;
+	}
+
+	.noorifa-core-product-reviews__avatar {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border-radius: 10px;
+		color: #fff;
+		font-size: 0.8rem;
+		font-weight: 700;
+
+		&--palette-0 {
+			background: #2f6f62;
+		}
+
+		&--palette-1 {
+			background: #2c6ecb;
+		}
+
+		&--palette-2 {
+			background: #b5793a;
+		}
+
+		&--palette-3 {
+			background: #6c5ce7;
+		}
+
+		&--palette-4 {
+			background: #c0392b;
+		}
+
+		&--palette-5 {
+			background: #16a085;
+		}
+	}
+
+	.noorifa-core-product-reviews__reviewer {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		min-width: 0;
+	}
+
+	.noorifa-core-product-reviews__name {
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+
+	.noorifa-core-product-reviews__verified {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		font-size: 0.75rem;
+		color: #2f6f62;
+
+		&::before {
+			content: "\2713";
+			font-weight: 700;
+		}
+	}
+
+	.noorifa-core-product-reviews__empty {
+		margin: 0 0 2rem;
+		color: #757575;
+	}
+
+	.noorifa-core-product-reviews__load-more-wrap {
+		margin: 0 0 2rem;
+		text-align: center;
+	}
+
+	.noorifa-core-product-reviews__load-more {
+		display: inline-block;
+		padding: 0.75em 2em;
+		background: none;
+		border: 1px solid currentcolor;
+		border-radius: 999px;
+		color: inherit;
+		font: inherit;
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		cursor: pointer;
+		transition: opacity 0.15s ease-in-out;
+
+		&:hover,
+		&:focus {
+			opacity: 0.7;
+		}
+
+		&:disabled {
+			cursor: default;
+			opacity: 0.5;
+		}
+	}
+
+	// Reuses the same review-form styling built for the Product Tabs
+	// block, since this renders the same underlying WooCommerce form.
+	#review_form_wrapper {
+		padding: 1.75rem;
+		background: #f9fafb;
+		border: 1px solid #eee;
+		border-radius: 8px;
+
+		@media (max-width: 599px) {
+			padding: 1.25rem;
+		}
+
+		#reply-title {
+			display: block;
+			margin: 0 0 1.25rem;
+			font-size: 1.15rem;
+		}
+
+		.comment-form-rating,
+		.comment-form-comment,
+		.comment-form-author,
+		.comment-form-email {
+			display: block;
+			margin: 0 0 1.25rem;
+
+			label {
+				display: block;
+				margin: 0 0 0.4rem;
+				font-weight: 600;
+			}
+		}
+
+		textarea,
+		input[type='text'],
+		input[type='email'] {
+			box-sizing: border-box;
+			width: 100%;
+			max-width: 32em;
+			padding: 0.65rem 0.85rem;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+			font: inherit;
+			transition: border-color 0.15s ease-in-out;
+
+			&:focus {
+				border-color: #2f6f62;
+				outline: none;
+			}
+		}
+
+		textarea {
+			max-width: 100%;
+			min-height: 8em;
+		}
+
+		.form-submit {
+			margin: 0;
+		}
+
+		#submit {
+			display: inline-block;
+			padding: 0.65em 1.6em;
+			background-color: #2f6f62;
+			border: 0;
+			border-radius: 6px;
+			color: #fff;
+			font: inherit;
+			font-weight: 500;
+			cursor: pointer;
+			transition: opacity 0.15s ease-in-out;
+
+			&:hover,
+			&:focus {
+				opacity: 0.9;
+			}
+		}
+	}
+
+	@media (max-width: 599px) {
+
+		.noorifa-core-product-reviews__summary {
+			flex-direction: column;
+			align-items: stretch;
+			padding: 1.5rem;
+		}
+
+		// `flex: 1 1 320px` sizes the breakdown's WIDTH in the desktop
+		// row layout; once the summary above stacks into a column, that
+		// same 320px is read as a minimum HEIGHT instead, leaving a large
+		// empty gap under 5 short rows. Reset it to size to its content.
+		.noorifa-core-product-reviews__breakdown {
+			flex: 0 1 auto;
+			width: 100%;
+		}
+
+		.noorifa-core-product-reviews__average {
+			font-size: 2.75rem;
+		}
+
+		.noorifa-core-product-reviews__card {
+			padding: 1.25rem;
+		}
+	}
+
+	// "Write a Review" modal.
+	.noorifa-core-product-reviews__modal {
+		position: fixed;
+		inset: 0;
+		z-index: 100000;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		padding: 5vh 1.5rem;
+		overflow-y: auto;
+
+		&[hidden] {
+			display: none;
+		}
+	}
+
+	.noorifa-core-product-reviews__modal-backdrop {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.5);
+	}
+
+	.noorifa-core-product-reviews__modal-panel {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		max-width: 40em;
+		max-height: 90vh;
+		overflow-y: auto;
+		background: #fff;
+		border-radius: 12px;
+		padding: 2rem;
+
+		#review_form_wrapper {
+			padding: 0;
+			background: none;
+			border: 0;
+		}
+
+		@media (max-width: 599px) {
+			padding: 1.5rem;
+			max-height: 100vh;
+		}
+	}
+
+	.noorifa-core-product-reviews__modal-close {
+		position: absolute;
+		top: 0.75rem;
+		right: 0.75rem;
+		width: 2rem;
+		height: 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: none;
+		border: 0;
+		border-radius: 50%;
+		font-size: 1.5rem;
+		line-height: 1;
+		color: #757575;
+		cursor: pointer;
+
+		&:hover,
+		&:focus {
+			background: #f0f0f0;
+			color: #333;
+		}
+	}
+}
+
+body.noorifa-core-modal-open {
+	overflow: hidden;
+}

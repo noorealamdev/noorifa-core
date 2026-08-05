@@ -1,0 +1,33 @@
+// Styles WooCommerce's own `table.shop_attributes` markup output by
+// wc_display_product_attributes() — the exact same table product-tabs
+// hardens for its Additional Information panel, reused here so the
+// standalone block looks the same regardless of the active theme's own
+// (often weak or absent) WooCommerce table styling.
+.wp-block-noorifa-core-product-specifications {
+
+	table.shop_attributes {
+		display: block;
+		width: 100%;
+		max-width: 40em;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		border-collapse: collapse;
+		font-size: inherit;
+
+		th,
+		td {
+			padding: 0.75rem 1rem;
+			text-align: left;
+			border-bottom: 1px solid #eee;
+		}
+
+		th {
+			width: 35%;
+			font-weight: 600;
+		}
+
+		tr:nth-child(odd) {
+			background: #f9fafb;
+		}
+	}
+}

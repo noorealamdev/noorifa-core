@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "noorifa-core/product-specifications",
+    "title": "Product Specifications",
+    "category": "noorifa-core",
+    "icon": "editor-table",
+    "description": "Displays the current WooCommerce product's attributes as a specification table, the same data shown in the native Additional Information tab.",
+    "keywords": [
+        "woocommerce",
+        "product",
+        "specifications",
+        "attributes",
+        "specs"
+    ],
+    "version": "1.0.0",
+    "textdomain": "noorifa-core",
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "color": {
+            "background": true,
+            "text": true,
+            "gradients": true
+        },
+        "typography": {
+            "fontSize": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        },
+        "__experimentalBorder": {
+            "radius": true,
+            "width": true,
+            "color": true
+        },
+        "shadow": true
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css",
+    "render": "file:./render.php"
+}

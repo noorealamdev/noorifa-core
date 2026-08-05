@@ -1,0 +1,205 @@
+.wp-block-noorifa-core-review-carousel {
+
+	.noorifa-core-review-carousel {
+		// Padding (not margin, which can collapse through this plain div
+		// into whatever follows) keeps the dots from crowding the next
+		// section when this block has no bottom margin/padding of its own.
+		padding-bottom: 0.5rem;
+
+		// max-width itself is set inline (it's user-configurable), this
+		// just centers the box once that width is narrower than its container.
+		&.is-boxed {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	.noorifa-core-review-carousel__stage {
+		position: relative;
+	}
+
+	.noorifa-core-review-carousel__viewport {
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x mandatory;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+		cursor: grab;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		// Suspends snapping while a mouse drag is in progress, so the
+		// track follows the cursor 1:1 instead of fighting the snap point;
+		// it re-snaps to the nearest slide once the drag ends.
+		&.is-dragging {
+			cursor: grabbing;
+			scroll-snap-type: none;
+			user-select: none;
+
+			.noorifa-core-review-carousel__slide {
+				pointer-events: none;
+			}
+		}
+	}
+
+	.noorifa-core-review-carousel__track {
+		display: flex;
+		gap: 1.5rem;
+		padding: 0.25rem 0.25rem 1rem;
+	}
+
+	.noorifa-core-review-carousel__slide {
+		flex: 0 0 auto;
+		box-sizing: border-box;
+		width: 100%;
+		scroll-snap-align: start;
+		// On mobile only one slide is visible at a time (no peeking
+		// neighbor), so each slide reserves its own side clearance for the
+		// overlaid arrow buttons — that clearance travels with every slide
+		// instead of only existing at the very start/end of the track.
+		padding: 0;
+
+		@media (min-width: 600px) {
+			width: 46%;
+			padding: 0;
+		}
+
+		@media (min-width: 900px) {
+			width: 29%;
+		}
+	}
+
+	.noorifa-core-review-carousel__card {
+		height: 100%;
+		box-sizing: border-box;
+		padding: 1.75rem;
+		background: #fff;
+		border: 1px solid #eee;
+		border-radius: 12px;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+		// WooCommerce's own CSS floats `.star-rating` right by default;
+		// forced to a plain block so it sits cleanly above the review text.
+		.star-rating {
+			display: block;
+			float: none;
+			margin: 0 0 0.75rem;
+		}
+	}
+
+	// Color intentionally `inherit`, not hardcoded — the block's own Color
+	// support applies on the wrapper, and a directly-targeted rule here
+	// would always beat that inherited value.
+	.noorifa-core-review-carousel__content {
+		margin: 0 0 1.5rem;
+		line-height: 1.6;
+		color: inherit;
+	}
+
+	.noorifa-core-review-carousel__footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		padding-top: 1rem;
+		border-top: 1px solid #f0f0f0;
+	}
+
+	.noorifa-core-review-carousel__verified {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		font-size: 0.8rem;
+		color: #2f6f62;
+
+		&::before {
+			content: "\2713";
+			font-weight: 700;
+		}
+	}
+
+	.noorifa-core-review-carousel__name {
+		margin-left: auto;
+		font-weight: 700;
+		font-size: 0.9rem;
+		white-space: nowrap;
+	}
+
+	.noorifa-core-review-carousel__arrow {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		box-sizing: border-box;
+		flex-shrink: 0;
+		width: 2.75rem;
+		height: 2.75rem;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #fff;
+		color: #4a4a4a;
+		border: 1px solid #e2e2e2;
+		border-radius: 50%;
+		font-size: 1rem;
+		line-height: 1;
+		cursor: pointer;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+		transition: opacity 0.15s ease-in-out, background-color 0.15s ease-in-out;
+		z-index: 2;
+
+		&:hover,
+		&:focus {
+			background: #f5f5f5;
+			opacity: 1;
+		}
+
+		&--prev {
+			left: -1.25rem;
+		}
+
+		&--next {
+			right: -1.25rem;
+		}
+
+		@media (max-width: 599px) {
+			width: 2.25rem;
+			height: 2.25rem;
+
+			&--prev {
+				left: 0.25rem;
+			}
+
+			&--next {
+				right: 0.25rem;
+			}
+		}
+	}
+
+	.noorifa-core-review-carousel__dots {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.5rem;
+		margin-top: 1rem;
+	}
+
+	.noorifa-core-review-carousel__dot {
+		width: 8px;
+		height: 8px;
+		padding: 0;
+		background: #ddd;
+		border: 0;
+		border-radius: 50%;
+		cursor: pointer;
+		transition: background-color 0.15s ease-in-out, transform 0.15s ease-in-out;
+
+		&.is-active {
+			background: #2f6f62;
+			transform: scale(1.3);
+		}
+	}
+}

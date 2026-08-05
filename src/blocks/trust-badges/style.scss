@@ -1,0 +1,88 @@
+.wp-block-noorifa-core-trust-badges {
+	// No hardcoded background/text-color/radius default here — same as
+	// Icon List. WordPress can't tell "cleared" from "never set" for a
+	// color attribute, so any baked-in default could never be fully
+	// suppressed by the user. The card look (beige background, rounded
+	// corners, brand text color) is meant to be set once via the block's
+	// own Inspector controls after inserting it, exactly like any other
+	// core block — at that point it's a real, clearable attribute value.
+
+	.noorifa-core-trust-badges__list {
+		display: flex;
+		flex-wrap: wrap;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		&.is-boxed {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	.noorifa-core-trust-badges__item {
+		position: relative;
+		flex: 1 1 0;
+		min-width: 7rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.6rem;
+		padding: 1.75rem 1rem;
+		text-align: center;
+
+		// Vertical divider between items — not on the last one.
+		&:not(:last-child)::after {
+			content: '';
+			position: absolute;
+			top: 22%;
+			bottom: 22%;
+			right: 0;
+			width: 1px;
+			background: currentColor;
+			opacity: 0.25;
+		}
+	}
+
+	// Color/font-size are intentionally `inherit`, not hardcoded — this
+	// block supports typography/color controls on its own wrapper.
+	.noorifa-core-trust-badges__icon {
+		width: 1.75rem;
+		height: 1.75rem;
+		color: inherit;
+
+		svg {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	.noorifa-core-trust-badges__label {
+		font-size: inherit;
+		color: inherit;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		line-height: 1.4;
+		max-width: 9rem;
+	}
+
+	// Editor-only "remove badge" control — given its own explicit color
+	// rather than `inherit`, since it's a UI control, not part of the
+	// rendered badges, and shouldn't disappear against a light background.
+	.noorifa-core-trust-badges__remove.components-button {
+		position: absolute;
+		top: 0.25rem;
+		right: 0.25rem;
+		z-index: 1;
+		color: #757575;
+
+		&:hover,
+		&:focus {
+			color: #cc1818;
+		}
+	}
+}
+
+@import '../../utils/icon-picker';

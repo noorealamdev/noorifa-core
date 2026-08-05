@@ -1,0 +1,32 @@
+.wp-block-noorifa-core-product-rating {
+
+	.woocommerce-product-rating {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		margin: 0;
+	}
+
+	// WooCommerce's own CSS floats `.star-rating` right by default; forced
+	// to inline-block so it sits beside the review-count link instead.
+	.star-rating {
+		display: inline-block;
+		float: none;
+	}
+
+	// Font-size/color intentionally relative/inherited, not hardcoded — the
+	// block's own Typography/Color supports apply on the wrapper, and a
+	// directly-targeted rule here would always beat that inherited value.
+	.woocommerce-review-link {
+		font-size: 0.9em;
+		color: inherit;
+		opacity: 0.75;
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			opacity: 1;
+			text-decoration: underline;
+		}
+	}
+}
