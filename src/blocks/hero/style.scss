@@ -1,5 +1,14 @@
 .wp-block-noorifa-core-hero {
 	text-align: center;
+	// Fallback gutter, not a forced value — the block's own Dimensions >
+	// Padding control writes padding-left/-right as inline style, which
+	// (same property, same element) always wins over this class rule
+	// regardless of specificity. Only applies when left/right were never
+	// set at all — e.g. unlinking the padding sides in the editor and
+	// only touching top/bottom leaves them fully absent, not "0", which
+	// otherwise runs text straight to the screen edge on mobile.
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
 
 	// Sits behind the heading/subheading/actions as a full-bleed background
 	// — those three are given `position: relative` below specifically so
