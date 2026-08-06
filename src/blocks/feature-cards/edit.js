@@ -14,6 +14,8 @@ import {
 	RangeControl,
 	BaseControl,
 	ToggleControl,
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import { closeSmall } from '@wordpress/icons';
 
@@ -28,6 +30,22 @@ import { closeSmall } from '@wordpress/icons';
 export const DEFAULT_CARD_BACKGROUND = '#1c1c1c';
 export const DEFAULT_CARD_RADIUS = 20;
 export const DEFAULT_CARD_PADDING = 28;
+export const DEFAULT_IMAGE_WIDTH = 56;
+
+// render.php keeps its own copy of this logic (PHP/JS can't share a
+// module, same as the DEFAULT_CARD_* constants above). Centers/right-
+// aligns via margin instead of relying on a parent text-align, since the
+// wrap is a block-level element regardless of the card's own text
+// alignment.
+export function getImageAlignStyle( align ) {
+	if ( 'center' === align ) {
+		return { marginLeft: 'auto', marginRight: 'auto' };
+	}
+	if ( 'right' === align ) {
+		return { marginLeft: 'auto', marginRight: 0 };
+	}
+	return { marginLeft: 0, marginRight: 'auto' };
+}
 
 export default function Edit( { attributes, setAttributes } ) {
 	const {
@@ -37,6 +55,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		cardBackgroundGradient,
 		cardRadius,
 		cardPadding,
+		imageWidth,
+		imageAlign,
 		boxed,
 		boxedWidth,
 	} = attributes;
@@ -101,6 +121,9 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	const removeItem = ( index ) =>
 		setAttributes( { items: items.filter( ( _item, i ) => i !== index ) } );
+
+	const resolvedImageSize = ( imageWidth || DEFAULT_IMAGE_WIDTH ) + 'px';
+	const imageAlignStyle = getImageAlignStyle( imageAlign || 'left' );
 
 	return (
 		<>
@@ -224,6 +247,43 @@ export default function Edit( { attributes, setAttributes } ) {
 						min={ 0 }
 						max={ 60 }
 					/>
+					<RangeControl
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
+						label={ __( 'Image width', 'noorifa-core' ) }
+						help={ __(
+							'Applies to every card that has an image. The image is always a circle, so height follows automatically.',
+							'noorifa-core'
+						) }
+						value={ imageWidth || DEFAULT_IMAGE_WIDTH }
+						onChange={ ( value ) =>
+							setAttributes( { imageWidth: value || 0 } )
+						}
+						min={ 24 }
+						max={ 160 }
+					/>
+					<ToggleGroupControl
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
+						label={ __( 'Image alignment', 'noorifa-core' ) }
+						value={ imageAlign || 'left' }
+						onChange={ ( value ) =>
+							setAttributes( { imageAlign: value || 'left' } )
+						}
+					>
+						<ToggleGroupControlOption
+							value="left"
+							label={ __( 'Left', 'noorifa-core' ) }
+						/>
+						<ToggleGroupControlOption
+							value="center"
+							label={ __( 'Center', 'noorifa-core' ) }
+						/>
+						<ToggleGroupControlOption
+							value="right"
+							label={ __( 'Right', 'noorifa-core' ) }
+						/>
+					</ToggleGroupControl>
 				</PanelBody>
 			</InspectorControls>
 
@@ -257,13 +317,20 @@ export default function Edit( { attributes, setAttributes } ) {
 								onClick={ () => removeItem( index ) }
 							/>
 
-							<div className="noorifa-core-feature-cards__image-wrap">
+							<div
+								className="noorifa-core-feature-cards__image-wrap"
+								style={ imageAlignStyle }
+							>
 								{ item.imageUrl ? (
 									<>
 										<img
 											src={ item.imageUrl }
 											alt=""
 											className="noorifa-core-feature-cards__image"
+											style={ {
+												width: resolvedImageSize,
+												height: resolvedImageSize,
+											} }
 										/>
 										<MediaUploadCheck>
 											<MediaUpload
@@ -278,6 +345,10 @@ export default function Edit( { attributes, setAttributes } ) {
 														onClick={ open }
 														variant="secondary"
 														size="small"
+														style={ {
+															width: resolvedImageSize,
+															height: resolvedImageSize,
+														} }
 													>
 														{ __( 'Replace', 'noorifa-core' ) }
 													</Button>
@@ -303,6 +374,10 @@ export default function Edit( { attributes, setAttributes } ) {
 													className="noorifa-core-feature-cards__image-placeholder"
 													onClick={ open }
 													variant="tertiary"
+													style={ {
+														width: resolvedImageSize,
+														height: resolvedImageSize,
+													} }
 												>
 													{ __( 'Add image', 'noorifa-core' ) }
 												</Button>

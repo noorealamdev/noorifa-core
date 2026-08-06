@@ -31,6 +31,19 @@ $noorifa_core_card_background = ! empty( $attributes['cardBackgroundGradient'] )
 	: ( ! empty( $attributes['cardBackground'] ) ? $attributes['cardBackground'] : '#1c1c1c' );
 $noorifa_core_card_radius     = ! empty( $attributes['cardRadius'] ) ? (int) $attributes['cardRadius'] : 20;
 $noorifa_core_card_padding    = ! empty( $attributes['cardPadding'] ) ? (int) $attributes['cardPadding'] : 28;
+$noorifa_core_image_width     = ! empty( $attributes['imageWidth'] ) ? (int) $attributes['imageWidth'] : 56;
+$noorifa_core_image_align     = ! empty( $attributes['imageAlign'] ) ? $attributes['imageAlign'] : 'left';
+
+// Same margin-based centering as edit.js's getImageAlignStyle() — the wrap
+// is `width:fit-content` (see style.scss) so auto-margins actually have
+// room to center/right-align it instead of it already filling the row.
+$noorifa_core_image_align_style = 'left' === $noorifa_core_image_align
+	? 'margin-left:0;margin-right:auto;'
+	: ( 'right' === $noorifa_core_image_align
+		? 'margin-left:auto;margin-right:0;'
+		: 'margin-left:auto;margin-right:auto;' );
+
+$noorifa_core_image_style = sprintf( 'width:%1$dpx;height:%1$dpx;', $noorifa_core_image_width );
 
 // `background` (not `background-color`) since this value can be either a
 // plain color or a `linear-gradient(...)`/`radial-gradient(...)` string —
@@ -74,13 +87,16 @@ $noorifa_core_wrapper = get_block_wrapper_attributes(
 		<?php foreach ( $noorifa_core_items as $noorifa_core_item ) : ?>
 			<div class="noorifa-core-feature-cards__item" style="<?php echo esc_attr( $noorifa_core_card_style ); ?>">
 				<?php if ( ! empty( $noorifa_core_item['imageId'] ) ) : ?>
-					<div class="noorifa-core-feature-cards__image-wrap">
+					<div class="noorifa-core-feature-cards__image-wrap" style="<?php echo esc_attr( $noorifa_core_image_align_style ); ?>">
 						<?php
 						echo wp_get_attachment_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped.
 							(int) $noorifa_core_item['imageId'],
 							'thumbnail',
 							false,
-							array( 'class' => 'noorifa-core-feature-cards__image' )
+							array(
+								'class' => 'noorifa-core-feature-cards__image',
+								'style' => $noorifa_core_image_style,
+							)
 						);
 						?>
 					</div>

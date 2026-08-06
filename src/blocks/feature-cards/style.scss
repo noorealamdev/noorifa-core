@@ -43,16 +43,24 @@
 		opacity: 0.9;
 	}
 
+	// display:block (not inline-block) is required for the wrap's own
+	// margin-left/right:auto (set inline by edit.js/render.php per the
+	// Image alignment setting) to actually center/right-align it —
+	// inline-block boxes don't resolve auto-margins as centering.
 	.noorifa-core-feature-cards__image-wrap {
 		position: relative;
-		display: inline-block;
+		display: block;
+		width: fit-content;
 		margin-bottom: 0.75rem;
 	}
 
+	// Width/height intentionally NOT set here — both edit.js and
+	// render.php always supply them inline from the Image width setting
+	// (same conditional-inline-default pattern as cardBackground/
+	// cardRadius/cardPadding above), so a card never actually falls back
+	// to unstyled native <img>/<button> sizing.
 	.noorifa-core-feature-cards__image {
 		display: block;
-		width: 56px;
-		height: 56px;
 		border-radius: 50%;
 		object-fit: cover;
 	}
@@ -60,8 +68,6 @@
 	// Editor-only controls for the per-card image — not part of the
 	// rendered front-end output (render.php never prints these).
 	.noorifa-core-feature-cards__image-placeholder {
-		width: 56px;
-		height: 56px;
 		border-radius: 50%;
 		border: 1px dashed currentColor;
 		opacity: 0.6;
@@ -83,8 +89,6 @@
 	.noorifa-core-feature-cards__image-replace {
 		position: absolute;
 		inset: 0;
-		width: 56px;
-		height: 56px;
 		border-radius: 50%;
 		background: rgba(0, 0, 0, 0.55) !important;
 		color: #fff !important;

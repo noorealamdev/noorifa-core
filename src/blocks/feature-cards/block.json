@@ -53,6 +53,14 @@
             "type": "number",
             "default": 0
         },
+        "imageWidth": {
+            "type": "number",
+            "default": 0
+        },
+        "imageAlign": {
+            "type": "string",
+            "default": "left"
+        },
         "boxed": {
             "type": "boolean",
             "default": true
