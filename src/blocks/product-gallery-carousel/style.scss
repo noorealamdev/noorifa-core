@@ -108,6 +108,23 @@
 		flex-wrap: wrap;
 		gap: 1rem;
 		margin-top: 1rem;
+
+		// On narrow screens a wrapped grid of thumbs eats a lot of vertical
+		// space above the fold; scroll it horizontally instead, matching
+		// the main image viewport's own carousel behaviour.
+		@media (max-width: 599px) {
+			flex-wrap: nowrap;
+			gap: 0.625rem;
+			overflow-x: auto;
+			overflow-y: hidden;
+			scroll-snap-type: x proximity;
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: none;
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
+		}
 	}
 
 	.noorifa-core-product-gallery-carousel__thumb {
@@ -131,6 +148,12 @@
 		&.is-active {
 			opacity: 1;
 			border-color: #2f6f62;
+		}
+
+		@media (max-width: 599px) {
+			width: 4.5rem;
+			height: 4.5rem;
+			scroll-snap-align: start;
 		}
 	}
 
