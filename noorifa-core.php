@@ -23,8 +23,6 @@ define( 'NOORIFA_CORE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NOORIFA_CORE_URL', plugin_dir_url( __FILE__ ) );
 define( 'NOORIFA_CORE_BASENAME', plugin_basename( __FILE__ ) );
 
-define( 'NOORIFA_CORE_CHECKOUT_URL', 'https://checkout.freemius.com/plugin/35066/plan/57625/' );
-
 // Register the PSR-4 autoloader.
 require_once NOORIFA_CORE_DIR . 'includes/Autoloader.php';
 \Noorifa\Core\Autoloader::register();

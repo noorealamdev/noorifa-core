@@ -50,8 +50,7 @@ class Manager {
 			'noorifa-core-library',
 			'window.noorTemplatesLicensing = ' . wp_json_encode(
 				array(
-					'isPro'       => Gate::is_pro(),
-					'checkoutUrl' => NOORIFA_CORE_CHECKOUT_URL,
+					'isPro' => Gate::is_pro(),
 				)
 			) . ';',
 			'before'
