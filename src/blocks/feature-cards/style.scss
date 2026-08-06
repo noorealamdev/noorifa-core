@@ -43,6 +43,77 @@
 		opacity: 0.9;
 	}
 
+	.noorifa-core-feature-cards__image-wrap {
+		position: relative;
+		display: inline-block;
+		margin-bottom: 0.75rem;
+	}
+
+	.noorifa-core-feature-cards__image {
+		display: block;
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	// Editor-only controls for the per-card image — not part of the
+	// rendered front-end output (render.php never prints these).
+	.noorifa-core-feature-cards__image-placeholder {
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		border: 1px dashed currentColor;
+		opacity: 0.6;
+		font-size: 0.7em;
+		text-align: center;
+		white-space: normal;
+
+		&:hover,
+		&:focus {
+			opacity: 1;
+		}
+	}
+
+	.noorifa-core-feature-cards__image-wrap:hover .noorifa-core-feature-cards__image-replace,
+	.noorifa-core-feature-cards__image-wrap:hover .noorifa-core-feature-cards__image-remove {
+		opacity: 1;
+	}
+
+	.noorifa-core-feature-cards__image-replace {
+		position: absolute;
+		inset: 0;
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		background: rgba(0, 0, 0, 0.55) !important;
+		color: #fff !important;
+		font-size: 0.65em;
+		opacity: 0;
+		transition: opacity 0.15s ease-in-out;
+	}
+
+	.noorifa-core-feature-cards__image-remove.components-button {
+		position: absolute;
+		top: -6px;
+		right: -6px;
+		width: 20px;
+		height: 20px;
+		min-width: 20px;
+		padding: 0;
+		border-radius: 50%;
+		background: #fff;
+		color: #1c1c1c;
+		opacity: 0;
+		transition: opacity 0.15s ease-in-out;
+
+		&:hover,
+		&:focus {
+			background: #fff;
+			color: #1c1c1c;
+		}
+	}
+
 	// Editor-only "remove card" control — given its own explicit color
 	// rather than `inherit`, since it's a UI control, not part of the
 	// rendered cards, and shouldn't disappear against a dark card background.

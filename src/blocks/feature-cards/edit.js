@@ -5,6 +5,8 @@ import {
 	InspectorControls,
 	useSettings,
 	__experimentalColorGradientControl as ColorGradientControl,
+	MediaUpload,
+	MediaUploadCheck,
 } from '@wordpress/block-editor';
 import {
 	Button,
@@ -57,6 +59,32 @@ export default function Edit( { attributes, setAttributes } ) {
 	const updateItem = ( index, field, value ) => {
 		const next = items.slice();
 		next[ index ] = { ...next[ index ], [ field ]: value };
+		setAttributes( { items: next } );
+	};
+
+	// A single combined update (not two updateItem() calls back to back) —
+	// both fields have to land in the same setAttributes() call, since two
+	// separate calls would each read the same not-yet-updated `items` and
+	// the second would silently discard whatever the first just set (the
+	// exact bug already found and fixed for the gradient/color controls
+	// above).
+	const updateItemImage = ( index, media ) => {
+		const next = items.slice();
+		next[ index ] = {
+			...next[ index ],
+			imageId: media.id,
+			imageUrl: media.url,
+		};
+		setAttributes( { items: next } );
+	};
+
+	const removeItemImage = ( index ) => {
+		const next = items.slice();
+		next[ index ] = {
+			...next[ index ],
+			imageId: undefined,
+			imageUrl: undefined,
+		};
 		setAttributes( { items: next } );
 	};
 
@@ -228,6 +256,62 @@ export default function Edit( { attributes, setAttributes } ) {
 								label={ __( 'Remove card', 'noorifa-core' ) }
 								onClick={ () => removeItem( index ) }
 							/>
+
+							<div className="noorifa-core-feature-cards__image-wrap">
+								{ item.imageUrl ? (
+									<>
+										<img
+											src={ item.imageUrl }
+											alt=""
+											className="noorifa-core-feature-cards__image"
+										/>
+										<MediaUploadCheck>
+											<MediaUpload
+												onSelect={ ( media ) =>
+													updateItemImage( index, media )
+												}
+												allowedTypes={ [ 'image' ] }
+												value={ item.imageId }
+												render={ ( { open } ) => (
+													<Button
+														className="noorifa-core-feature-cards__image-replace"
+														onClick={ open }
+														variant="secondary"
+														size="small"
+													>
+														{ __( 'Replace', 'noorifa-core' ) }
+													</Button>
+												) }
+											/>
+										</MediaUploadCheck>
+										<Button
+											className="noorifa-core-feature-cards__image-remove"
+											icon={ closeSmall }
+											label={ __( 'Remove image', 'noorifa-core' ) }
+											onClick={ () => removeItemImage( index ) }
+										/>
+									</>
+								) : (
+									<MediaUploadCheck>
+										<MediaUpload
+											onSelect={ ( media ) =>
+												updateItemImage( index, media )
+											}
+											allowedTypes={ [ 'image' ] }
+											render={ ( { open } ) => (
+												<Button
+													className="noorifa-core-feature-cards__image-placeholder"
+													onClick={ open }
+													variant="tertiary"
+												>
+													{ __( 'Add image', 'noorifa-core' ) }
+												</Button>
+											) }
+										/>
+									</MediaUploadCheck>
+								) }
+							</div>
+
 							<RichText
 								tagName="div"
 								className="noorifa-core-feature-cards__heading"

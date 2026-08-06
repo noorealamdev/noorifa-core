@@ -73,6 +73,18 @@ $noorifa_core_wrapper = get_block_wrapper_attributes(
 	>
 		<?php foreach ( $noorifa_core_items as $noorifa_core_item ) : ?>
 			<div class="noorifa-core-feature-cards__item" style="<?php echo esc_attr( $noorifa_core_card_style ); ?>">
+				<?php if ( ! empty( $noorifa_core_item['imageId'] ) ) : ?>
+					<div class="noorifa-core-feature-cards__image-wrap">
+						<?php
+						echo wp_get_attachment_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped.
+							(int) $noorifa_core_item['imageId'],
+							'thumbnail',
+							false,
+							array( 'class' => 'noorifa-core-feature-cards__image' )
+						);
+						?>
+					</div>
+				<?php endif; ?>
 				<div class="noorifa-core-feature-cards__heading" style="<?php echo esc_attr( $noorifa_core_text_style ); ?>"><?php echo wp_kses_post( $noorifa_core_item['heading'] ?? '' ); ?></div>
 				<div class="noorifa-core-feature-cards__text" style="<?php echo esc_attr( $noorifa_core_text_style ); ?>"><?php echo wp_kses_post( $noorifa_core_item['text'] ?? '' ); ?></div>
 			</div>
