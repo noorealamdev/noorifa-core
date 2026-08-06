@@ -134,8 +134,14 @@ export default function Edit( { attributes, setAttributes } ) {
 						<ColorGradientControl
 							colors={ colors }
 							gradients={ gradients }
-							colorValue={ cardBackground }
-							gradientValue={ cardBackgroundGradient }
+							// WP core's own gradient-bar control crashes
+							// (`Cannot read properties of undefined
+							// (reading 'orientation')`) if it's ever handed
+							// an empty string instead of a real gradient or
+							// undefined — it tries to parse the value even
+							// on the very first render of the Gradient tab.
+							colorValue={ cardBackground || undefined }
+							gradientValue={ cardBackgroundGradient || undefined }
 							onColorChange={ ( value ) =>
 								setAttributes( {
 									cardBackground: value || '',
