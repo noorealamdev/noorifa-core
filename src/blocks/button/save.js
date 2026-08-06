@@ -1,18 +1,20 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor';
 
 export default function save( { attributes } ) {
-	const { text, url, opensInNewTab, textAlign } = attributes;
+	const { text, url, opensInNewTab, textAlign, fullWidth } = attributes;
 	const blockProps = useBlockProps.save( {
 		className: 'noorifa-core-button__link',
 	} );
 
 	return (
 		<div
-			className={
-				textAlign
-					? `wp-block-noorifa-core-button has-text-align-${ textAlign }`
-					: 'wp-block-noorifa-core-button'
-			}
+			className={ [
+				'wp-block-noorifa-core-button',
+				textAlign ? `has-text-align-${ textAlign }` : '',
+				fullWidth ? 'is-full-width' : '',
+			]
+				.filter( Boolean )
+				.join( ' ' ) }
 		>
 			<RichText.Content
 				tagName="a"

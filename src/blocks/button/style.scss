@@ -27,4 +27,14 @@
 			color: #fff;
 		}
 	}
+
+	// Stretches the button to fill its container instead of sizing to its
+	// text — text-align becomes irrelevant once the button itself is the
+	// full width, so the label is centered inside it instead.
+	&.is-full-width .noorifa-core-button__link {
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+		text-align: center;
+	}
 }
