@@ -17,6 +17,8 @@ export default function save( { attributes } ) {
 		textAlign,
 		headingFontSize,
 		subheadingFontSize,
+		headingLineHeight,
+		subheadingLineHeight,
 		boxed,
 		boxedWidth,
 	} = attributes;
@@ -63,21 +65,19 @@ export default function save( { attributes } ) {
 				<RichText.Content
 					tagName="h1"
 					className="noorifa-core-hero__heading"
-					style={
-						headingFontSize
-							? { fontSize: headingFontSize }
-							: undefined
-					}
+					style={ {
+						...( headingFontSize && { fontSize: headingFontSize } ),
+						...( headingLineHeight && { lineHeight: headingLineHeight } ),
+					} }
 					value={ heading }
 				/>
 				<RichText.Content
 					tagName="p"
 					className="noorifa-core-hero__subheading"
-					style={
-						subheadingFontSize
-							? { fontSize: subheadingFontSize }
-							: undefined
-					}
+					style={ {
+						...( subheadingFontSize && { fontSize: subheadingFontSize } ),
+						...( subheadingLineHeight && { lineHeight: subheadingLineHeight } ),
+					} }
 					value={ subheading }
 				/>
 				<div className="noorifa-core-hero__actions">

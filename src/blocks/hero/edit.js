@@ -18,6 +18,7 @@ import {
 	RangeControl,
 	ColorPalette,
 	ToggleControl,
+	__experimentalNumberControl as NumberControl,
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
@@ -41,6 +42,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		textAlign,
 		headingFontSize,
 		subheadingFontSize,
+		headingLineHeight,
+		subheadingLineHeight,
 		boxed,
 		boxedWidth,
 	} = attributes;
@@ -240,6 +243,18 @@ export default function Edit( { attributes, setAttributes } ) {
 								} )
 							}
 						/>
+						<NumberControl
+							__next40pxDefaultSize
+							label={ __( 'Line height', 'noorifa-core' ) }
+							value={ headingLineHeight }
+							min={ 0 }
+							step={ 0.1 }
+							onChange={ ( value ) =>
+								setAttributes( {
+									headingLineHeight: value || '',
+								} )
+							}
+						/>
 					</BaseControl>
 					<BaseControl
 						__nextHasNoMarginBottom
@@ -252,6 +267,18 @@ export default function Edit( { attributes, setAttributes } ) {
 							onChange={ ( value ) =>
 								setAttributes( {
 									subheadingFontSize: value || '',
+								} )
+							}
+						/>
+						<NumberControl
+							__next40pxDefaultSize
+							label={ __( 'Line height', 'noorifa-core' ) }
+							value={ subheadingLineHeight }
+							min={ 0 }
+							step={ 0.1 }
+							onChange={ ( value ) =>
+								setAttributes( {
+									subheadingLineHeight: value || '',
 								} )
 							}
 						/>
@@ -320,11 +347,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					<RichText
 						tagName="h1"
 						className="noorifa-core-hero__heading"
-						style={
-							headingFontSize
-								? { fontSize: headingFontSize }
-								: undefined
-						}
+						style={ {
+							...( headingFontSize && { fontSize: headingFontSize } ),
+							...( headingLineHeight && { lineHeight: headingLineHeight } ),
+						} }
 						value={ heading }
 						onChange={ ( value ) =>
 							setAttributes( { heading: value } )
@@ -334,11 +360,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					<RichText
 						tagName="p"
 						className="noorifa-core-hero__subheading"
-						style={
-							subheadingFontSize
-								? { fontSize: subheadingFontSize }
-								: undefined
-						}
+						style={ {
+							...( subheadingFontSize && { fontSize: subheadingFontSize } ),
+							...( subheadingLineHeight && { lineHeight: subheadingLineHeight } ),
+						} }
 						value={ subheading }
 						onChange={ ( value ) =>
 							setAttributes( { subheading: value } )

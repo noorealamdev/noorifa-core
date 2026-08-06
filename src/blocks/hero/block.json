@@ -60,6 +60,14 @@
 			"type": "string",
 			"default": ""
 		},
+		"headingLineHeight": {
+			"type": "string",
+			"default": ""
+		},
+		"subheadingLineHeight": {
+			"type": "string",
+			"default": ""
+		},
 		"align": {
 			"type": "string"
 		},
