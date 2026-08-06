@@ -462,7 +462,7 @@ export default function Library() {
 					icon={ layout }
 					onClick={ () => setOpen( true ) }
 				>
-					{ __( 'Noorifa Core', 'noorifa-core' ) }
+					{ __( 'Noorifa Templates', 'noorifa-core' ) }
 				</Button>
 				<Button
 					variant="secondary"
