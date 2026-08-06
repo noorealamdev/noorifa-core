@@ -104,40 +104,40 @@
 	}
 
 	.noorifa-core-product-gallery-carousel__thumbs {
+		// A real carousel strip at every screen size — same mechanics as
+		// the main image viewport (drag-to-scroll via JS + native touch),
+		// not just a mobile-only fallback. A wrapped grid never fit more
+		// than a handful of thumbs without pushing content down anyway.
 		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
+		flex-wrap: nowrap;
+		gap: 0.625rem;
 		margin-top: 1rem;
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x proximity;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+		cursor: grab;
 
-		// On narrow screens a wrapped grid of thumbs eats a lot of vertical
-		// space above the fold; scroll it horizontally instead, matching
-		// the main image viewport's own carousel behaviour.
-		@media (max-width: 599px) {
-			flex-wrap: nowrap;
-			gap: 0.625rem;
-			overflow-x: auto;
-			overflow-y: hidden;
-			scroll-snap-type: x proximity;
-			-webkit-overflow-scrolling: touch;
-			scrollbar-width: none;
-			cursor: grab;
+		&::-webkit-scrollbar {
+			display: none;
+		}
 
-			&::-webkit-scrollbar {
-				display: none;
-			}
+		&.is-dragging {
+			cursor: grabbing;
+			scroll-snap-type: none;
+			user-select: none;
 
-			&.is-dragging {
-				cursor: grabbing;
-				scroll-snap-type: none;
-				user-select: none;
+			.noorifa-core-product-gallery-carousel__thumb {
+				pointer-events: none;
 			}
 		}
 	}
 
 	.noorifa-core-product-gallery-carousel__thumb {
 		flex: 0 0 auto;
-		width: 6.5rem;
-		height: 6.5rem;
+		width: 4.5rem;
+		height: 4.5rem;
 		padding: 0;
 		background: none;
 		border: 2px solid transparent;
@@ -145,6 +145,7 @@
 		overflow: hidden;
 		cursor: pointer;
 		opacity: 0.6;
+		scroll-snap-align: start;
 		transition: opacity 0.15s ease-in-out, border-color 0.15s ease-in-out;
 
 		&:hover,
@@ -157,10 +158,9 @@
 			border-color: #2f6f62;
 		}
 
-		@media (max-width: 599px) {
-			width: 4.5rem;
-			height: 4.5rem;
-			scroll-snap-align: start;
+		@media (min-width: 600px) {
+			width: 5.5rem;
+			height: 5.5rem;
 		}
 	}
 

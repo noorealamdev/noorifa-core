@@ -1,6 +1,92 @@
+/*
+ * Touch already scrolls any overflow-x:auto element natively (with the
+ * browser's own momentum/fling physics), so this only wires up mouse
+ * click-and-drag — desktop has no touchpad-swipe equivalent by default.
+ *
+ * Pointer capture is deliberately NOT taken on pointerdown — capturing
+ * before any movement retargets the resulting native "click" event away
+ * from the actually-pressed element (e.g. a thumbnail <button>), which
+ * silently breaks plain taps/clicks that never move. Capture is only
+ * grabbed once real dragging past a small threshold is confirmed.
+ */
+function enablePointerDragScroll( el, onDragEnd ) {
+	let isDragging = false;
+	let dragMoved = false;
+	let dragStartX = 0;
+	let dragStartScrollLeft = 0;
+	let pointerId = null;
+
+	el.addEventListener( 'pointerdown', ( event ) => {
+		if ( 'mouse' !== event.pointerType ) {
+			return;
+		}
+
+		isDragging = true;
+		dragMoved = false;
+		dragStartX = event.clientX;
+		dragStartScrollLeft = el.scrollLeft;
+		pointerId = event.pointerId;
+	} );
+
+	el.addEventListener( 'pointermove', ( event ) => {
+		if ( ! isDragging ) {
+			return;
+		}
+
+		const delta = event.clientX - dragStartX;
+
+		if ( ! dragMoved && Math.abs( delta ) > 3 ) {
+			dragMoved = true;
+			el.classList.add( 'is-dragging' );
+			el.setPointerCapture( pointerId );
+		}
+
+		if ( dragMoved ) {
+			el.scrollLeft = dragStartScrollLeft - delta;
+		}
+	} );
+
+	const endDrag = ( event ) => {
+		if ( ! isDragging ) {
+			return;
+		}
+
+		isDragging = false;
+		el.classList.remove( 'is-dragging' );
+
+		if ( el.hasPointerCapture( event.pointerId ) ) {
+			el.releasePointerCapture( event.pointerId );
+		}
+
+		if ( dragMoved && onDragEnd ) {
+			onDragEnd();
+		}
+	};
+
+	el.addEventListener( 'pointerup', endDrag );
+	el.addEventListener( 'pointercancel', endDrag );
+
+	// Swallows the click a drag gesture ends on, so dragging doesn't also
+	// trigger a click (e.g. a thumbnail button, or a lightbox) underneath it.
+	el.addEventListener(
+		'click',
+		( event ) => {
+			if ( dragMoved ) {
+				event.preventDefault();
+				event.stopPropagation();
+				dragMoved = false;
+			}
+		},
+		true
+	);
+}
+
 function initGalleryCarousel( carousel ) {
 	const viewport = carousel.querySelector(
 		'.noorifa-core-product-gallery-carousel__viewport'
+	);
+	const thumbsStrip = carousel.querySelector(
+		'.noorifa-core-product-gallery-carousel__thumbs'
 	);
 	const slides = Array.from(
 		carousel.querySelectorAll( '.noorifa-core-product-gallery-carousel__slide' )
@@ -130,76 +216,16 @@ function initGalleryCarousel( carousel ) {
 		resizeTimeout = setTimeout( measureSlidePositions, 150 );
 	} );
 
-	/*
-	 * Touch already scrolls the viewport natively (with the browser's own
-	 * momentum/fling physics), so only mouse input gets a manual
-	 * click-and-drag handler — desktop has no touchpad-swipe equivalent by
-	 * default.
-	 */
-	let isDragging = false;
-	let dragMoved = false;
-	let dragStartX = 0;
-	let dragStartScrollLeft = 0;
-
-	viewport.addEventListener( 'pointerdown', ( event ) => {
-		if ( 'mouse' !== event.pointerType ) {
-			return;
-		}
-
-		isDragging = true;
-		dragMoved = false;
-		dragStartX = event.clientX;
-		dragStartScrollLeft = viewport.scrollLeft;
-		viewport.classList.add( 'is-dragging' );
-		viewport.setPointerCapture( event.pointerId );
-	} );
-
-	viewport.addEventListener( 'pointermove', ( event ) => {
-		if ( ! isDragging ) {
-			return;
-		}
-
-		const delta = event.clientX - dragStartX;
-
-		if ( Math.abs( delta ) > 3 ) {
-			dragMoved = true;
-		}
-
-		viewport.scrollLeft = dragStartScrollLeft - delta;
-	} );
-
-	const endDrag = ( event ) => {
-		if ( ! isDragging ) {
-			return;
-		}
-
-		isDragging = false;
-		viewport.classList.remove( 'is-dragging' );
-
-		if ( viewport.hasPointerCapture( event.pointerId ) ) {
-			viewport.releasePointerCapture( event.pointerId );
-		}
-
+	enablePointerDragScroll( viewport, () => {
 		updateActiveFromScroll();
 		scrollToSlide( activeIndex );
-	};
+	} );
 
-	viewport.addEventListener( 'pointerup', endDrag );
-	viewport.addEventListener( 'pointercancel', endDrag );
-
-	// Swallows the click a drag gesture ends on, so dragging the carousel
-	// doesn't also trigger a click (e.g. a lightbox) underneath it.
-	viewport.addEventListener(
-		'click',
-		( event ) => {
-			if ( dragMoved ) {
-				event.preventDefault();
-				event.stopPropagation();
-				dragMoved = false;
-			}
-		},
-		true
-	);
+	// The thumbnail strip is its own carousel — draggable by mouse and
+	// swipeable by touch at every screen size, same as the main viewport.
+	if ( thumbsStrip ) {
+		enablePointerDragScroll( thumbsStrip );
+	}
 
 	/*
 	 * Keeps the carousel in sync with WooCommerce's own variation
