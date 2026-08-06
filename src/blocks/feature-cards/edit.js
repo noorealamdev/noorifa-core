@@ -142,21 +142,35 @@ export default function Edit( { attributes, setAttributes } ) {
 							// on the very first render of the Gradient tab.
 							colorValue={ cardBackground || undefined }
 							gradientValue={ cardBackgroundGradient || undefined }
+							// A card shows either a solid color or a gradient,
+							// never both — same as WP core's own Cover block
+							// background. But the control calls BOTH
+							// callbacks on every interaction (e.g. picking a
+							// gradient fires onGradientChange with the real
+							// value AND THEN onColorChange with undefined,
+							// as its own "color is now unset" signal) — only
+							// treat a truthy value as a real pick that
+							// should clear the other side; an undefined/''
+							// call only clears its own attribute.
 							onColorChange={ ( value ) =>
-								setAttributes( {
-									cardBackground: value || '',
-									// A card shows either a solid color or a
-									// gradient, never both at once — picking
-									// one clears the other, same as WP
-									// core's own Cover block background.
-									cardBackgroundGradient: '',
-								} )
+								setAttributes(
+									value
+										? {
+												cardBackground: value,
+												cardBackgroundGradient: '',
+										  }
+										: { cardBackground: '' }
+								)
 							}
 							onGradientChange={ ( value ) =>
-								setAttributes( {
-									cardBackgroundGradient: value || '',
-									cardBackground: '',
-								} )
+								setAttributes(
+									value
+										? {
+												cardBackgroundGradient: value,
+												cardBackground: '',
+										  }
+										: { cardBackgroundGradient: '' }
+								)
 							}
 						/>
 					</BaseControl>
