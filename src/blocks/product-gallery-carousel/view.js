@@ -37,10 +37,20 @@ function initGalleryCarousel( carousel ) {
 
 	const setActiveNav = ( index ) => {
 		navItems.forEach( ( item ) => {
-			item.classList.toggle(
-				'is-active',
-				Number( item.getAttribute( 'data-slide-index' ) ) === index
-			);
+			const isActive = Number( item.getAttribute( 'data-slide-index' ) ) === index;
+			item.classList.toggle( 'is-active', isActive );
+
+			// Keeps the thumbnail strip in sync with the main gallery: as the
+			// active image changes (swipe, arrows, or a WC variation swap),
+			// its thumbnail scrolls into view on its own — nobody has to
+			// manually drag the strip to reach a thumbnail further along.
+			if ( isActive ) {
+				item.scrollIntoView( {
+					behavior: 'smooth',
+					block: 'nearest',
+					inline: 'nearest',
+				} );
+			}
 		} );
 	};
 
