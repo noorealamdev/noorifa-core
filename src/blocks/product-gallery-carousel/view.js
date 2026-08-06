@@ -81,32 +81,13 @@ function enablePointerDragScroll( el, onDragEnd ) {
 	);
 }
 
-function initGalleryCarousel( carousel ) {
-	const viewport = carousel.querySelector(
-		'.noorifa-core-product-gallery-carousel__viewport'
-	);
-	const thumbsStrip = carousel.querySelector(
-		'.noorifa-core-product-gallery-carousel__thumbs'
-	);
-	const slides = Array.from(
-		carousel.querySelectorAll( '.noorifa-core-product-gallery-carousel__slide' )
-	);
-	const navItems = Array.from(
-		carousel.querySelectorAll(
-			'.noorifa-core-product-gallery-carousel__dot, .noorifa-core-product-gallery-carousel__thumb'
-		)
-	);
-	const prevButton = carousel.querySelector(
-		'.noorifa-core-product-gallery-carousel__arrow--prev'
-	);
-	const nextButton = carousel.querySelector(
-		'.noorifa-core-product-gallery-carousel__arrow--next'
-	);
-
-	if ( ! viewport || ! slides.length ) {
-		return;
-	}
-
+/*
+ * No native-scroll/pointer-drag physics — a plain WordPress theme with no
+ * carousel library at all. Behaviourally equivalent to the Swiper path
+ * below (arrows, thumbs, dots, WC variation sync) just without Swiper's
+ * momentum/easing.
+ */
+function initNativeCarousel( carousel, viewport, thumbsStrip, slides, navItems, prevButton, nextButton ) {
 	let activeIndex = 0;
 	// The scrollLeft value that puts each slide flush against the
 	// viewport's left edge.
@@ -126,10 +107,6 @@ function initGalleryCarousel( carousel ) {
 			const isActive = Number( item.getAttribute( 'data-slide-index' ) ) === index;
 			item.classList.toggle( 'is-active', isActive );
 
-			// Keeps the thumbnail strip in sync with the main gallery: as the
-			// active image changes (swipe, arrows, or a WC variation swap),
-			// its thumbnail scrolls into view on its own — nobody has to
-			// manually drag the strip to reach a thumbnail further along.
 			if ( isActive ) {
 				item.scrollIntoView( {
 					behavior: 'smooth',
@@ -163,15 +140,11 @@ function initGalleryCarousel( carousel ) {
 	};
 
 	if ( prevButton ) {
-		prevButton.addEventListener( 'click', () =>
-			scrollToSlide( activeIndex - 1 )
-		);
+		prevButton.addEventListener( 'click', () => scrollToSlide( activeIndex - 1 ) );
 	}
 
 	if ( nextButton ) {
-		nextButton.addEventListener( 'click', () =>
-			scrollToSlide( activeIndex + 1 )
-		);
+		nextButton.addEventListener( 'click', () => scrollToSlide( activeIndex + 1 ) );
 	}
 
 	navItems.forEach( ( item ) => {
@@ -221,11 +194,107 @@ function initGalleryCarousel( carousel ) {
 		scrollToSlide( activeIndex );
 	} );
 
-	// The thumbnail strip is its own carousel — draggable by mouse and
-	// swipeable by touch at every screen size, same as the main viewport.
 	if ( thumbsStrip ) {
 		enablePointerDragScroll( thumbsStrip );
 	}
+
+	measureSlidePositions();
+
+	return {
+		goToSlide: scrollToSlide,
+		getSlideIndexForImageId: ( imageId ) =>
+			slides.findIndex( ( slide ) => Number( slide.dataset.imageId ) === Number( imageId ) ),
+	};
+}
+
+/*
+ * Swiper.js is already loaded by this theme (used for the review
+ * carousel), so reusing it here costs nothing extra and gives real
+ * momentum/easing instead of hand-rolled drag physics — matching the
+ * design reference exactly (main + thumbs Swiper linked via the Thumbs
+ * module). A different theme without Swiper falls back to
+ * initNativeCarousel() above, so the block still works everywhere.
+ */
+function initSwiperCarousel( carousel, viewport, thumbsStrip, slides, navItems, prevButton, nextButton ) {
+	let thumbsSwiper = null;
+
+	if ( thumbsStrip ) {
+		thumbsSwiper = new window.Swiper( thumbsStrip, {
+			slidesPerView: 'auto',
+			spaceBetween: 8,
+			freeMode: true,
+			watchSlidesProgress: true,
+			grabCursor: true,
+		} );
+	}
+
+	const mainSwiper = new window.Swiper( viewport, {
+		grabCursor: true,
+		navigation: {
+			nextEl: nextButton,
+			prevEl: prevButton,
+		},
+		thumbs: thumbsSwiper ? { swiper: thumbsSwiper } : undefined,
+	} );
+
+	const setActiveNav = ( index ) => {
+		navItems.forEach( ( item ) => {
+			item.classList.toggle(
+				'is-active',
+				Number( item.getAttribute( 'data-slide-index' ) ) === index
+			);
+		} );
+	};
+
+	mainSwiper.on( 'slideChange', () => setActiveNav( mainSwiper.activeIndex ) );
+
+	// Dots only render when the thumbnail strip is switched off in the
+	// block's settings, so they need their own click-to-navigate — thumbs
+	// already get this for free from Swiper's Thumbs module.
+	if ( ! thumbsSwiper ) {
+		navItems.forEach( ( item ) => {
+			item.addEventListener( 'click', () =>
+				mainSwiper.slideTo( Number( item.getAttribute( 'data-slide-index' ) ) )
+			);
+		} );
+	}
+
+	return {
+		goToSlide: ( index ) => mainSwiper.slideTo( index ),
+		getSlideIndexForImageId: ( imageId ) =>
+			slides.findIndex( ( slide ) => Number( slide.dataset.imageId ) === Number( imageId ) ),
+	};
+}
+
+function initGalleryCarousel( carousel ) {
+	const viewport = carousel.querySelector(
+		'.noorifa-core-product-gallery-carousel__viewport'
+	);
+	const thumbsStrip = carousel.querySelector(
+		'.noorifa-core-product-gallery-carousel__thumbs'
+	);
+	const slides = Array.from(
+		carousel.querySelectorAll( '.noorifa-core-product-gallery-carousel__slide' )
+	);
+	const navItems = Array.from(
+		carousel.querySelectorAll(
+			'.noorifa-core-product-gallery-carousel__dot, .noorifa-core-product-gallery-carousel__thumb'
+		)
+	);
+	const prevButton = carousel.querySelector(
+		'.noorifa-core-product-gallery-carousel__arrow--prev'
+	);
+	const nextButton = carousel.querySelector(
+		'.noorifa-core-product-gallery-carousel__arrow--next'
+	);
+
+	if ( ! viewport || ! slides.length ) {
+		return;
+	}
+
+	const controller = window.Swiper
+		? initSwiperCarousel( carousel, viewport, thumbsStrip, slides, navItems, prevButton, nextButton )
+		: initNativeCarousel( carousel, viewport, thumbsStrip, slides, navItems, prevButton, nextButton );
 
 	/*
 	 * Keeps the carousel in sync with WooCommerce's own variation
@@ -241,25 +310,34 @@ function initGalleryCarousel( carousel ) {
 			'form.variations_form',
 			( event, variation ) => {
 				const imageId = variation && variation.image_id;
-				const index = imageId
-					? slides.findIndex(
-							( slide ) =>
-								Number( slide.dataset.imageId ) === Number( imageId )
-					  )
-					: -1;
+				const index = imageId ? controller.getSlideIndexForImageId( imageId ) : -1;
 
-				scrollToSlide( -1 === index ? 0 : index );
+				controller.goToSlide( -1 === index ? 0 : index );
 			}
 		);
 
 		window.jQuery( document ).on( 'reset_data', 'form.variations_form', () => {
-			scrollToSlide( 0 );
+			controller.goToSlide( 0 );
 		} );
 	}
-
-	measureSlidePositions();
 }
 
-document
-	.querySelectorAll( '.noorifa-core-product-gallery-carousel' )
-	.forEach( initGalleryCarousel );
+/*
+ * The theme enqueues Swiper as a separate, independently-ordered script,
+ * so `window.Swiper` isn't guaranteed to exist yet the instant this file
+ * runs. A short bounded wait (not a hard dependency) keeps this block
+ * portable to themes that don't ship Swiper at all — see
+ * initNativeCarousel() above.
+ */
+function waitForSwiperThenInit( attemptsLeft ) {
+	if ( ! window.Swiper && attemptsLeft > 0 ) {
+		setTimeout( () => waitForSwiperThenInit( attemptsLeft - 1 ), 50 );
+		return;
+	}
+
+	document
+		.querySelectorAll( '.noorifa-core-product-gallery-carousel' )
+		.forEach( initGalleryCarousel );
+}
+
+waitForSwiperThenInit( 20 );

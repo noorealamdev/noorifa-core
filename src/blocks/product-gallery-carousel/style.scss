@@ -5,24 +5,33 @@
 	}
 
 	.noorifa-core-product-gallery-carousel__viewport {
-		overflow-x: auto;
-		overflow-y: hidden;
-		scroll-snap-type: x mandatory;
-		-webkit-overflow-scrolling: touch;
-		scrollbar-width: none;
-		cursor: grab;
+		position: relative;
+		overflow: hidden;
 
-		&::-webkit-scrollbar {
-			display: none;
-		}
+		// Swiper (when present — see view.js) drives sliding via its own
+		// transform-based engine and adds `swiper-initialized` on init; the
+		// native-scroll fallback below only applies when that never
+		// happens, so the two approaches never fight over `overflow`.
+		&:not(.swiper-initialized) {
+			overflow-x: auto;
+			overflow-y: hidden;
+			scroll-snap-type: x mandatory;
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: none;
+			cursor: grab;
 
-		&.is-dragging {
-			cursor: grabbing;
-			scroll-snap-type: none;
-			user-select: none;
+			&::-webkit-scrollbar {
+				display: none;
+			}
 
-			.noorifa-core-product-gallery-carousel__slide {
-				pointer-events: none;
+			&.is-dragging {
+				cursor: grabbing;
+				scroll-snap-type: none;
+				user-select: none;
+
+				.noorifa-core-product-gallery-carousel__slide {
+					pointer-events: none;
+				}
 			}
 		}
 	}
@@ -105,33 +114,48 @@
 
 	.noorifa-core-product-gallery-carousel__thumbs {
 		// A real carousel strip at every screen size — same mechanics as
-		// the main image viewport (drag-to-scroll via JS + native touch),
-		// not just a mobile-only fallback. A wrapped grid never fit more
-		// than a handful of thumbs without pushing content down anyway.
-		display: flex;
-		flex-wrap: nowrap;
-		gap: 0.625rem;
+		// the main image viewport (Swiper when available, drag-to-scroll
+		// JS + native touch as the fallback), not just a mobile-only
+		// treatment. A wrapped grid never fit more than a handful of
+		// thumbs without pushing content down anyway.
+		position: relative;
 		margin-top: 1rem;
-		overflow-x: auto;
-		overflow-y: hidden;
-		scroll-snap-type: x proximity;
-		-webkit-overflow-scrolling: touch;
-		scrollbar-width: none;
-		cursor: grab;
+		overflow: hidden;
 
-		&::-webkit-scrollbar {
-			display: none;
-		}
+		&:not(.swiper-initialized) {
+			display: flex;
+			flex-wrap: nowrap;
+			gap: 0.625rem;
+			overflow-x: auto;
+			overflow-y: hidden;
+			scroll-snap-type: x proximity;
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: none;
+			cursor: grab;
 
-		&.is-dragging {
-			cursor: grabbing;
-			scroll-snap-type: none;
-			user-select: none;
+			&::-webkit-scrollbar {
+				display: none;
+			}
 
-			.noorifa-core-product-gallery-carousel__thumb {
-				pointer-events: none;
+			&.is-dragging {
+				cursor: grabbing;
+				scroll-snap-type: none;
+				user-select: none;
+
+				.noorifa-core-product-gallery-carousel__thumb {
+					pointer-events: none;
+				}
 			}
 		}
+	}
+
+	// Swiper's base stylesheet sets `.swiper-slide { width: 100% }`, which
+	// is correct for the main viewport's one-per-view slides but wrong for
+	// the thumbs strip's `slidesPerView: 'auto'` mode — that mode expects
+	// each slide to size to its own content, so this override is required
+	// (not optional/cosmetic) for the thumbs to render as a row at all.
+	.noorifa-core-product-gallery-carousel__thumb-slide {
+		width: auto;
 	}
 
 	.noorifa-core-product-gallery-carousel__thumb {

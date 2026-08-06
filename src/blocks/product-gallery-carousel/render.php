@@ -45,17 +45,17 @@ $noorifa_core_wrapper     = get_block_wrapper_attributes();
 <div <?php echo $noorifa_core_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>>
 	<div class="noorifa-core-product-gallery-carousel">
 		<div class="noorifa-core-product-gallery-carousel__stage">
-			<div class="noorifa-core-product-gallery-carousel__viewport">
-				<div class="noorifa-core-product-gallery-carousel__track">
+			<div class="swiper noorifa-core-product-gallery-carousel__viewport">
+				<div class="swiper-wrapper noorifa-core-product-gallery-carousel__track">
 					<?php if ( empty( $noorifa_core_image_ids ) ) : ?>
-						<div class="noorifa-core-product-gallery-carousel__slide">
+						<div class="swiper-slide noorifa-core-product-gallery-carousel__slide">
 							<div class="noorifa-core-product-gallery-carousel__image-wrap">
 								<?php echo wc_placeholder_img( 'woocommerce_single' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>
 							</div>
 						</div>
 					<?php else : ?>
 						<?php foreach ( $noorifa_core_image_ids as $noorifa_core_id ) : ?>
-							<div class="noorifa-core-product-gallery-carousel__slide" data-image-id="<?php echo esc_attr( $noorifa_core_id ); ?>">
+							<div class="swiper-slide noorifa-core-product-gallery-carousel__slide" data-image-id="<?php echo esc_attr( $noorifa_core_id ); ?>">
 								<div class="noorifa-core-product-gallery-carousel__image-wrap">
 									<?php
 									echo wp_get_attachment_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped.
@@ -89,28 +89,32 @@ $noorifa_core_wrapper     = get_block_wrapper_attributes();
 		</div>
 
 		<?php if ( $noorifa_core_multiple && $noorifa_core_show_thumbs ) : ?>
-			<div class="noorifa-core-product-gallery-carousel__thumbs">
-				<?php foreach ( $noorifa_core_image_ids as $noorifa_core_index => $noorifa_core_id ) : ?>
-					<?php
-					/* translators: %d: image number in the gallery. */
-					$noorifa_core_thumb_label = sprintf( __( 'Show image %d', 'noorifa-core' ), $noorifa_core_index + 1 );
-					?>
-					<button
-						type="button"
-						class="noorifa-core-product-gallery-carousel__thumb<?php echo 0 === $noorifa_core_index ? ' is-active' : ''; ?>"
-						data-slide-index="<?php echo esc_attr( $noorifa_core_index ); ?>"
-						aria-label="<?php echo esc_attr( $noorifa_core_thumb_label ); ?>"
-					>
+			<div class="swiper noorifa-core-product-gallery-carousel__thumbs">
+				<div class="swiper-wrapper">
+					<?php foreach ( $noorifa_core_image_ids as $noorifa_core_index => $noorifa_core_id ) : ?>
 						<?php
-						echo wp_get_attachment_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped.
-							$noorifa_core_id,
-							array( $noorifa_core_thumb_size['width'], $noorifa_core_thumb_size['height'] ),
-							false,
-							array( 'class' => 'noorifa-core-product-gallery-carousel__thumb-image' )
-						);
+						/* translators: %d: image number in the gallery. */
+						$noorifa_core_thumb_label = sprintf( __( 'Show image %d', 'noorifa-core' ), $noorifa_core_index + 1 );
 						?>
-					</button>
-				<?php endforeach; ?>
+						<div class="swiper-slide noorifa-core-product-gallery-carousel__thumb-slide">
+							<button
+								type="button"
+								class="noorifa-core-product-gallery-carousel__thumb<?php echo 0 === $noorifa_core_index ? ' is-active' : ''; ?>"
+								data-slide-index="<?php echo esc_attr( $noorifa_core_index ); ?>"
+								aria-label="<?php echo esc_attr( $noorifa_core_thumb_label ); ?>"
+							>
+								<?php
+								echo wp_get_attachment_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped.
+									$noorifa_core_id,
+									array( $noorifa_core_thumb_size['width'], $noorifa_core_thumb_size['height'] ),
+									false,
+									array( 'class' => 'noorifa-core-product-gallery-carousel__thumb-image' )
+								);
+								?>
+							</button>
+						</div>
+					<?php endforeach; ?>
+				</div>
 			</div>
 		<?php elseif ( $noorifa_core_multiple ) : ?>
 			<div class="noorifa-core-product-gallery-carousel__dots">
