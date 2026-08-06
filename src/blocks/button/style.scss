@@ -30,9 +30,14 @@
 
 	// Stretches the button to fill its container instead of sizing to its
 	// text — text-align becomes irrelevant once the button itself is the
-	// full width, so the label is centered inside it instead.
+	// full width, so the label is centered inside it instead. Flex (not
+	// block + text-align) so the label is also centered vertically if the
+	// button's height ever grows beyond one line (custom padding, wrapped
+	// text, etc.), not just horizontally.
 	&.is-full-width .noorifa-core-button__link {
-		display: block;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width: 100%;
 		box-sizing: border-box;
 		text-align: center;
