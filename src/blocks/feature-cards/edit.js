@@ -4,12 +4,12 @@ import {
 	RichText,
 	InspectorControls,
 	useSettings,
+	__experimentalColorGradientControl as ColorGradientControl,
 } from '@wordpress/block-editor';
 import {
 	Button,
 	PanelBody,
 	RangeControl,
-	ColorPalette,
 	BaseControl,
 	ToggleControl,
 } from '@wordpress/components';
@@ -32,12 +32,16 @@ export default function Edit( { attributes, setAttributes } ) {
 		items,
 		columns,
 		cardBackground,
+		cardBackgroundGradient,
 		cardRadius,
 		cardPadding,
 		boxed,
 		boxedWidth,
 	} = attributes;
-	const [ colors = [] ] = useSettings( 'color.palette' );
+	const [ colors = [], gradients = [] ] = useSettings(
+		'color.palette',
+		'color.gradients'
+	);
 	const blockProps = useBlockProps( {
 		style: { '--noorifa-core-feature-cards-columns': columns },
 	} );
@@ -127,11 +131,26 @@ export default function Edit( { attributes, setAttributes } ) {
 						__nextHasNoMarginBottom
 						label={ __( 'Background', 'noorifa-core' ) }
 					>
-						<ColorPalette
+						<ColorGradientControl
 							colors={ colors }
-							value={ cardBackground }
-							onChange={ ( value ) =>
-								setAttributes( { cardBackground: value || '' } )
+							gradients={ gradients }
+							colorValue={ cardBackground }
+							gradientValue={ cardBackgroundGradient }
+							onColorChange={ ( value ) =>
+								setAttributes( {
+									cardBackground: value || '',
+									// A card shows either a solid color or a
+									// gradient, never both at once — picking
+									// one clears the other, same as WP
+									// core's own Cover block background.
+									cardBackgroundGradient: '',
+								} )
+							}
+							onGradientChange={ ( value ) =>
+								setAttributes( {
+									cardBackgroundGradient: value || '',
+									cardBackground: '',
+								} )
 							}
 						/>
 					</BaseControl>
@@ -173,8 +192,10 @@ export default function Edit( { attributes, setAttributes } ) {
 							className="noorifa-core-feature-cards__item"
 							key={ index }
 							style={ {
-								backgroundColor:
-									cardBackground || DEFAULT_CARD_BACKGROUND,
+								background:
+									cardBackgroundGradient ||
+									cardBackground ||
+									DEFAULT_CARD_BACKGROUND,
 								borderRadius:
 									( cardRadius || DEFAULT_CARD_RADIUS ) + 'px',
 								padding:

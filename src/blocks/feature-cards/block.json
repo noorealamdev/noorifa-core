@@ -41,6 +41,10 @@
             "type": "string",
             "default": ""
         },
+        "cardBackgroundGradient": {
+            "type": "string",
+            "default": ""
+        },
         "cardRadius": {
             "type": "number",
             "default": 0

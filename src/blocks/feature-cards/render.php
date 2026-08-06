@@ -26,12 +26,17 @@ $noorifa_core_columns = ! empty( $attributes['columns'] ) ? max( 1, min( 4, (int
  * class-based default would keep showing regardless of intent (the exact
  * issue already found and fixed for Trust Badges this session).
  */
-$noorifa_core_card_background = ! empty( $attributes['cardBackground'] ) ? $attributes['cardBackground'] : '#1c1c1c';
+$noorifa_core_card_background = ! empty( $attributes['cardBackgroundGradient'] )
+	? $attributes['cardBackgroundGradient']
+	: ( ! empty( $attributes['cardBackground'] ) ? $attributes['cardBackground'] : '#1c1c1c' );
 $noorifa_core_card_radius     = ! empty( $attributes['cardRadius'] ) ? (int) $attributes['cardRadius'] : 20;
 $noorifa_core_card_padding    = ! empty( $attributes['cardPadding'] ) ? (int) $attributes['cardPadding'] : 28;
 
+// `background` (not `background-color`) since this value can be either a
+// plain color or a `linear-gradient(...)`/`radial-gradient(...)` string —
+// `background-color` silently drops gradient values.
 $noorifa_core_card_style = sprintf(
-	'background-color:%s;border-radius:%dpx;padding:%dpx;',
+	'background:%s;border-radius:%dpx;padding:%dpx;',
 	$noorifa_core_card_background,
 	$noorifa_core_card_radius,
 	$noorifa_core_card_padding
