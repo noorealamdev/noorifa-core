@@ -10,11 +10,11 @@ export function getBackgroundStyle(
 	backgroundVideo,
 	overlayOpacity
 ) {
-	const showOverlay = hasOverlay( overlayOpacity );
-
 	if ( 'video' === backgroundType && backgroundVideo?.url ) {
 		return { position: 'relative', overflow: 'hidden' };
 	}
+
+	const showOverlay = hasOverlay( overlayOpacity );
 
 	if ( backgroundImage?.url ) {
 		return {

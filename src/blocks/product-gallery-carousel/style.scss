@@ -4,6 +4,21 @@
 		position: relative;
 	}
 
+	.noorifa-core-product-gallery-carousel__track {
+		display: flex;
+	}
+
+	// Declared before .__viewport (below) even though .__slide is a
+	// descendant of it — .__viewport's own :not(.swiper-initialized)
+	// fallback nests a more specific ".is-dragging .__slide" rule, and a
+	// less-specific base rule compiling AFTER a more-specific one for the
+	// same class trips stylelint's no-descending-specificity check.
+	.noorifa-core-product-gallery-carousel__slide {
+		flex: 0 0 100%;
+		width: 100%;
+		scroll-snap-align: start;
+	}
+
 	.noorifa-core-product-gallery-carousel__viewport {
 		position: relative;
 		overflow: hidden;
@@ -34,16 +49,6 @@
 				}
 			}
 		}
-	}
-
-	.noorifa-core-product-gallery-carousel__track {
-		display: flex;
-	}
-
-	.noorifa-core-product-gallery-carousel__slide {
-		flex: 0 0 100%;
-		width: 100%;
-		scroll-snap-align: start;
 	}
 
 	.noorifa-core-product-gallery-carousel__image-wrap {
@@ -112,6 +117,47 @@
 		}
 	}
 
+	// Swiper's base stylesheet sets `.swiper-slide { width: 100% }`, which
+	// is correct for the main viewport's one-per-view slides but wrong for
+	// the thumbs strip's `slidesPerView: 'auto'` mode — that mode expects
+	// each slide to size to its own content, so this override is required
+	// (not optional/cosmetic) for the thumbs to render as a row at all.
+	.noorifa-core-product-gallery-carousel__thumb-slide {
+		width: auto;
+	}
+
+	// Declared before .__thumbs (below) for the same reason .__slide is
+	// declared before .__viewport above — see that comment.
+	.noorifa-core-product-gallery-carousel__thumb {
+		flex: 0 0 auto;
+		width: 4.5rem;
+		height: 4.5rem;
+		padding: 0;
+		background: none;
+		border: 2px solid transparent;
+		border-radius: 10px;
+		overflow: hidden;
+		cursor: pointer;
+		opacity: 0.6;
+		scroll-snap-align: start;
+		transition: opacity 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+		&:hover,
+		&:focus {
+			opacity: 0.85;
+		}
+
+		&.is-active {
+			opacity: 1;
+			border-color: #2f6f62;
+		}
+
+		@media (min-width: 600px) {
+			width: 5.5rem;
+			height: 5.5rem;
+		}
+	}
+
 	.noorifa-core-product-gallery-carousel__thumbs {
 		// A real carousel strip at every screen size — same mechanics as
 		// the main image viewport (Swiper when available, drag-to-scroll
@@ -146,45 +192,6 @@
 					pointer-events: none;
 				}
 			}
-		}
-	}
-
-	// Swiper's base stylesheet sets `.swiper-slide { width: 100% }`, which
-	// is correct for the main viewport's one-per-view slides but wrong for
-	// the thumbs strip's `slidesPerView: 'auto'` mode — that mode expects
-	// each slide to size to its own content, so this override is required
-	// (not optional/cosmetic) for the thumbs to render as a row at all.
-	.noorifa-core-product-gallery-carousel__thumb-slide {
-		width: auto;
-	}
-
-	.noorifa-core-product-gallery-carousel__thumb {
-		flex: 0 0 auto;
-		width: 4.5rem;
-		height: 4.5rem;
-		padding: 0;
-		background: none;
-		border: 2px solid transparent;
-		border-radius: 10px;
-		overflow: hidden;
-		cursor: pointer;
-		opacity: 0.6;
-		scroll-snap-align: start;
-		transition: opacity 0.15s ease-in-out, border-color 0.15s ease-in-out;
-
-		&:hover,
-		&:focus {
-			opacity: 0.85;
-		}
-
-		&.is-active {
-			opacity: 1;
-			border-color: #2f6f62;
-		}
-
-		@media (min-width: 600px) {
-			width: 5.5rem;
-			height: 5.5rem;
 		}
 	}
 

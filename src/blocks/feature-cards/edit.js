@@ -4,6 +4,10 @@ import {
 	RichText,
 	InspectorControls,
 	useSettings,
+	// No stable/public equivalent exists for the native Color/Gradient
+	// tabbed background control WP core's own Cover block uses — see the
+	// usage below for the crash this API already has to work around.
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientControl as ColorGradientControl,
 	MediaUpload,
 	MediaUploadCheck,
@@ -14,9 +18,15 @@ import {
 	RangeControl,
 	BaseControl,
 	ToggleControl,
+	// No stable/public equivalent — same segmented-control primitive WP
+	// core's own inspector panels use throughout (e.g. Hero's background
+	// type toggle already in this plugin).
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
+import { useInstanceId } from '@wordpress/compose';
 import { closeSmall } from '@wordpress/icons';
 
 /*
@@ -60,6 +70,10 @@ export default function Edit( { attributes, setAttributes } ) {
 		boxed,
 		boxedWidth,
 	} = attributes;
+	const backgroundControlId = useInstanceId(
+		Edit,
+		'noorifa-core-feature-cards-background'
+	);
 	const [ colors = [], gradients = [] ] = useSettings(
 		'color.palette',
 		'color.gradients'
@@ -148,7 +162,9 @@ export default function Edit( { attributes, setAttributes } ) {
 						__nextHasNoMarginBottom
 						label={ __( 'Boxed width', 'noorifa-core' ) }
 						checked={ boxed }
-						onChange={ ( value ) => setAttributes( { boxed: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { boxed: value } )
+						}
 						help={
 							boxed
 								? __(
@@ -180,6 +196,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				<PanelBody title={ __( 'Card', 'noorifa-core' ) }>
 					<BaseControl
 						__nextHasNoMarginBottom
+						id={ backgroundControlId }
 						label={ __( 'Background', 'noorifa-core' ) }
 					>
 						<ColorGradientControl
@@ -192,7 +209,9 @@ export default function Edit( { attributes, setAttributes } ) {
 							// undefined — it tries to parse the value even
 							// on the very first render of the Gradient tab.
 							colorValue={ cardBackground || undefined }
-							gradientValue={ cardBackgroundGradient || undefined }
+							gradientValue={
+								cardBackgroundGradient || undefined
+							}
 							// A card shows either a solid color or a gradient,
 							// never both — same as WP core's own Cover block
 							// background. But the control calls BOTH
@@ -305,9 +324,11 @@ export default function Edit( { attributes, setAttributes } ) {
 									cardBackground ||
 									DEFAULT_CARD_BACKGROUND,
 								borderRadius:
-									( cardRadius || DEFAULT_CARD_RADIUS ) + 'px',
+									( cardRadius || DEFAULT_CARD_RADIUS ) +
+									'px',
 								padding:
-									( cardPadding || DEFAULT_CARD_PADDING ) + 'px',
+									( cardPadding || DEFAULT_CARD_PADDING ) +
+									'px',
 							} }
 						>
 							<Button
@@ -335,7 +356,10 @@ export default function Edit( { attributes, setAttributes } ) {
 										<MediaUploadCheck>
 											<MediaUpload
 												onSelect={ ( media ) =>
-													updateItemImage( index, media )
+													updateItemImage(
+														index,
+														media
+													)
 												}
 												allowedTypes={ [ 'image' ] }
 												value={ item.imageId }
@@ -350,7 +374,10 @@ export default function Edit( { attributes, setAttributes } ) {
 															height: resolvedImageSize,
 														} }
 													>
-														{ __( 'Replace', 'noorifa-core' ) }
+														{ __(
+															'Replace',
+															'noorifa-core'
+														) }
 													</Button>
 												) }
 											/>
@@ -358,8 +385,13 @@ export default function Edit( { attributes, setAttributes } ) {
 										<Button
 											className="noorifa-core-feature-cards__image-remove"
 											icon={ closeSmall }
-											label={ __( 'Remove image', 'noorifa-core' ) }
-											onClick={ () => removeItemImage( index ) }
+											label={ __(
+												'Remove image',
+												'noorifa-core'
+											) }
+											onClick={ () =>
+												removeItemImage( index )
+											}
 										/>
 									</>
 								) : (
@@ -379,7 +411,10 @@ export default function Edit( { attributes, setAttributes } ) {
 														height: resolvedImageSize,
 													} }
 												>
-													{ __( 'Add image', 'noorifa-core' ) }
+													{ __(
+														'Add image',
+														'noorifa-core'
+													) }
 												</Button>
 											) }
 										/>
@@ -405,7 +440,10 @@ export default function Edit( { attributes, setAttributes } ) {
 								onChange={ ( value ) =>
 									updateItem( index, 'text', value )
 								}
-								placeholder={ __( 'Supporting text', 'noorifa-core' ) }
+								placeholder={ __(
+									'Supporting text',
+									'noorifa-core'
+								) }
 							/>
 						</div>
 					) ) }

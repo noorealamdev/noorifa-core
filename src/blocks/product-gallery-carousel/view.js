@@ -87,7 +87,15 @@ function enablePointerDragScroll( el, onDragEnd ) {
  * below (arrows, thumbs, dots, WC variation sync) just without Swiper's
  * momentum/easing.
  */
-function initNativeCarousel( carousel, viewport, thumbsStrip, slides, navItems, prevButton, nextButton ) {
+function initNativeCarousel(
+	carousel,
+	viewport,
+	thumbsStrip,
+	slides,
+	navItems,
+	prevButton,
+	nextButton
+) {
 	let activeIndex = 0;
 	// The scrollLeft value that puts each slide flush against the
 	// viewport's left edge.
@@ -104,7 +112,8 @@ function initNativeCarousel( carousel, viewport, thumbsStrip, slides, navItems, 
 
 	const setActiveNav = ( index ) => {
 		navItems.forEach( ( item ) => {
-			const isActive = Number( item.getAttribute( 'data-slide-index' ) ) === index;
+			const isActive =
+				Number( item.getAttribute( 'data-slide-index' ) ) === index;
 			item.classList.toggle( 'is-active', isActive );
 
 			if ( isActive ) {
@@ -136,15 +145,22 @@ function initNativeCarousel( carousel, viewport, thumbsStrip, slides, navItems, 
 			suppressScrollSync = false;
 		}, 600 );
 
-		viewport.scrollTo( { left: slidePositions[ clamped ], behavior: 'smooth' } );
+		viewport.scrollTo( {
+			left: slidePositions[ clamped ],
+			behavior: 'smooth',
+		} );
 	};
 
 	if ( prevButton ) {
-		prevButton.addEventListener( 'click', () => scrollToSlide( activeIndex - 1 ) );
+		prevButton.addEventListener( 'click', () =>
+			scrollToSlide( activeIndex - 1 )
+		);
 	}
 
 	if ( nextButton ) {
-		nextButton.addEventListener( 'click', () => scrollToSlide( activeIndex + 1 ) );
+		nextButton.addEventListener( 'click', () =>
+			scrollToSlide( activeIndex + 1 )
+		);
 	}
 
 	navItems.forEach( ( item ) => {
@@ -203,7 +219,10 @@ function initNativeCarousel( carousel, viewport, thumbsStrip, slides, navItems, 
 	return {
 		goToSlide: scrollToSlide,
 		getSlideIndexForImageId: ( imageId ) =>
-			slides.findIndex( ( slide ) => Number( slide.dataset.imageId ) === Number( imageId ) ),
+			slides.findIndex(
+				( slide ) =>
+					Number( slide.dataset.imageId ) === Number( imageId )
+			),
 	};
 }
 
@@ -215,7 +234,15 @@ function initNativeCarousel( carousel, viewport, thumbsStrip, slides, navItems, 
  * module). A different theme without Swiper falls back to
  * initNativeCarousel() above, so the block still works everywhere.
  */
-function initSwiperCarousel( carousel, viewport, thumbsStrip, slides, navItems, prevButton, nextButton ) {
+function initSwiperCarousel(
+	carousel,
+	viewport,
+	thumbsStrip,
+	slides,
+	navItems,
+	prevButton,
+	nextButton
+) {
 	let thumbsSwiper = null;
 
 	if ( thumbsStrip ) {
@@ -246,7 +273,9 @@ function initSwiperCarousel( carousel, viewport, thumbsStrip, slides, navItems, 
 		} );
 	};
 
-	mainSwiper.on( 'slideChange', () => setActiveNav( mainSwiper.activeIndex ) );
+	mainSwiper.on( 'slideChange', () =>
+		setActiveNav( mainSwiper.activeIndex )
+	);
 
 	// Dots only render when the thumbnail strip is switched off in the
 	// block's settings, so they need their own click-to-navigate — thumbs
@@ -254,7 +283,9 @@ function initSwiperCarousel( carousel, viewport, thumbsStrip, slides, navItems, 
 	if ( ! thumbsSwiper ) {
 		navItems.forEach( ( item ) => {
 			item.addEventListener( 'click', () =>
-				mainSwiper.slideTo( Number( item.getAttribute( 'data-slide-index' ) ) )
+				mainSwiper.slideTo(
+					Number( item.getAttribute( 'data-slide-index' ) )
+				)
 			);
 		} );
 	}
@@ -262,7 +293,10 @@ function initSwiperCarousel( carousel, viewport, thumbsStrip, slides, navItems, 
 	return {
 		goToSlide: ( index ) => mainSwiper.slideTo( index ),
 		getSlideIndexForImageId: ( imageId ) =>
-			slides.findIndex( ( slide ) => Number( slide.dataset.imageId ) === Number( imageId ) ),
+			slides.findIndex(
+				( slide ) =>
+					Number( slide.dataset.imageId ) === Number( imageId )
+			),
 	};
 }
 
@@ -270,11 +304,18 @@ function initGalleryCarousel( carousel ) {
 	const viewport = carousel.querySelector(
 		'.noorifa-core-product-gallery-carousel__viewport'
 	);
+	const slides = Array.from(
+		carousel.querySelectorAll(
+			'.noorifa-core-product-gallery-carousel__slide'
+		)
+	);
+
+	if ( ! viewport || ! slides.length ) {
+		return;
+	}
+
 	const thumbsStrip = carousel.querySelector(
 		'.noorifa-core-product-gallery-carousel__thumbs'
-	);
-	const slides = Array.from(
-		carousel.querySelectorAll( '.noorifa-core-product-gallery-carousel__slide' )
 	);
 	const navItems = Array.from(
 		carousel.querySelectorAll(
@@ -288,13 +329,25 @@ function initGalleryCarousel( carousel ) {
 		'.noorifa-core-product-gallery-carousel__arrow--next'
 	);
 
-	if ( ! viewport || ! slides.length ) {
-		return;
-	}
-
 	const controller = window.Swiper
-		? initSwiperCarousel( carousel, viewport, thumbsStrip, slides, navItems, prevButton, nextButton )
-		: initNativeCarousel( carousel, viewport, thumbsStrip, slides, navItems, prevButton, nextButton );
+		? initSwiperCarousel(
+				carousel,
+				viewport,
+				thumbsStrip,
+				slides,
+				navItems,
+				prevButton,
+				nextButton
+		  )
+		: initNativeCarousel(
+				carousel,
+				viewport,
+				thumbsStrip,
+				slides,
+				navItems,
+				prevButton,
+				nextButton
+		  );
 
 	/*
 	 * Keeps the carousel in sync with WooCommerce's own variation
@@ -305,20 +358,26 @@ function initGalleryCarousel( carousel ) {
 	 * WooCommerce) is required here.
 	 */
 	if ( window.jQuery ) {
-		window.jQuery( document ).on(
-			'found_variation',
-			'form.variations_form',
-			( event, variation ) => {
-				const imageId = variation && variation.image_id;
-				const index = imageId ? controller.getSlideIndexForImageId( imageId ) : -1;
+		window
+			.jQuery( document )
+			.on(
+				'found_variation',
+				'form.variations_form',
+				( event, variation ) => {
+					const imageId = variation && variation.image_id;
+					const index = imageId
+						? controller.getSlideIndexForImageId( imageId )
+						: -1;
 
-				controller.goToSlide( -1 === index ? 0 : index );
-			}
-		);
+					controller.goToSlide( -1 === index ? 0 : index );
+				}
+			);
 
-		window.jQuery( document ).on( 'reset_data', 'form.variations_form', () => {
-			controller.goToSlide( 0 );
-		} );
+		window
+			.jQuery( document )
+			.on( 'reset_data', 'form.variations_form', () => {
+				controller.goToSlide( 0 );
+			} );
 	}
 }
 

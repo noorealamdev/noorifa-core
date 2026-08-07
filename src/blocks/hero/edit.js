@@ -18,10 +18,18 @@ import {
 	RangeControl,
 	ColorPalette,
 	ToggleControl,
+	// No stable/public equivalent — this is the same primitive WP core's
+	// own native supports.typography.lineHeight control wraps internally,
+	// needed here since Hero has two independent text elements rather
+	// than the single element that native support assumes.
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalNumberControl as NumberControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
+import { useInstanceId } from '@wordpress/compose';
 import {
 	getBackgroundStyle,
 	hasBackgroundVideo,
@@ -49,6 +57,18 @@ export default function Edit( { attributes, setAttributes } ) {
 	} = attributes;
 	const [ fontSizes ] = useSettings( 'typography.fontSizes' );
 	const [ colors = [] ] = useSettings( 'color.palette' );
+	const overlayColorControlId = useInstanceId(
+		Edit,
+		'noorifa-core-hero-overlay-color'
+	);
+	const headingTypographyControlId = useInstanceId(
+		Edit,
+		'noorifa-core-hero-heading-typography'
+	);
+	const subheadingTypographyControlId = useInstanceId(
+		Edit,
+		'noorifa-core-hero-subheading-typography'
+	);
 
 	const blockProps = useBlockProps( {
 		className: textAlign ? `has-text-align-${ textAlign }` : undefined,
@@ -213,6 +233,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					{ showOverlay && (
 						<BaseControl
 							__nextHasNoMarginBottom
+							id={ overlayColorControlId }
 							label={ __( 'Color', 'noorifa-core' ) }
 						>
 							<ColorPalette
@@ -231,6 +252,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				<PanelBody title={ __( 'Typography', 'noorifa-core' ) }>
 					<BaseControl
 						__nextHasNoMarginBottom
+						id={ headingTypographyControlId }
 						label={ __( 'Heading', 'noorifa-core' ) }
 					>
 						<FontSizePicker
@@ -258,6 +280,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					</BaseControl>
 					<BaseControl
 						__nextHasNoMarginBottom
+						id={ subheadingTypographyControlId }
 						label={ __( 'Subheading', 'noorifa-core' ) }
 					>
 						<FontSizePicker
@@ -285,11 +308,16 @@ export default function Edit( { attributes, setAttributes } ) {
 					</BaseControl>
 				</PanelBody>
 
-				<PanelBody title={ __( 'Layout', 'noorifa-core' ) } initialOpen={ false }>
+				<PanelBody
+					title={ __( 'Layout', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
 					<ToggleControl
 						label={ __( 'Boxed width', 'noorifa-core' ) }
 						checked={ boxed }
-						onChange={ ( value ) => setAttributes( { boxed: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { boxed: value } )
+						}
 						help={
 							boxed
 								? __(
@@ -348,21 +376,32 @@ export default function Edit( { attributes, setAttributes } ) {
 						tagName="h1"
 						className="noorifa-core-hero__heading"
 						style={ {
-							...( headingFontSize && { fontSize: headingFontSize } ),
-							...( headingLineHeight && { lineHeight: headingLineHeight } ),
+							...( headingFontSize && {
+								fontSize: headingFontSize,
+							} ),
+							...( headingLineHeight && {
+								lineHeight: headingLineHeight,
+							} ),
 						} }
 						value={ heading }
 						onChange={ ( value ) =>
 							setAttributes( { heading: value } )
 						}
-						placeholder={ __( 'Your Hero Heading', 'noorifa-core' ) }
+						placeholder={ __(
+							'Your Hero Heading',
+							'noorifa-core'
+						) }
 					/>
 					<RichText
 						tagName="p"
 						className="noorifa-core-hero__subheading"
 						style={ {
-							...( subheadingFontSize && { fontSize: subheadingFontSize } ),
-							...( subheadingLineHeight && { lineHeight: subheadingLineHeight } ),
+							...( subheadingFontSize && {
+								fontSize: subheadingFontSize,
+							} ),
+							...( subheadingLineHeight && {
+								lineHeight: subheadingLineHeight,
+							} ),
 						} }
 						value={ subheading }
 						onChange={ ( value ) =>

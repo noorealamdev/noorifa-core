@@ -9,7 +9,10 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Gallery', 'noorifa-core' ) } initialOpen>
+				<PanelBody
+					title={ __( 'Gallery', 'noorifa-core' ) }
+					initialOpen
+				>
 					<ToggleControl
 						label={ __( 'Show thumbnail strip', 'noorifa-core' ) }
 						checked={ showThumbnails }
