@@ -5,11 +5,19 @@
 		margin-right: auto;
 	}
 
-	// One clean divided list instead of separate outlined boxes — reads as
-	// a professional FAQ. Dividers use the theme's own line color (with a
-	// neutral fallback so the block still looks right on any theme).
+	// Each item is a rounded card: a tinted title bar on top, a content
+	// area below. Colors use theme-overridable variables with neutral
+	// fallbacks so it looks right on any theme out of the box.
 	.wp-block-noorifa-core-accordion-item {
-		border-bottom: 1px solid var(--line, rgba(0, 0, 0, 0.1));
+		overflow: hidden;
+		background: var(--noorifa-accordion-content-bg, #fff);
+		border: 1px solid var(--line, #e8e5e0);
+		border-radius: 12px;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+
+		+ .wp-block-noorifa-core-accordion-item {
+			margin-top: 12px;
+		}
 	}
 
 	.noorifa-core-accordion__heading {
@@ -22,65 +30,65 @@
 		color: inherit;
 	}
 
+	// Title bar — its own background, the part the reference styles.
 	.noorifa-core-accordion__toggle {
 		display: flex;
 		gap: 16px;
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
-		padding: 20px 4px;
-		background: none;
+		padding: 18px 22px;
+		background: var(--noorifa-accordion-title-bg, #f5f2ec);
 		border: 0;
 		color: inherit;
 		cursor: pointer;
 		font: inherit;
 		font-size: 1.05em;
-		font-weight: 600;
+		font-weight: 700;
 		line-height: 1.4;
 		text-align: left;
 		transition: color 0.15s ease-in-out;
 
 		&:hover,
-		&:focus-visible,
-		&.is-open {
+		&:focus-visible {
 			color: var(--primary, inherit);
+		}
+
+		// A crisp divider between the title bar and the content once open.
+		&.is-open {
+			border-bottom: 1px solid var(--line, #e8e5e0);
 		}
 	}
 
-	// Circular +/- toggle — its border follows the toggle color, so it
-	// picks up the theme accent on hover/open for free (currentcolor).
+	// Chevron: points down when closed, flips up when open — matches the
+	// reference's arrow toggle.
 	.noorifa-core-accordion__icon {
 		flex-shrink: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 1.7em;
-		height: 1.7em;
-		border: 1px solid currentcolor;
-		border-radius: 50%;
-		opacity: 0.55;
-		transition: opacity 0.15s ease-in-out;
+		width: 1.4em;
+		height: 1.4em;
 	}
 
 	.noorifa-core-accordion__icon::before {
-		content: "+";
-		display: block;
-		font-size: 1.15em;
-		font-weight: 400;
-		line-height: 1;
+		content: "";
+		width: 0.5em;
+		height: 0.5em;
+		border-right: 2px solid currentcolor;
+		border-bottom: 2px solid currentcolor;
+		transform: translateY(-0.12em) rotate(45deg);
 		transition: transform 0.25s ease;
 	}
 
-	.noorifa-core-accordion__toggle.is-open .noorifa-core-accordion__icon {
-		opacity: 1;
-	}
-
 	.noorifa-core-accordion__toggle.is-open .noorifa-core-accordion__icon::before {
-		transform: rotate(45deg);
+		transform: translateY(0.1em) rotate(225deg);
 	}
 
+	// Content area — its own background, sits under the title bar.
 	.noorifa-core-accordion__panel {
-		padding: 0 4px 20px;
+		padding: 18px 22px 20px;
+		background: var(--noorifa-accordion-content-bg, #fff);
 
 		// The panel's own padding-bottom already provides the gap below
 		// the content — a paragraph's default margin-bottom on top of
