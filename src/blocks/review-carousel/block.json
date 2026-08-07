@@ -28,15 +28,17 @@
 		"boxedWidth": {
 			"type": "number",
 			"default": 1200
+		},
+		"cardBackground": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"supports": {
 		"anchor": true,
 		"html": false,
 		"color": {
-			"background": true,
-			"text": true,
-			"gradients": true
+			"text": true
 		},
 		"typography": {
 			"fontSize": true

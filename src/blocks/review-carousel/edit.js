@@ -1,6 +1,11 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InspectorControls,
+	useSettings,
+	ColorPalette,
+} from '@wordpress/block-editor';
 import {
 	PanelBody,
 	ComboboxControl,
@@ -9,14 +14,22 @@ import {
 	Notice,
 	ToggleControl,
 	RangeControl,
+	BaseControl,
 } from '@wordpress/components';
+import { useInstanceId } from '@wordpress/compose';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { decodeEntities } from '@wordpress/html-entities';
 import WooPlaceholder from '../../utils/woo-placeholder';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { productId, selectedReviews, boxed, boxedWidth } = attributes;
+	const { productId, selectedReviews, boxed, boxedWidth, cardBackground } =
+		attributes;
+	const [ colors = [] ] = useSettings( 'color.palette' );
+	const cardBgId = useInstanceId(
+		Edit,
+		'noorifa-core-review-carousel-card-bg'
+	);
 	const blockProps = useBlockProps();
 
 	const [ productSearch, setProductSearch ] = useState( '' );
@@ -187,6 +200,24 @@ export default function Edit( { attributes, setAttributes } ) {
 							step={ 10 }
 						/>
 					) }
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Colors', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
+					<BaseControl
+						__nextHasNoMarginBottom
+						id={ cardBgId }
+						label={ __( 'Card background', 'noorifa-core' ) }
+					>
+						<ColorPalette
+							colors={ colors }
+							value={ cardBackground }
+							onChange={ ( value ) =>
+								setAttributes( { cardBackground: value || '' } )
+							}
+						/>
+					</BaseControl>
 				</PanelBody>
 			</InspectorControls>
 			<WooPlaceholder

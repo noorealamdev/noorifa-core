@@ -56,8 +56,16 @@ if ( empty( $noorifa_core_ordered ) ) {
 }
 
 $noorifa_core_ratings_enabled = wc_review_ratings_enabled();
-$noorifa_core_wrapper         = get_block_wrapper_attributes();
 $noorifa_core_multiple        = count( $noorifa_core_ordered ) > 1;
+
+// The "Card background" control tints the review cards via a CSS variable
+// the styles read (see style.scss) — kept as a variable rather than a
+// wrapper background so the color lands on the cards, not behind them.
+$noorifa_core_wrapper_args = array();
+if ( ! empty( $attributes['cardBackground'] ) ) {
+	$noorifa_core_wrapper_args['style'] = '--noorifa-review-card-bg:' . esc_attr( $attributes['cardBackground'] ) . ';';
+}
+$noorifa_core_wrapper = get_block_wrapper_attributes( $noorifa_core_wrapper_args );
 
 // Self-contained max-width instead of relying on the theme/template to
 // constrain block content — this block can land in templates that render
