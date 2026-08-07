@@ -5,14 +5,11 @@
 		margin-right: auto;
 	}
 
+	// One clean divided list instead of separate outlined boxes — reads as
+	// a professional FAQ. Dividers use the theme's own line color (with a
+	// neutral fallback so the block still looks right on any theme).
 	.wp-block-noorifa-core-accordion-item {
-		overflow: hidden;
-		border: 1px solid #e0e0e0;
-		border-radius: 4px;
-
-		+ .wp-block-noorifa-core-accordion-item {
-			margin-top: 8px;
-		}
+		border-bottom: 1px solid var(--line, rgba(0, 0, 0, 0.1));
 	}
 
 	.noorifa-core-accordion__heading {
@@ -27,27 +24,55 @@
 
 	.noorifa-core-accordion__toggle {
 		display: flex;
-		gap: 12px;
+		gap: 16px;
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
-		padding: 14px 16px;
+		padding: 20px 4px;
 		background: none;
 		border: 0;
 		color: inherit;
 		cursor: pointer;
 		font: inherit;
+		font-size: 1.05em;
 		font-weight: 600;
+		line-height: 1.4;
 		text-align: left;
+		transition: color 0.15s ease-in-out;
+
+		&:hover,
+		&:focus-visible,
+		&.is-open {
+			color: var(--primary, inherit);
+		}
+	}
+
+	// Circular +/- toggle — its border follows the toggle color, so it
+	// picks up the theme accent on hover/open for free (currentcolor).
+	.noorifa-core-accordion__icon {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.7em;
+		height: 1.7em;
+		border: 1px solid currentcolor;
+		border-radius: 50%;
+		opacity: 0.55;
+		transition: opacity 0.15s ease-in-out;
 	}
 
 	.noorifa-core-accordion__icon::before {
 		content: "+";
-		display: inline-block;
-		font-size: 1.25em;
+		display: block;
+		font-size: 1.15em;
 		font-weight: 400;
 		line-height: 1;
-		transition: transform 0.2s ease-in-out;
+		transition: transform 0.25s ease;
+	}
+
+	.noorifa-core-accordion__toggle.is-open .noorifa-core-accordion__icon {
+		opacity: 1;
 	}
 
 	.noorifa-core-accordion__toggle.is-open .noorifa-core-accordion__icon::before {
@@ -55,7 +80,7 @@
 	}
 
 	.noorifa-core-accordion__panel {
-		padding: 0 16px 16px;
+		padding: 0 4px 20px;
 
 		// The panel's own padding-bottom already provides the gap below
 		// the content — a paragraph's default margin-bottom on top of
@@ -63,5 +88,33 @@
 		p:last-child {
 			margin-bottom: 0;
 		}
+	}
+
+	// Smooth reveal as a panel opens. The collapse stays instant because
+	// the panel toggles the `hidden` attribute via the Interactivity API
+	// (display:none can't be transitioned) — animating the open is the
+	// part users actually notice.
+	.noorifa-core-accordion__panel:not([hidden]) {
+		animation: noorifa-core-accordion-reveal 0.28s ease;
+	}
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+
+	.wp-block-noorifa-core-accordion .noorifa-core-accordion__panel:not([hidden]) {
+		animation: none;
+	}
+}
+
+@keyframes noorifa-core-accordion-reveal {
+
+	from {
+		opacity: 0;
+		transform: translateY(-6px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
