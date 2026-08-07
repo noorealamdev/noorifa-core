@@ -1,20 +1,11 @@
 import { __ } from '@wordpress/i18n';
-import {
-	useBlockProps,
-	RichText,
-	InspectorControls,
-} from '@wordpress/block-editor';
-import {
-	Button,
-	PanelBody,
-	ToggleControl,
-	RangeControl,
-} from '@wordpress/components';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { Button } from '@wordpress/components';
 import { closeSmall } from '@wordpress/icons';
 import IconPicker from '../../utils/icon-picker';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { rows, boxed, boxedWidth } = attributes;
+	const { rows } = attributes;
 	const blockProps = useBlockProps();
 
 	const updateRow = ( index, field, value ) => {
@@ -36,50 +27,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<div { ...blockProps }>
-			<InspectorControls>
-				<PanelBody
-					title={ __( 'Layout', 'noorifa-core' ) }
-					initialOpen={ false }
-				>
-					<ToggleControl
-						label={ __( 'Boxed width', 'noorifa-core' ) }
-						checked={ boxed }
-						onChange={ ( value ) =>
-							setAttributes( { boxed: value } )
-						}
-						help={
-							boxed
-								? __(
-										'Constrained to a max width and centered.',
-										'noorifa-core'
-								  )
-								: __(
-										'Stretches the full width of its container.',
-										'noorifa-core'
-								  )
-						}
-					/>
-					{ boxed && (
-						<RangeControl
-							label={ __( 'Max width (px)', 'noorifa-core' ) }
-							value={ boxedWidth }
-							onChange={ ( value ) =>
-								setAttributes( { boxedWidth: value } )
-							}
-							min={ 480 }
-							max={ 1800 }
-							step={ 10 }
-						/>
-					) }
-				</PanelBody>
-			</InspectorControls>
-			<ul
-				className={
-					'noorifa-core-icon-list__list' +
-					( boxed ? ' is-boxed' : '' )
-				}
-				style={ boxed ? { maxWidth: boxedWidth } : undefined }
-			>
+			<ul className="noorifa-core-icon-list__list">
 				{ rows.map( ( row, index ) => (
 					<li className="noorifa-core-icon-list__row" key={ index }>
 						<IconPicker
