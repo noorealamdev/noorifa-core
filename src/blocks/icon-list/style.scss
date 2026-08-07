@@ -45,7 +45,7 @@
 		color: inherit;
 		// Only takes effect once the block's Line height control is set;
 		// otherwise falls back to normal inherited line spacing.
-		line-height: var( --noorifa-icon-list-lh, inherit );
+		line-height: var(--noorifa-icon-list-lh, inherit);
 	}
 }
 
