@@ -108,14 +108,14 @@
 				font-size: 0;
 
 				&::after {
-					content: 'Sale';
+					content: "Sale";
 					font-size: 0.7rem;
 				}
 			}
 
 			.woocommerce-loop-product__title {
 				margin: 0.15rem 0 0;
-				font-family: Georgia, 'Times New Roman', serif;
+				font-family: Georgia, "Times New Roman", serif;
 				font-size: 1.05em;
 				font-weight: 400;
 				color: inherit;

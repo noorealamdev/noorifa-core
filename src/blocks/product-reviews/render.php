@@ -37,7 +37,7 @@ $noorifa_core_review_count = array_sum( $noorifa_core_rating_counts );
 $noorifa_core_breakdown = array();
 
 for ( $noorifa_core_star = 5; $noorifa_core_star >= 1; $noorifa_core_star-- ) {
-	$noorifa_core_star_count                       = isset( $noorifa_core_rating_counts[ $noorifa_core_star ] ) ? (int) $noorifa_core_rating_counts[ $noorifa_core_star ] : 0;
+	$noorifa_core_star_count                      = isset( $noorifa_core_rating_counts[ $noorifa_core_star ] ) ? (int) $noorifa_core_rating_counts[ $noorifa_core_star ] : 0;
 	$noorifa_core_breakdown[ $noorifa_core_star ] = array(
 		'count'      => $noorifa_core_star_count,
 		'percentage' => $noorifa_core_review_count ? round( ( $noorifa_core_star_count / $noorifa_core_review_count ) * 100 ) : 0,

@@ -123,7 +123,9 @@ export default function Edit( { attributes, setAttributes } ) {
 					<ToggleControl
 						label={ __( 'Boxed width', 'noorifa-core' ) }
 						checked={ boxed }
-						onChange={ ( value ) => setAttributes( { boxed: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { boxed: value } )
+						}
 						help={
 							boxed
 								? __(

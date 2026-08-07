@@ -69,7 +69,10 @@ function watchVisibility( bar ) {
 	}
 
 	const toggleFromScroll = () => {
-		bar.classList.toggle( 'is-visible', window.scrollY > window.innerHeight );
+		bar.classList.toggle(
+			'is-visible',
+			window.scrollY > window.innerHeight
+		);
 	};
 
 	window.addEventListener( 'scroll', toggleFromScroll, { passive: true } );
@@ -85,7 +88,11 @@ function watchVisibility( bar ) {
  * them.
  */
 function watchVariationSync( bar, form ) {
-	if ( ! window.jQuery || ! form || ! form.classList.contains( 'variations_form' ) ) {
+	if (
+		! window.jQuery ||
+		! form ||
+		! form.classList.contains( 'variations_form' )
+	) {
 		return;
 	}
 
@@ -99,23 +106,25 @@ function watchVariationSync( bar, form ) {
 	const defaultPriceHtml = priceEl ? priceEl.innerHTML : '';
 	const defaultImageSrc = imageEl ? imageEl.src : '';
 
-	window.jQuery( document ).on(
-		'found_variation',
-		'form.variations_form',
-		( event, variation ) => {
-			if ( priceEl && variation.price_html ) {
-				priceEl.innerHTML = variation.price_html;
-			}
+	window
+		.jQuery( document )
+		.on(
+			'found_variation',
+			'form.variations_form',
+			( event, variation ) => {
+				if ( priceEl && variation.price_html ) {
+					priceEl.innerHTML = variation.price_html;
+				}
 
-			if ( imageEl && variation.image ) {
-				imageEl.src =
-					variation.image.gallery_thumbnail_src ||
-					variation.image.thumb_src ||
-					variation.image.src ||
-					defaultImageSrc;
+				if ( imageEl && variation.image ) {
+					imageEl.src =
+						variation.image.gallery_thumbnail_src ||
+						variation.image.thumb_src ||
+						variation.image.src ||
+						defaultImageSrc;
+				}
 			}
-		}
-	);
+		);
 
 	window.jQuery( document ).on( 'reset_data', 'form.variations_form', () => {
 		if ( priceEl ) {

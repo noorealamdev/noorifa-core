@@ -13,8 +13,7 @@ export default function save( { attributes } ) {
 			/>
 			<div
 				className={
-					'noorifa-core-faq__accordion' +
-					( boxed ? ' is-boxed' : '' )
+					'noorifa-core-faq__accordion' + ( boxed ? ' is-boxed' : '' )
 				}
 				style={ boxed ? { maxWidth: boxedWidth } : undefined }
 			>

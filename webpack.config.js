@@ -17,8 +17,14 @@ const addExtraEntries = ( config ) => ( {
 			? config.entry()
 			: config.entry ),
 		'library/index': path.resolve( process.cwd(), 'src/library/index.js' ),
-		'extensions/index': path.resolve( process.cwd(), 'src/extensions/index.js' ),
-		'extensions/view': path.resolve( process.cwd(), 'src/extensions/view.js' ),
+		'extensions/index': path.resolve(
+			process.cwd(),
+			'src/extensions/index.js'
+		),
+		'extensions/view': path.resolve(
+			process.cwd(),
+			'src/extensions/view.js'
+		),
 	},
 } );
 

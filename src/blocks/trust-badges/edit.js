@@ -27,7 +27,10 @@ export default function Edit( { attributes, setAttributes } ) {
 		setAttributes( {
 			items: [
 				...items,
-				{ icon: 'nt-shieldCheck', label: __( 'New badge', 'noorifa-core' ) },
+				{
+					icon: 'nt-shieldCheck',
+					label: __( 'New badge', 'noorifa-core' ),
+				},
 			],
 		} );
 
@@ -37,11 +40,16 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Layout', 'noorifa-core' ) } initialOpen={ false }>
+				<PanelBody
+					title={ __( 'Layout', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
 					<ToggleControl
 						label={ __( 'Boxed width', 'noorifa-core' ) }
 						checked={ boxed }
-						onChange={ ( value ) => setAttributes( { boxed: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { boxed: value } )
+						}
 						help={
 							boxed
 								? __(
@@ -76,7 +84,10 @@ export default function Edit( { attributes, setAttributes } ) {
 				style={ boxed ? { maxWidth: boxedWidth } : undefined }
 			>
 				{ items.map( ( item, index ) => (
-					<li className="noorifa-core-trust-badges__item" key={ index }>
+					<li
+						className="noorifa-core-trust-badges__item"
+						key={ index }
+					>
 						<Button
 							className="noorifa-core-trust-badges__remove"
 							icon={ closeSmall }

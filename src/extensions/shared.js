@@ -21,7 +21,7 @@ export const ANIMATION_TYPES = [ 'fade-in', 'slide-up', 'zoom-in' ];
  * Whether a block name is extended by the Noorifa Core block engine.
  *
  * @param {string} name Block name, e.g. "noorifa-core/container".
- * @return {boolean}
+ * @return {boolean} Whether the block is extendable.
  */
 export function isExtendable( name ) {
 	return typeof name === 'string' && name.startsWith( 'noorifa-core/' );

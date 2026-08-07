@@ -3,7 +3,9 @@ function openReviewModal( modal ) {
 	modal.setAttribute( 'aria-hidden', 'false' );
 	document.body.classList.add( 'noorifa-core-modal-open' );
 
-	const firstField = modal.querySelector( 'select, textarea, input:not([type="hidden"])' );
+	const firstField = modal.querySelector(
+		'select, textarea, input:not([type="hidden"])'
+	);
 
 	if ( firstField ) {
 		firstField.focus();
@@ -34,7 +36,9 @@ document.addEventListener( 'click', ( event ) => {
 	const modalCloser = event.target.closest( '[data-review-modal-close]' );
 
 	if ( modalCloser ) {
-		const modal = modalCloser.closest( '.noorifa-core-product-reviews__modal' );
+		const modal = modalCloser.closest(
+			'.noorifa-core-product-reviews__modal'
+		);
 
 		if ( modal ) {
 			closeReviewModal( modal );
@@ -54,19 +58,24 @@ document.addEventListener( 'click', ( event ) => {
 	const wrapper = loadMoreButton.closest(
 		'.wp-block-noorifa-core-product-reviews'
 	);
-	const grid = wrapper && wrapper.querySelector( '.noorifa-core-product-reviews__grid' );
+	const grid =
+		wrapper &&
+		wrapper.querySelector( '.noorifa-core-product-reviews__grid' );
 
 	if ( ! grid ) {
 		return;
 	}
 
 	const restUrl = loadMoreButton.getAttribute( 'data-rest-url' );
-	const offset = parseInt( loadMoreButton.getAttribute( 'data-offset' ), 10 ) || 0;
-	const perPage = parseInt( loadMoreButton.getAttribute( 'data-per-page' ), 10 ) || 12;
+	const offset =
+		parseInt( loadMoreButton.getAttribute( 'data-offset' ), 10 ) || 0;
+	const perPage =
+		parseInt( loadMoreButton.getAttribute( 'data-per-page' ), 10 ) || 12;
 	const originalText = loadMoreButton.textContent;
 
 	loadMoreButton.disabled = true;
-	loadMoreButton.textContent = loadMoreButton.getAttribute( 'data-loading-text' ) || '…';
+	loadMoreButton.textContent =
+		loadMoreButton.getAttribute( 'data-loading-text' ) || '…';
 
 	const url = restUrl + '?offset=' + offset + '&per_page=' + perPage;
 

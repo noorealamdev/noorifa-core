@@ -1,3 +1,5 @@
+@import "../../utils/icon-picker";
+
 .wp-block-noorifa-core-icon-list {
 
 	.noorifa-core-icon-list__list {
@@ -37,7 +39,7 @@
 			display: block;
 			width: 100%;
 			height: 100%;
-			fill: currentColor;
+			fill: currentcolor;
 		}
 	}
 
@@ -46,8 +48,6 @@
 		color: inherit;
 	}
 }
-
-@import '../../utils/icon-picker';
 
 // Editor-only "remove row" control — given its own explicit color rather
 // than `inherit`, unlike the block's actual content elements: this is a UI

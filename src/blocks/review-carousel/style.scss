@@ -18,6 +18,37 @@
 		position: relative;
 	}
 
+	.noorifa-core-review-carousel__track {
+		display: flex;
+		gap: 1.5rem;
+		padding: 0.25rem 0.25rem 1rem;
+	}
+
+	// Declared before .__viewport (below) — its :not()-free .is-dragging
+	// fallback nests a more specific ".is-dragging .__slide" rule, and a
+	// less-specific base rule compiling AFTER a more-specific one for the
+	// same class trips stylelint's no-descending-specificity check.
+	.noorifa-core-review-carousel__slide {
+		flex: 0 0 auto;
+		box-sizing: border-box;
+		width: 100%;
+		scroll-snap-align: start;
+		// On mobile only one slide is visible at a time (no peeking
+		// neighbor), so each slide reserves its own side clearance for the
+		// overlaid arrow buttons — that clearance travels with every slide
+		// instead of only existing at the very start/end of the track.
+		padding: 0;
+
+		@media (min-width: 600px) {
+			width: 46%;
+			padding: 0;
+		}
+
+		@media (min-width: 900px) {
+			width: 29%;
+		}
+	}
+
 	.noorifa-core-review-carousel__viewport {
 		overflow-x: auto;
 		overflow-y: hidden;
@@ -41,33 +72,6 @@
 			.noorifa-core-review-carousel__slide {
 				pointer-events: none;
 			}
-		}
-	}
-
-	.noorifa-core-review-carousel__track {
-		display: flex;
-		gap: 1.5rem;
-		padding: 0.25rem 0.25rem 1rem;
-	}
-
-	.noorifa-core-review-carousel__slide {
-		flex: 0 0 auto;
-		box-sizing: border-box;
-		width: 100%;
-		scroll-snap-align: start;
-		// On mobile only one slide is visible at a time (no peeking
-		// neighbor), so each slide reserves its own side clearance for the
-		// overlaid arrow buttons — that clearance travels with every slide
-		// instead of only existing at the very start/end of the track.
-		padding: 0;
-
-		@media (min-width: 600px) {
-			width: 46%;
-			padding: 0;
-		}
-
-		@media (min-width: 900px) {
-			width: 29%;
 		}
 	}
 

@@ -1,5 +1,9 @@
 import { useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
-import { getBackgroundStyle, hasBackgroundVideo, hasOverlay } from './background';
+import {
+	getBackgroundStyle,
+	hasBackgroundVideo,
+	hasOverlay,
+} from './background';
 
 /**
  * Pre-"boxed width" shape: heading/subheading/actions were flat direct

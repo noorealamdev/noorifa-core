@@ -115,10 +115,7 @@ const withExtensionControls = createHigherOrderComponent(
 					>
 						<SelectControl
 							__nextHasNoMarginBottom
-							label={ __(
-								'Entrance animation',
-								'noorifa-core'
-							) }
+							label={ __( 'Entrance animation', 'noorifa-core' ) }
 							value={ animation.type }
 							options={ [
 								{
@@ -160,10 +157,7 @@ const withExtensionControls = createHigherOrderComponent(
 								/>
 								<RangeControl
 									__nextHasNoMarginBottom
-									label={ __(
-										'Delay (ms)',
-										'noorifa-core'
-									) }
+									label={ __( 'Delay (ms)', 'noorifa-core' ) }
 									min={ 0 }
 									max={ 3000 }
 									step={ 50 }

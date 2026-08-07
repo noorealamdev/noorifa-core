@@ -199,6 +199,12 @@
 		cursor: pointer;
 		transition: border-color 0.15s ease-in-out, background-color 0.15s ease-in-out, color 0.15s ease-in-out;
 
+		&:disabled {
+			color: #bbb;
+			cursor: not-allowed;
+			text-decoration: line-through;
+		}
+
 		&:hover:not(:disabled) {
 			border-color: #2f6f62;
 		}
@@ -207,12 +213,6 @@
 			background: #2f6f62;
 			border-color: #2f6f62;
 			color: #fff;
-		}
-
-		&:disabled {
-			color: #bbb;
-			cursor: not-allowed;
-			text-decoration: line-through;
 		}
 
 		// Image variant — a square thumbnail (each variation's own image)

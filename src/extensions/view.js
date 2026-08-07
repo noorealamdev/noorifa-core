@@ -14,10 +14,7 @@ function reveal( el ) {
 	}
 
 	if ( delay ) {
-		el.style.setProperty(
-			'--noorifa-core-animation-delay',
-			delay + 'ms'
-		);
+		el.style.setProperty( '--noorifa-core-animation-delay', delay + 'ms' );
 	}
 
 	el.classList.add( 'is-in-view' );

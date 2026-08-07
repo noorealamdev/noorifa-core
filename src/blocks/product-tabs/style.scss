@@ -20,6 +20,10 @@
 	// above (which have no font-size/weight of their own) actually reflect
 	// the block's setting; anything with its own explicit value elsewhere
 	// in this file (e.g. table th, review author, #submit) is unaffected.
+	// #reviews and #review_form_wrapper are WooCommerce's own real
+	// template ids (single-product/tabs/*.php) — kept verbatim, not
+	// rewritten to satisfy this rule's kebab-case preference.
+	/* stylelint-disable selector-id-pattern */
 	.woocommerce-Tabs-panel,
 	table.shop_attributes,
 	#reviews.woocommerce-Reviews,
@@ -27,6 +31,7 @@
 		font-size: 1rem;
 		font-weight: 400;
 	}
+	/* stylelint-enable selector-id-pattern */
 
 	// Tab navigation — plain underline style: left-aligned labels sitting
 	// on one shared divider line, the active tab picked out by weight and
@@ -193,7 +198,9 @@
 		}
 	}
 
-	// "Add a review" form.
+	// "Add a review" form. WooCommerce's own real template id, kept
+	// verbatim (see the comment on the earlier #review_form_wrapper use).
+	// stylelint-disable-next-line selector-id-pattern
 	#review_form_wrapper {
 		padding: 1.75rem;
 		background: #f9fafb;
@@ -224,8 +231,8 @@
 		}
 
 		textarea,
-		input[type='text'],
-		input[type='email'] {
+		input[type="text"],
+		input[type="email"] {
 			box-sizing: border-box;
 			width: 100%;
 			max-width: 32em;
@@ -241,6 +248,12 @@
 			}
 		}
 
+		// Must come after the shared rule above — its 32em cap is meant
+		// for the text/email inputs; textarea needs to override it back
+		// to full width. Reordering (the usual fix for this lint rule)
+		// would flip the cascade and silently cap the textarea too, since
+		// both selectors have equal specificity.
+		// stylelint-disable-next-line no-descending-specificity
 		textarea {
 			max-width: 100%;
 			min-height: 8em;

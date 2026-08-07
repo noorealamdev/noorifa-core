@@ -15,10 +15,7 @@ const TEMPLATE = [
 			[
 				'noorifa-core/accordion-item',
 				{
-					title: __(
-						'How long does shipping take?',
-						'noorifa-core'
-					),
+					title: __( 'How long does shipping take?', 'noorifa-core' ),
 					uid: 'faq-shipping',
 				},
 				[
@@ -26,7 +23,7 @@ const TEMPLATE = [
 						'core/paragraph',
 						{
 							content: __(
-								'Most orders ship within 1-2 business days and arrive within 5-7 business days depending on your location.',
+								'Most orders ship within 1–2 business days and arrive within 5–7 business days depending on your location.',
 								'noorifa-core'
 							),
 						},
@@ -36,10 +33,7 @@ const TEMPLATE = [
 			[
 				'noorifa-core/accordion-item',
 				{
-					title: __(
-						'What is your return policy?',
-						'noorifa-core'
-					),
+					title: __( 'What is your return policy?', 'noorifa-core' ),
 					uid: 'faq-returns',
 				},
 				[
@@ -57,10 +51,7 @@ const TEMPLATE = [
 			[
 				'noorifa-core/accordion-item',
 				{
-					title: __(
-						'Do you ship internationally?',
-						'noorifa-core'
-					),
+					title: __( 'Do you ship internationally?', 'noorifa-core' ),
 					uid: 'faq-international',
 				},
 				[
@@ -85,8 +76,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className:
-				'noorifa-core-faq__accordion' +
-				( boxed ? ' is-boxed' : '' ),
+				'noorifa-core-faq__accordion' + ( boxed ? ' is-boxed' : '' ),
 			style: boxed ? { maxWidth: boxedWidth } : undefined,
 		},
 		{
@@ -99,11 +89,16 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Layout', 'noorifa-core' ) } initialOpen={ false }>
+				<PanelBody
+					title={ __( 'Layout', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
 					<ToggleControl
 						label={ __( 'Boxed width', 'noorifa-core' ) }
 						checked={ boxed }
-						onChange={ ( value ) => setAttributes( { boxed: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { boxed: value } )
+						}
 						help={
 							boxed
 								? __(

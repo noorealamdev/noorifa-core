@@ -79,7 +79,10 @@ function MedalIcon() {
 }
 
 const EXTRA_ICONS = {
-	'nt-shieldCheck': { label: __( 'Shield check', 'noorifa-core' ), icon: ShieldCheckIcon },
+	'nt-shieldCheck': {
+		label: __( 'Shield check', 'noorifa-core' ),
+		icon: ShieldCheckIcon,
+	},
 	'nt-leaf': { label: __( 'Leaf', 'noorifa-core' ), icon: LeafIcon },
 	'nt-capsule': { label: __( 'Capsule', 'noorifa-core' ), icon: CapsuleIcon },
 	'nt-medal': { label: __( 'Medal', 'noorifa-core' ), icon: MedalIcon },
@@ -135,9 +138,9 @@ const MAX_VISIBLE = 200;
  * above. Shared across every block that lets the user pick an icon per
  * row/item, so there's exactly one picker UI to maintain.
  *
- * @param {Object}   props           Component props.
- * @param {string}   props.value     Selected icon key (empty string = no icon).
- * @param {Function} props.onChange  Called with the new icon key.
+ * @param {Object}   props             Component props.
+ * @param {string}   props.value       Selected icon key (empty string = no icon).
+ * @param {Function} props.onChange    Called with the new icon key.
  * @param {boolean}  [props.allowNone] Whether "No icon" is a selectable option.
  */
 export default function IconPicker( { value, onChange, allowNone } ) {

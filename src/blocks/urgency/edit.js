@@ -8,9 +8,14 @@ import {
 	ToggleControl,
 	BaseControl,
 } from '@wordpress/components';
+import { useInstanceId } from '@wordpress/compose';
 import WooPlaceholder from '../../utils/woo-placeholder';
 
 export default function Edit( { attributes, setAttributes } ) {
+	const deadlineControlId = useInstanceId(
+		Edit,
+		'noorifa-core-urgency-deadline'
+	);
 	const {
 		type,
 		stockThreshold,
@@ -47,7 +52,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						value={ type }
 						options={ [
 							{
-								label: __( 'Low stock warning', 'noorifa-core' ),
+								label: __(
+									'Low stock warning',
+									'noorifa-core'
+								),
 								value: 'stock',
 							},
 							{
@@ -55,12 +63,16 @@ export default function Edit( { attributes, setAttributes } ) {
 								value: 'countdown',
 							},
 						] }
-						onChange={ ( value ) => setAttributes( { type: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { type: value } )
+						}
 					/>
 				</PanelBody>
 
 				{ type === 'stock' && (
-					<PanelBody title={ __( 'Low stock settings', 'noorifa-core' ) }>
+					<PanelBody
+						title={ __( 'Low stock settings', 'noorifa-core' ) }
+					>
 						<RangeControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
@@ -99,7 +111,9 @@ export default function Edit( { attributes, setAttributes } ) {
 				) }
 
 				{ type === 'countdown' && (
-					<PanelBody title={ __( 'Countdown settings', 'noorifa-core' ) }>
+					<PanelBody
+						title={ __( 'Countdown settings', 'noorifa-core' ) }
+					>
 						<SelectControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
@@ -114,7 +128,10 @@ export default function Edit( { attributes, setAttributes } ) {
 									value: 'sale',
 								},
 								{
-									label: __( 'Custom date & time', 'noorifa-core' ),
+									label: __(
+										'Custom date & time',
+										'noorifa-core'
+									),
 									value: 'custom',
 								},
 							] }
@@ -133,15 +150,21 @@ export default function Edit( { attributes, setAttributes } ) {
 						{ countdownSource === 'custom' && (
 							<BaseControl
 								__nextHasNoMarginBottom
+								id={ deadlineControlId }
 								label={ __( 'Deadline', 'noorifa-core' ) }
-								help={ __( "Uses your site's timezone.", 'noorifa-core' ) }
+								help={ __(
+									"Uses your site's timezone.",
+									'noorifa-core'
+								) }
 							>
 								<input
 									type="datetime-local"
 									className="components-text-control__input"
 									value={ customDate }
 									onChange={ ( event ) =>
-										setAttributes( { customDate: event.target.value } )
+										setAttributes( {
+											customDate: event.target.value,
+										} )
 									}
 								/>
 							</BaseControl>
@@ -176,7 +199,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						{ ! hideWhenExpired && (
 							<TextControl
 								__nextHasNoMarginBottom
-								label={ __( 'Expired message', 'noorifa-core' ) }
+								label={ __(
+									'Expired message',
+									'noorifa-core'
+								) }
 								value={ expiredMessage }
 								onChange={ ( value ) =>
 									setAttributes( { expiredMessage: value } )
@@ -186,12 +212,17 @@ export default function Edit( { attributes, setAttributes } ) {
 					</PanelBody>
 				) }
 
-				<PanelBody title={ __( 'Layout', 'noorifa-core' ) } initialOpen={ false }>
+				<PanelBody
+					title={ __( 'Layout', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
 					<ToggleControl
 						__nextHasNoMarginBottom
 						label={ __( 'Boxed width', 'noorifa-core' ) }
 						checked={ boxed }
-						onChange={ ( value ) => setAttributes( { boxed: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { boxed: value } )
+						}
 						help={
 							boxed
 								? __(

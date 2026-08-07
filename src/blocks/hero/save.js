@@ -57,8 +57,7 @@ export default function save( { attributes } ) {
 			) }
 			<div
 				className={
-					'noorifa-core-hero__content' +
-					( boxed ? ' is-boxed' : '' )
+					'noorifa-core-hero__content' + ( boxed ? ' is-boxed' : '' )
 				}
 				style={ boxed ? { maxWidth: boxedWidth } : undefined }
 			>
@@ -67,7 +66,9 @@ export default function save( { attributes } ) {
 					className="noorifa-core-hero__heading"
 					style={ {
 						...( headingFontSize && { fontSize: headingFontSize } ),
-						...( headingLineHeight && { lineHeight: headingLineHeight } ),
+						...( headingLineHeight && {
+							lineHeight: headingLineHeight,
+						} ),
 					} }
 					value={ heading }
 				/>
@@ -75,8 +76,12 @@ export default function save( { attributes } ) {
 					tagName="p"
 					className="noorifa-core-hero__subheading"
 					style={ {
-						...( subheadingFontSize && { fontSize: subheadingFontSize } ),
-						...( subheadingLineHeight && { lineHeight: subheadingLineHeight } ),
+						...( subheadingFontSize && {
+							fontSize: subheadingFontSize,
+						} ),
+						...( subheadingLineHeight && {
+							lineHeight: subheadingLineHeight,
+						} ),
 					} }
 					value={ subheading }
 				/>

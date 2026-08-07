@@ -54,10 +54,7 @@ const TABLE_TEMPLATE = [
 				{
 					cells: [
 						{
-							content: __(
-								'Extended warranty',
-								'noorifa-core'
-							),
+							content: __( 'Extended warranty', 'noorifa-core' ),
 							tag: 'td',
 						},
 						{ content: '✕', tag: 'td' },
@@ -89,11 +86,16 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Layout', 'noorifa-core' ) } initialOpen={ false }>
+				<PanelBody
+					title={ __( 'Layout', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
 					<ToggleControl
 						label={ __( 'Boxed width', 'noorifa-core' ) }
 						checked={ boxed }
-						onChange={ ( value ) => setAttributes( { boxed: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { boxed: value } )
+						}
 						help={
 							boxed
 								? __(

@@ -275,6 +275,11 @@
 
 	// Reuses the same review-form styling built for the Product Tabs
 	// block, since this renders the same underlying WooCommerce form.
+	// WooCommerce's own real template markup outputs this exact
+	// underscored id (wp-content/plugins/woocommerce/templates/single-
+	// product/tabs/reviews.php) — it has to match that verbatim, not the
+	// kebab-case this rule otherwise expects for our own selectors.
+	// stylelint-disable-next-line selector-id-pattern
 	#review_form_wrapper {
 		padding: 1.75rem;
 		background: #f9fafb;
@@ -306,8 +311,8 @@
 		}
 
 		textarea,
-		input[type='text'],
-		input[type='email'] {
+		input[type="text"],
+		input[type="email"] {
 			box-sizing: border-box;
 			width: 100%;
 			max-width: 32em;
@@ -323,6 +328,12 @@
 			}
 		}
 
+		// Must come after the shared rule above — its 32em cap is meant
+		// for the text/email inputs; textarea needs to override it back
+		// to full width. Reordering these (the usual fix for this lint
+		// rule) would flip the cascade and silently cap the textarea too,
+		// since both selectors have equal specificity.
+		// stylelint-disable-next-line no-descending-specificity
 		textarea {
 			max-width: 100%;
 			min-height: 8em;
@@ -410,6 +421,11 @@
 		border-radius: 12px;
 		padding: 2rem;
 
+		// WooCommerce's own real template markup outputs this exact
+		// underscored id (wp-content/plugins/woocommerce/templates/single-
+		// product/tabs/reviews.php) — it has to match that verbatim, not the
+		// kebab-case this rule otherwise expects for our own selectors.
+		// stylelint-disable-next-line selector-id-pattern
 		#review_form_wrapper {
 			padding: 0;
 			background: none;

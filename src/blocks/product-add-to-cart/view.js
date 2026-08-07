@@ -29,11 +29,13 @@ function getVariationImages( form, attributeName ) {
 	const images = {};
 
 	variations.forEach( ( variation ) => {
-		const value = variation.attributes && variation.attributes[ attributeName ];
+		const value =
+			variation.attributes && variation.attributes[ attributeName ];
 		const image = variation.image;
 
 		if ( value && image && ! images[ value ] ) {
-			images[ value ] = image.gallery_thumbnail_src || image.thumb_src || image.src;
+			images[ value ] =
+				image.gallery_thumbnail_src || image.thumb_src || image.src;
 		}
 	} );
 
@@ -60,7 +62,10 @@ function buildSwatches( select ) {
 		button.type = 'button';
 		button.className = 'noorifa-core-swatch';
 		button.disabled = option.disabled;
-		button.setAttribute( 'aria-pressed', option.selected ? 'true' : 'false' );
+		button.setAttribute(
+			'aria-pressed',
+			option.selected ? 'true' : 'false'
+		);
 		button.setAttribute( 'aria-label', option.textContent );
 		button.title = option.textContent;
 
@@ -99,7 +104,10 @@ function buildSwatches( select ) {
 		buttons.forEach( ( button, index ) => {
 			const option = options[ index ];
 			button.disabled = option.disabled;
-			button.classList.toggle( 'is-selected', option.value === select.value );
+			button.classList.toggle(
+				'is-selected',
+				option.value === select.value
+			);
 			button.setAttribute(
 				'aria-pressed',
 				option.value === select.value ? 'true' : 'false'
@@ -114,7 +122,10 @@ function buildSwatches( select ) {
 	// chosen Color); watch for that so the swatches stay in sync too.
 	const observer = new MutationObserver( syncSwatches );
 	options.forEach( ( option ) =>
-		observer.observe( option, { attributes: true, attributeFilter: [ 'disabled' ] } )
+		observer.observe( option, {
+			attributes: true,
+			attributeFilter: [ 'disabled' ],
+		} )
 	);
 
 	select.insertAdjacentElement( 'afterend', wrapper );
@@ -136,7 +147,10 @@ function buildQuantityStepper( quantityWrapper ) {
 		button.type = 'button';
 		button.className = 'noorifa-core-quantity-step';
 		button.textContent = label;
-		button.setAttribute( 'aria-label', delta > 0 ? 'Increase quantity' : 'Decrease quantity' );
+		button.setAttribute(
+			'aria-label',
+			delta > 0 ? 'Increase quantity' : 'Decrease quantity'
+		);
 
 		button.addEventListener( 'click', () => {
 			const current = Number( input.value ) || min;

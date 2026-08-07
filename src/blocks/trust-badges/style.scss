@@ -1,3 +1,5 @@
+@import "../../utils/icon-picker";
+
 .wp-block-noorifa-core-trust-badges {
 	// No hardcoded background/text-color/radius default here — same as
 	// Icon List. WordPress can't tell "cleared" from "never set" for a
@@ -33,13 +35,13 @@
 
 		// Vertical divider between items — not on the last one.
 		&:not(:last-child)::after {
-			content: '';
+			content: "";
 			position: absolute;
 			top: 22%;
 			bottom: 22%;
 			right: 0;
 			width: 1px;
-			background: currentColor;
+			background: currentcolor;
 			opacity: 0.25;
 		}
 	}
@@ -84,5 +86,3 @@
 		}
 	}
 }
-
-@import '../../utils/icon-picker';

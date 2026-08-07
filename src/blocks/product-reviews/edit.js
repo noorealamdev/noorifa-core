@@ -9,11 +9,16 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Layout', 'noorifa-core' ) } initialOpen={ false }>
+				<PanelBody
+					title={ __( 'Layout', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
 					<ToggleControl
 						label={ __( 'Boxed width', 'noorifa-core' ) }
 						checked={ boxed }
-						onChange={ ( value ) => setAttributes( { boxed: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { boxed: value } )
+						}
 						help={
 							boxed
 								? __(
@@ -44,7 +49,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				icon="star-filled"
 				label={ __( 'Product Reviews', 'noorifa-core' ) }
 				instructions={ __(
-					"A rating summary and review grid for the current product. Preview appears on the product page.",
+					'A rating summary and review grid for the current product. Preview appears on the product page.',
 					'noorifa-core'
 				) }
 			/>

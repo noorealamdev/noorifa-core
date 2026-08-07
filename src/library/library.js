@@ -63,6 +63,13 @@ function ToolbarPortal( { children } ) {
 function TemplateCard( { template, isBusy, onSelect } ) {
 	const isLocked = template.is_pro && ! LICENSING.isPro;
 
+	let actionLabel = __( 'Insert Section', 'noorifa-core' );
+	if ( isLocked ) {
+		actionLabel = __( 'Upgrade to Pro', 'noorifa-core' );
+	} else if ( template.type === 'layout' ) {
+		actionLabel = __( 'Use Layout', 'noorifa-core' );
+	}
+
 	return (
 		<div className="noorifa-core-library__card">
 			<button
@@ -73,11 +80,7 @@ function TemplateCard( { template, isBusy, onSelect } ) {
 				disabled={ isBusy }
 			>
 				{ template.thumbnail ? (
-					<img
-						src={ template.thumbnail }
-						alt=""
-						loading="lazy"
-					/>
+					<img src={ template.thumbnail } alt="" loading="lazy" />
 				) : (
 					<span className="noorifa-core-library__card-placeholder">
 						{ imagePlaceholder }
@@ -89,11 +92,7 @@ function TemplateCard( { template, isBusy, onSelect } ) {
 					</span>
 				) }
 				<span className="noorifa-core-library__card-action">
-					{ isLocked
-						? __( 'Upgrade to Pro', 'noorifa-core' )
-						: template.type === 'layout'
-						? __( 'Use Layout', 'noorifa-core' )
-						: __( 'Insert Section', 'noorifa-core' ) }
+					{ actionLabel }
 				</span>
 			</button>
 			{ isLocked && (
@@ -182,8 +181,14 @@ function ExportTemplateModal( { onClose } ) {
 				value={ type }
 				onChange={ setType }
 				options={ [
-					{ value: 'layout', label: __( 'Full Layout', 'noorifa-core' ) },
-					{ value: 'section', label: __( 'Section', 'noorifa-core' ) },
+					{
+						value: 'layout',
+						label: __( 'Full Layout', 'noorifa-core' ),
+					},
+					{
+						value: 'section',
+						label: __( 'Section', 'noorifa-core' ),
+					},
 				] }
 			/>
 			<TextControl
@@ -283,15 +288,19 @@ export default function Library() {
 			return;
 		}
 
-		apiFetch( { path: addQueryArgs( '/noorifa-core/v1/templates', { type } ) } )
+		apiFetch( {
+			path: addQueryArgs( '/noorifa-core/v1/templates', { type } ),
+		} )
 			.then( ( result ) => {
 				const found = new Set();
 
-				( Array.isArray( result ) ? result : [] ).forEach( ( template ) => {
-					if ( template.category ) {
-						found.add( template.category );
+				( Array.isArray( result ) ? result : [] ).forEach(
+					( template ) => {
+						if ( template.category ) {
+							found.add( template.category );
+						}
 					}
-				} );
+				);
 
 				setCategoryOptions( Array.from( found ).sort() );
 			} )
@@ -416,7 +425,10 @@ export default function Library() {
 						className="noorifa-core-library__search"
 						value={ search }
 						onChange={ setSearch }
-						placeholder={ __( 'Search templates…', 'noorifa-core' ) }
+						placeholder={ __(
+							'Search templates…',
+							'noorifa-core'
+						) }
 					/>
 					<SelectControl
 						__nextHasNoMarginBottom
@@ -424,7 +436,10 @@ export default function Library() {
 						value={ category }
 						onChange={ setCategory }
 						options={ [
-							{ value: '', label: __( 'All categories', 'noorifa-core' ) },
+							{
+								value: '',
+								label: __( 'All categories', 'noorifa-core' ),
+							},
 							...categoryOptions.map( ( slug ) => ( {
 								value: slug,
 								label: slug,

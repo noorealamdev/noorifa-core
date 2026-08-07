@@ -5,6 +5,11 @@ function initReviewCarousel( carousel ) {
 	const slides = Array.from(
 		carousel.querySelectorAll( '.noorifa-core-review-carousel__slide' )
 	);
+
+	if ( ! viewport || ! slides.length ) {
+		return;
+	}
+
 	const dots = Array.from(
 		carousel.querySelectorAll( '.noorifa-core-review-carousel__dot' )
 	);
@@ -14,10 +19,6 @@ function initReviewCarousel( carousel ) {
 	const nextButton = carousel.querySelector(
 		'.noorifa-core-review-carousel__arrow--next'
 	);
-
-	if ( ! viewport || ! slides.length ) {
-		return;
-	}
 
 	let activeIndex = 0;
 	// The scrollLeft value that would settle each slide into its own
@@ -32,7 +33,8 @@ function initReviewCarousel( carousel ) {
 
 		slidePositions = slides.map( ( slide ) => {
 			const slideRect = slide.getBoundingClientRect();
-			const start = slideRect.left - viewportRect.left + viewport.scrollLeft;
+			const start =
+				slideRect.left - viewportRect.left + viewport.scrollLeft;
 
 			if ( 'center' === getComputedStyle( slide ).scrollSnapAlign ) {
 				return start + slideRect.width / 2 - viewportRect.width / 2;
@@ -69,7 +71,10 @@ function initReviewCarousel( carousel ) {
 			suppressScrollSync = false;
 		}, 600 );
 
-		viewport.scrollTo( { left: slidePositions[ clamped ], behavior: 'smooth' } );
+		viewport.scrollTo( {
+			left: slidePositions[ clamped ],
+			behavior: 'smooth',
+		} );
 	};
 
 	if ( prevButton ) {

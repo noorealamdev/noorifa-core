@@ -71,7 +71,9 @@ export default function Edit( { attributes, setAttributes } ) {
 		let cancelled = false;
 		setReviewsLoading( true );
 
-		apiFetch( { path: `/noorifa-core/v1/product-reviews/${ productId }/list` } )
+		apiFetch( {
+			path: `/noorifa-core/v1/product-reviews/${ productId }/list`,
+		} )
 			.then( ( results ) => {
 				if ( ! cancelled ) {
 					setReviews( Array.isArray( results ) ? results : [] );
@@ -104,7 +106,10 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Reviews', 'noorifa-core' ) } initialOpen>
+				<PanelBody
+					title={ __( 'Reviews', 'noorifa-core' ) }
+					initialOpen
+				>
 					<ComboboxControl
 						label={ __( 'Product', 'noorifa-core' ) }
 						value={ productId ? String( productId ) : null }
@@ -148,11 +153,16 @@ export default function Edit( { attributes, setAttributes } ) {
 							/>
 						) ) }
 				</PanelBody>
-				<PanelBody title={ __( 'Layout', 'noorifa-core' ) } initialOpen={ false }>
+				<PanelBody
+					title={ __( 'Layout', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
 					<ToggleControl
 						label={ __( 'Boxed width', 'noorifa-core' ) }
 						checked={ boxed }
-						onChange={ ( value ) => setAttributes( { boxed: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { boxed: value } )
+						}
 						help={
 							boxed
 								? __(
