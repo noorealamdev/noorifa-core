@@ -11,4 +11,17 @@
 	&.has-text-align-right {
 		text-align: right;
 	}
+
+	// When a subheading is enabled the block wrapper becomes a div holding
+	// the heading + the subheading; keep the heading's own default margins
+	// from pushing the two apart more than the small gap below.
+	.noorifa-core-heading__subheading {
+		margin: 0.35em 0 0;
+	}
+
+	// Above the heading, the gap sits under the subheading instead.
+	.noorifa-core-heading__subheading:first-child {
+		margin: 0 0 0.35em;
+	}
 }
+

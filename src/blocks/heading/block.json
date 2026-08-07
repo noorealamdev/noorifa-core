@@ -30,6 +30,34 @@
         "lineHeight": {
             "type": "string",
             "default": ""
+        },
+        "showSubheading": {
+            "type": "boolean",
+            "default": false
+        },
+        "subheading": {
+            "type": "string",
+            "default": ""
+        },
+        "subheadingPosition": {
+            "type": "string",
+            "default": "below"
+        },
+        "subheadingFontSize": {
+            "type": "string",
+            "default": ""
+        },
+        "subheadingLineHeight": {
+            "type": "string",
+            "default": ""
+        },
+        "subheadingColor": {
+            "type": "string",
+            "default": ""
+        },
+        "subheadingFontWeight": {
+            "type": "string",
+            "default": ""
         }
     },
     "supports": {
