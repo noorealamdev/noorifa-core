@@ -1,0 +1,60 @@
+.wp-block-noorifa-core-marquee {
+	overflow: hidden;
+
+	.noorifa-core-marquee__track {
+		display: flex;
+		width: max-content;
+		animation:
+			noorifa-core-marquee-scroll
+			var(--noorifa-marquee-duration, 20s) linear infinite;
+	}
+
+	// Each group carries a trailing gap (padding-right) so its measured
+	// width includes the gap before the next group — that's what makes the
+	// -50% loop land seamlessly on an identical frame.
+	.noorifa-core-marquee__group {
+		display: flex;
+		flex-shrink: 0;
+		align-items: center;
+		gap: var(--noorifa-marquee-gap, 3rem);
+		padding-right: var(--noorifa-marquee-gap, 3rem);
+	}
+
+	.noorifa-core-marquee__item {
+		white-space: nowrap;
+	}
+
+	// Decorative; color/font inherit from the block so it always matches
+	// the theme without hardcoded values.
+	.noorifa-core-marquee__separator {
+		opacity: 0.5;
+	}
+
+	&.is-direction-right .noorifa-core-marquee__track {
+		animation-direction: reverse;
+	}
+
+	&.is-pause-hover:hover .noorifa-core-marquee__track {
+		animation-play-state: paused;
+	}
+}
+
+// Respect a reduced-motion preference — show the items static instead of
+// scrolling.
+@media (prefers-reduced-motion: reduce) {
+
+	.wp-block-noorifa-core-marquee .noorifa-core-marquee__track {
+		animation: none;
+	}
+}
+
+@keyframes noorifa-core-marquee-scroll {
+
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(-50%);
+	}
+}

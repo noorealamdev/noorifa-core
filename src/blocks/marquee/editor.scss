@@ -1,0 +1,31 @@
+// Editor-only: the front-end scrolls, but in the editor the items are a
+// plain wrapping row so each one stays clickable and editable. Overrides
+// the front-end overflow:hidden that would otherwise clip focus outlines.
+.wp-block-noorifa-core-marquee {
+	overflow: visible;
+}
+
+.noorifa-core-marquee__editor {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.noorifa-core-marquee__editor-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.25rem 0.25rem 0.25rem 0.6rem;
+	border: 1px dashed rgba(0, 0, 0, 0.2);
+	border-radius: 6px;
+}
+
+.noorifa-core-marquee__remove.components-button {
+	color: #757575;
+
+	&:hover,
+	&:focus {
+		color: #cc1818;
+	}
+}
