@@ -26,6 +26,10 @@
         },
         "textAlign": {
             "type": "string"
+        },
+        "lineHeight": {
+            "type": "string",
+            "default": ""
         }
     },
     "supports": {
@@ -38,7 +42,6 @@
         },
         "typography": {
             "fontSize": true,
-            "lineHeight": true,
             "__experimentalFontFamily": true,
             "__experimentalFontWeight": true,
             "__experimentalLetterSpacing": true,
