@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="NoorTemplates">
-	<description>Coding standards for the NoorTemplates plugin.</description>
+<ruleset name="NoorifaCore">
+	<description>Coding standards for the Noorifa Core plugin.</description>
 
 	<file>.</file>
 
@@ -19,27 +19,35 @@
 		<exclude name="WordPress.Files.FileName"/>
 	</rule>
 
-	<!-- Hook names use a slash-delimited namespace: noortemplates/hook_name. -->
+	<!--
+	Hook names use a slash-delimited namespace with a hyphenated prefix
+	(noorifa-core/hook_name, matching the plugin slug) — additionalWordDelimiters
+	makes the sniff split on "/", but it still rejects the hyphen inside
+	"noorifa-core" itself (the sniff has no way to allow that), so the
+	specific UseUnderscores check is excluded rather than renaming every
+	hook away from this deliberate, consistent, project-wide convention.
+	-->
 	<rule ref="WordPress.NamingConventions.ValidHookName">
 		<properties>
 			<property name="additionalWordDelimiters" value="/"/>
 		</properties>
+		<exclude name="WordPress.NamingConventions.ValidHookName.UseUnderscores"/>
 	</rule>
 
 	<!-- Verify that everything is prefixed and the correct text domain is used. -->
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="NoorTemplates"/>
-				<element value="NOORTEMPLATES"/>
-				<element value="noortemplates"/>
+				<element value="Noorifa"/>
+				<element value="NOORIFA_CORE"/>
+				<element value="noorifa_core"/>
 			</property>
 		</properties>
 	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="noortemplates"/>
+				<element value="noorifa-core"/>
 			</property>
 		</properties>
 	</rule>
