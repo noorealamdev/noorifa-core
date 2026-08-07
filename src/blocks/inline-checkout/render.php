@@ -67,10 +67,24 @@ $noorifa_ic_first       = $noorifa_ic_packages[0];
 $noorifa_ic_first_price = $noorifa_ic_first['price'];
 $noorifa_ic_uid         = wp_unique_id( 'noorifa-ic-' );
 
+// Self-contained max-width so the form can be constrained and centered
+// without relying on the theme/template, matching the boxed Layout control
+// other Noorifa Core blocks use.
+$noorifa_ic_boxed       = ! isset( $attributes['boxed'] ) || (bool) $attributes['boxed'];
+$noorifa_ic_boxed_width = isset( $attributes['boxedWidth'] ) ? absint( $attributes['boxedWidth'] ) : 1000;
+
+$noorifa_ic_class = 'noorifa-core-inline-checkout';
+$noorifa_ic_style = '--noorifa-ic-accent:' . $noorifa_ic_accent . ';';
+
+if ( $noorifa_ic_boxed ) {
+	$noorifa_ic_class .= ' is-boxed';
+	$noorifa_ic_style .= 'max-width:' . $noorifa_ic_boxed_width . 'px;';
+}
+
 $noorifa_ic_wrapper = get_block_wrapper_attributes(
 	array(
-		'class'             => 'noorifa-core-inline-checkout',
-		'style'             => '--noorifa-ic-accent:' . $noorifa_ic_accent . ';',
+		'class'             => $noorifa_ic_class,
+		'style'             => $noorifa_ic_style,
 		'data-endpoint'     => class_exists( 'WC_AJAX' ) ? \WC_AJAX::get_endpoint( 'noorifa_core_inline_checkout' ) : admin_url( 'admin-ajax.php?action=noorifa_core_inline_checkout' ),
 		'data-nonce'        => wp_create_nonce( 'noorifa_core_inline_checkout' ),
 		'data-symbol'       => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, 'UTF-8' ),

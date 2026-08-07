@@ -76,6 +76,30 @@
         "accentColor": {
             "type": "string",
             "default": "#3a9e3a"
+        },
+        "boxed": {
+            "type": "boolean",
+            "default": true
+        },
+        "boxedWidth": {
+            "type": "number",
+            "default": 1000
+        },
+        "noorifaCoreVisibility": {
+            "type": "object",
+            "default": {
+                "hideOnMobile": false,
+                "hideOnTablet": false,
+                "hideOnDesktop": false
+            }
+        },
+        "noorifaCoreAnimation": {
+            "type": "object",
+            "default": {
+                "type": "none",
+                "duration": 600,
+                "delay": 0
+            }
         }
     },
     "supports": {

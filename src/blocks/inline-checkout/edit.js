@@ -12,6 +12,7 @@ import {
 	TextControl,
 	TextareaControl,
 	ToggleControl,
+	RangeControl,
 	Button,
 	BaseControl,
 	Disabled,
@@ -38,6 +39,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		privacyText,
 		buttonText,
 		accentColor,
+		boxed,
+		boxedWidth,
 	} = attributes;
 
 	const accentControlId = useInstanceId(
@@ -302,6 +305,44 @@ export default function Edit( { attributes, setAttributes } ) {
 							setAttributes( { buttonText: value } )
 						}
 					/>
+				</PanelBody>
+
+				<PanelBody
+					title={ __( 'Layout', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
+					<ToggleControl
+						__nextHasNoMarginBottom
+						label={ __( 'Boxed width', 'noorifa-core' ) }
+						checked={ boxed }
+						onChange={ ( value ) =>
+							setAttributes( { boxed: value } )
+						}
+						help={
+							boxed
+								? __(
+										'Constrained to a max width and centered.',
+										'noorifa-core'
+								  )
+								: __(
+										'Stretches the full width of its container.',
+										'noorifa-core'
+								  )
+						}
+					/>
+					{ boxed && (
+						<RangeControl
+							__nextHasNoMarginBottom
+							label={ __( 'Max width (px)', 'noorifa-core' ) }
+							value={ boxedWidth }
+							onChange={ ( value ) =>
+								setAttributes( { boxedWidth: value } )
+							}
+							min={ 480 }
+							max={ 1800 }
+							step={ 10 }
+						/>
+					) }
 				</PanelBody>
 
 				<PanelBody

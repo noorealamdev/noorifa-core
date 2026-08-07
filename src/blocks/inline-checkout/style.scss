@@ -10,6 +10,13 @@
 	box-sizing: border-box;
 	color: var(--text, #101010);
 
+	// Boxed Layout control: the inline max-width comes from render.php; this
+	// only centers the constrained form within its container.
+	&.is-boxed {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
 	*,
 	*::before,
 	*::after {
