@@ -111,6 +111,14 @@
 		line-height: 1;
 	}
 
+	// The button's own self-contained add-to-cart form (render.php) — kept
+	// out of the flex flow so the button stays the visual element.
+	.noorifa-core-sticky-add-to-cart__form {
+		flex-shrink: 0;
+		display: flex;
+		margin: 0;
+	}
+
 	// Dark pill button, matching the theme's own sticky add-to-cart button
 	// (theme --text / --white tokens, with neutral fallbacks).
 	.noorifa-core-sticky-add-to-cart__button {

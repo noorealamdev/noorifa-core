@@ -1,18 +1,25 @@
 const FORM_ID = 'noorifa-core-product-form';
 
 /*
- * The sticky bar's Buy Now button lives outside form.cart (it's fixed to
- * the viewport, not part of the product summary), but still needs to
- * submit that exact form — an externally-associated button (HTML5 `form`
- * attribute) still contributes its own name/value to that form's
- * submission, same as a button nested inside it. The real form has no id
- * by default, so one is assigned here before wiring the button to it.
+ * Finds a real add-to-cart form ELSEWHERE on the page (the Product Add to
+ * Cart block, or the theme's) — never the sticky bar's own fallback form.
+ * When one exists, the button is re-pointed at it so the shopper's chosen
+ * variation/quantity carry over; when it doesn't, the button just submits
+ * the bar's own self-contained form (see render.php).
  */
-function findProductForm() {
+function findExternalProductForm( bar ) {
+	const inBlock = document.querySelector(
+		'.wp-block-noorifa-core-product-add-to-cart form.cart'
+	);
+
+	if ( inBlock ) {
+		return inBlock;
+	}
+
 	return (
-		document.querySelector(
-			'.wp-block-noorifa-core-product-add-to-cart form.cart'
-		) || document.querySelector( 'form.cart' )
+		Array.from( document.querySelectorAll( 'form.cart' ) ).find(
+			( form ) => ! bar.contains( form )
+		) || null
 	);
 }
 
@@ -21,6 +28,7 @@ function wireBuyNowButton( bar, form ) {
 		'.noorifa-core-sticky-add-to-cart__button'
 	);
 
+	// No external form — leave the button on its own nested form (render.php).
 	if ( ! button || ! form ) {
 		return;
 	}
@@ -140,7 +148,7 @@ function watchVariationSync( bar, form ) {
 document
 	.querySelectorAll( '.wp-block-noorifa-core-sticky-add-to-cart' )
 	.forEach( ( bar ) => {
-		const form = findProductForm();
+		const form = findExternalProductForm( bar );
 
 		wireBuyNowButton( bar, form );
 		watchVisibility( bar );

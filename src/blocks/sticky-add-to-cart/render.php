@@ -44,29 +44,38 @@ if ( ! $product ) {
 		?>
 	</div>
 	<?php
-	/*
-	 * This button lives outside form.cart (it's fixed to the viewport, not
-	 * part of the product summary markup), but still submits that exact
-	 * form via the HTML5 `form` attribute — an externally-associated
-	 * button still contributes its own name/value to that form's
-	 * submission, same as if it were nested inside it. view.js sets the
-	 * attribute to the real form's id once it locates it; left empty here
-	 * so the button is inert (matches no form) rather than erroring if JS
-	 * fails to load, instead of accidentally submitting nothing useful.
-	 */
-	?>
-	<?php
 	$noorifa_core_button_text = ! empty( $attributes['buttonText'] )
 		? $attributes['buttonText']
 		: __( 'Buy Now', 'noorifa-core' );
+	/*
+	 * The button submits this self-contained add-to-cart form, so it works
+	 * even when the page has no separate Product Add to Cart block (adds
+	 * the product, then Buy_Now's redirect filter sends the shopper to
+	 * checkout). When a real add-to-cart form IS present (e.g. a variable
+	 * product's variations form), view.js re-points the button at it via
+	 * the HTML5 `form` attribute so the shopper's chosen variation/quantity
+	 * carry over instead of this quantity-1 fallback.
+	 */
 	?>
-	<button
-		type="submit"
-		form=""
-		name="<?php echo esc_attr( \Noorifa\Core\Blocks\Buy_Now::FIELD ); ?>"
-		value="1"
-		class="noorifa-core-sticky-add-to-cart__button"
-	>
-		<?php echo esc_html( $noorifa_core_button_text ); ?>
-	</button>
+	<?php
+	/*
+	 * Deliberately NOT given the `cart` class: the theme's AJAX cart script
+	 * hijacks `form.cart` submits into a background wc-ajax add (which drops
+	 * the Buy Now field and keeps the shopper on the page). A plain form
+	 * does a full submit so WooCommerce runs add-to-cart and Buy_Now's
+	 * redirect filter lands the shopper on checkout.
+	 */
+	?>
+	<form class="noorifa-core-sticky-add-to-cart__form" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" />
+		<input type="hidden" name="quantity" value="1" />
+		<button
+			type="submit"
+			name="<?php echo esc_attr( \Noorifa\Core\Blocks\Buy_Now::FIELD ); ?>"
+			value="1"
+			class="noorifa-core-sticky-add-to-cart__button"
+		>
+			<?php echo esc_html( $noorifa_core_button_text ); ?>
+		</button>
+	</form>
 </div>
