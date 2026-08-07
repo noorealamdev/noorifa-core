@@ -4,11 +4,25 @@ import { PanelBody, TextControl } from '@wordpress/components';
 import WooPlaceholder from '../../utils/woo-placeholder';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { badgeText } = attributes;
+	const { badgeText, buttonText } = attributes;
 
 	return (
 		<>
 			<InspectorControls>
+				<PanelBody title={ __( 'Button', 'noorifa-core' ) }>
+					<TextControl
+						__nextHasNoMarginBottom
+						label={ __( 'Button text', 'noorifa-core' ) }
+						help={ __(
+							'Text shown on the sticky bar button.',
+							'noorifa-core'
+						) }
+						value={ buttonText }
+						onChange={ ( value ) =>
+							setAttributes( { buttonText: value } )
+						}
+					/>
+				</PanelBody>
 				<PanelBody title={ __( 'Badge', 'noorifa-core' ) }>
 					<TextControl
 						__nextHasNoMarginBottom

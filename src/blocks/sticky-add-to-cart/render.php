@@ -55,6 +55,11 @@ if ( ! $product ) {
 	 * fails to load, instead of accidentally submitting nothing useful.
 	 */
 	?>
+	<?php
+	$noorifa_core_button_text = ! empty( $attributes['buttonText'] )
+		? $attributes['buttonText']
+		: __( 'Buy Now', 'noorifa-core' );
+	?>
 	<button
 		type="submit"
 		form=""
@@ -62,6 +67,6 @@ if ( ! $product ) {
 		value="1"
 		class="noorifa-core-sticky-add-to-cart__button"
 	>
-		<?php esc_html_e( 'Buy Now', 'noorifa-core' ); ?>
+		<?php echo esc_html( $noorifa_core_button_text ); ?>
 	</button>
 </div>

@@ -20,6 +20,10 @@
         "badgeText": {
             "type": "string",
             "default": ""
+        },
+        "buttonText": {
+            "type": "string",
+            "default": "Buy Now"
         }
     },
     "supports": {
