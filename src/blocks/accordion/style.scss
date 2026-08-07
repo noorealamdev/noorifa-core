@@ -10,7 +10,9 @@
 	// fallbacks so it looks right on any theme out of the box.
 	.wp-block-noorifa-core-accordion-item {
 		overflow: hidden;
-		background: var(--noorifa-accordion-content-bg, #fff);
+		// Transparent by default (shows the page/section through), until a
+		// Content background color is set.
+		background: var(--noorifa-accordion-content-bg, transparent);
 		border: 1px solid var(--line, #e8e5e0);
 		border-radius: 12px;
 		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -37,7 +39,7 @@
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
-		padding: 18px 22px;
+		padding: 12px 22px;
 		background: var(--noorifa-accordion-title-bg, #f5f2ec);
 		border: 0;
 		color: inherit;
@@ -88,7 +90,7 @@
 	// Content area — its own background, sits under the title bar.
 	.noorifa-core-accordion__panel {
 		padding: 18px 22px 20px;
-		background: var(--noorifa-accordion-content-bg, #fff);
+		background: var(--noorifa-accordion-content-bg, transparent);
 
 		// The panel's own padding-bottom already provides the gap below
 		// the content — a paragraph's default margin-bottom on top of
