@@ -47,6 +47,7 @@ if ( ! $product ) {
 	$noorifa_core_button_text = ! empty( $attributes['buttonText'] )
 		? $attributes['buttonText']
 		: __( 'Buy Now', 'noorifa-core' );
+
 	/*
 	 * The button submits this self-contained add-to-cart form, so it works
 	 * even when the page has no separate Product Add to Cart block (adds
