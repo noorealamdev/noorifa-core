@@ -1,0 +1,21 @@
+// Inspector-only styling for the package repeater in the Inline Checkout
+// block settings. The front-end form itself is previewed via
+// ServerSideRender, so it needs no editor-specific rules.
+.noorifa-core-inline-checkout-repeater__item {
+	margin-bottom: 16px;
+	padding: 12px;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+}
+
+.noorifa-core-inline-checkout-repeater__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.noorifa-core-inline-checkout-repeater__actions {
+	display: flex;
+	gap: 2px;
+}

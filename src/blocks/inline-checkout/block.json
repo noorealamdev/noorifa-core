@@ -1,0 +1,98 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "noorifa-core/inline-checkout",
+    "title": "Inline Checkout",
+    "category": "noorifa-core",
+    "icon": "money-alt",
+    "description": "A self-contained landing-page order form: pick a package, fill in name/address/phone and place a real WooCommerce (Cash on Delivery) order without leaving the page.",
+    "keywords": [
+        "checkout",
+        "order",
+        "landing",
+        "cod",
+        "woocommerce",
+        "form"
+    ],
+    "version": "1.0.0",
+    "textdomain": "noorifa-core",
+    "attributes": {
+        "formHeading": {
+            "type": "string",
+            "default": "Fill out the form below to order"
+        },
+        "packagesHeading": {
+            "type": "string",
+            "default": "Select a package"
+        },
+        "packages": {
+            "type": "array",
+            "default": []
+        },
+        "billingHeading": {
+            "type": "string",
+            "default": "Billing details"
+        },
+        "nameLabel": {
+            "type": "string",
+            "default": "Your name"
+        },
+        "addressLabel": {
+            "type": "string",
+            "default": "Your full address"
+        },
+        "phoneLabel": {
+            "type": "string",
+            "default": "Your mobile number"
+        },
+        "phoneHelp": {
+            "type": "string",
+            "default": "Enter 11 digit BD phone number"
+        },
+        "orderHeading": {
+            "type": "string",
+            "default": "Your order"
+        },
+        "shippingLabel": {
+            "type": "string",
+            "default": "Free delivery"
+        },
+        "paymentTitle": {
+            "type": "string",
+            "default": "Cash on Delivery"
+        },
+        "paymentDescription": {
+            "type": "string",
+            "default": "Pay with cash upon delivery."
+        },
+        "privacyText": {
+            "type": "string",
+            "default": "Your personal data will be used to process your order and support your experience throughout this website."
+        },
+        "buttonText": {
+            "type": "string",
+            "default": "Place Order"
+        },
+        "accentColor": {
+            "type": "string",
+            "default": "#3a9e3a"
+        }
+    },
+    "supports": {
+        "align": [
+            "wide",
+            "full"
+        ],
+        "anchor": true,
+        "html": false,
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css",
+    "viewScript": "file:./view.js",
+    "render": "file:./render.php"
+}

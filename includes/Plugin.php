@@ -12,6 +12,7 @@ use Noorifa\Core\Blocks\Manager as Blocks_Manager;
 use Noorifa\Core\Blocks\Interactivity;
 use Noorifa\Core\Blocks\Extensions as Blocks_Extensions;
 use Noorifa\Core\Blocks\Buy_Now;
+use Noorifa\Core\Blocks\Inline_Checkout;
 use Noorifa\Core\Patterns\Manager as Patterns_Manager;
 use Noorifa\Core\Assets\Manager as Assets_Manager;
 use Noorifa\Core\Rest\Templates_Controller;
@@ -88,6 +89,7 @@ class Plugin {
 		Interactivity::instance();
 		Blocks_Extensions::instance();
 		Buy_Now::instance();
+		Inline_Checkout::instance();
 		Patterns_Manager::instance();
 		Assets_Manager::instance();
 		Templates_Controller::instance();
