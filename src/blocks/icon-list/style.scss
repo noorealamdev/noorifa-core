@@ -22,10 +22,12 @@
 	// Font-size/color are intentionally `inherit`, not hardcoded — this
 	// block supports typography/color controls on its own wrapper, and a
 	// directly-targeted rule here would always beat that inherited value.
+	// Size is in `em` (not a fixed rem) so the icon scales together with
+	// the text whenever the block's Font Size is changed.
 	.noorifa-core-icon-list__icon {
 		flex-shrink: 0;
-		width: 1.25rem;
-		height: 1.25rem;
+		width: 1.25em;
+		height: 1.25em;
 		display: flex;
 		align-items: center;
 		color: inherit;
@@ -41,6 +43,9 @@
 	.noorifa-core-icon-list__text {
 		font-size: inherit;
 		color: inherit;
+		// Only takes effect once the block's Line height control is set;
+		// otherwise falls back to normal inherited line spacing.
+		line-height: var( --noorifa-icon-list-lh, inherit );
 	}
 }
 

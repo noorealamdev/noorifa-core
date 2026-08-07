@@ -1,12 +1,31 @@
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, RichText } from '@wordpress/block-editor';
-import { Button } from '@wordpress/components';
+import {
+	useBlockProps,
+	RichText,
+	InspectorControls,
+} from '@wordpress/block-editor';
+import {
+	Button,
+	PanelBody,
+	// No stable/public equivalent — the native line-height control only
+	// surfaces when the theme opts in via theme.json, which this classic
+	// theme intentionally doesn't use, so it's hand-rolled here.
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalNumberControl as NumberControl,
+} from '@wordpress/components';
 import { closeSmall } from '@wordpress/icons';
 import IconPicker from '../../utils/icon-picker';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { rows } = attributes;
-	const blockProps = useBlockProps();
+	const { rows, lineHeight } = attributes;
+	const blockProps = useBlockProps( {
+		// Exposed as a CSS variable the row text consumes directly (see
+		// style.scss) rather than a plain inherited line-height, which the
+		// theme's own span/li rules would otherwise override.
+		style: lineHeight
+			? { '--noorifa-icon-list-lh': lineHeight }
+			: undefined,
+	} );
 
 	const updateRow = ( index, field, value ) => {
 		const next = rows.slice();
@@ -27,6 +46,20 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<PanelBody title={ __( 'Typography', 'noorifa-core' ) }>
+					<NumberControl
+						__next40pxDefaultSize
+						label={ __( 'Line height', 'noorifa-core' ) }
+						value={ lineHeight }
+						min={ 0 }
+						step={ 0.1 }
+						onChange={ ( value ) =>
+							setAttributes( { lineHeight: value || '' } )
+						}
+					/>
+				</PanelBody>
+			</InspectorControls>
 			<ul className="noorifa-core-icon-list__list">
 				{ rows.map( ( row, index ) => (
 					<li className="noorifa-core-icon-list__row" key={ index }>
