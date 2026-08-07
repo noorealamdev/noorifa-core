@@ -3,8 +3,17 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	useSettings,
+	ColorPalette,
 } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl, RangeControl } from '@wordpress/components';
+import {
+	PanelBody,
+	ToggleControl,
+	RangeControl,
+	BaseControl,
+} from '@wordpress/components';
+import { useInstanceId } from '@wordpress/compose';
+import { getAccordionStyle } from './shared';
 
 const TEMPLATE = [
 	[ 'noorifa-core/accordion-item' ],
@@ -12,10 +21,22 @@ const TEMPLATE = [
 ];
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { allowMultiple, boxed, boxedWidth } = attributes;
+	const {
+		allowMultiple,
+		boxed,
+		boxedWidth,
+		titleBackground,
+		contentBackground,
+	} = attributes;
+	const [ colors = [] ] = useSettings( 'color.palette' );
+	const titleBgId = useInstanceId( Edit, 'noorifa-core-accordion-title-bg' );
+	const contentBgId = useInstanceId(
+		Edit,
+		'noorifa-core-accordion-content-bg'
+	);
 	const blockProps = useBlockProps( {
 		className: boxed ? 'is-boxed' : undefined,
-		style: boxed ? { maxWidth: boxedWidth } : undefined,
+		style: getAccordionStyle( attributes ),
 	} );
 	const innerBlocksProps = useInnerBlocksProps( blockProps, {
 		allowedBlocks: [ 'noorifa-core/accordion-item' ],
@@ -75,6 +96,41 @@ export default function Edit( { attributes, setAttributes } ) {
 							step={ 10 }
 						/>
 					) }
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Colors', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
+					<BaseControl
+						__nextHasNoMarginBottom
+						id={ titleBgId }
+						label={ __( 'Title bar background', 'noorifa-core' ) }
+					>
+						<ColorPalette
+							colors={ colors }
+							value={ titleBackground }
+							onChange={ ( value ) =>
+								setAttributes( {
+									titleBackground: value || '',
+								} )
+							}
+						/>
+					</BaseControl>
+					<BaseControl
+						__nextHasNoMarginBottom
+						id={ contentBgId }
+						label={ __( 'Content background', 'noorifa-core' ) }
+					>
+						<ColorPalette
+							colors={ colors }
+							value={ contentBackground }
+							onChange={ ( value ) =>
+								setAttributes( {
+									contentBackground: value || '',
+								} )
+							}
+						/>
+					</BaseControl>
 				</PanelBody>
 			</InspectorControls>
 

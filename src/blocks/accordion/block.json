@@ -26,6 +26,14 @@
         "boxedWidth": {
             "type": "number",
             "default": 800
+        },
+        "titleBackground": {
+            "type": "string",
+            "default": ""
+        },
+        "contentBackground": {
+            "type": "string",
+            "default": ""
         }
     },
     "supports": {
