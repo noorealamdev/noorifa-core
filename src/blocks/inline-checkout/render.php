@@ -100,6 +100,7 @@ $noorifa_ic_wrapper = get_block_wrapper_attributes(
 		<h2 class="noorifa-core-inline-checkout__banner-title"><?php echo esc_html( $attributes['formHeading'] ?? '' ); ?></h2>
 	</div>
 
+	<div class="noorifa-core-inline-checkout__body">
 	<?php if ( ! empty( $attributes['packagesHeading'] ) ) : ?>
 		<h3 class="noorifa-core-inline-checkout__packages-heading"><?php echo esc_html( $attributes['packagesHeading'] ); ?></h3>
 	<?php endif; ?>
@@ -237,4 +238,5 @@ $noorifa_ic_wrapper = get_block_wrapper_attributes(
 			</div>
 		</div>
 	</form>
+	</div>
 </div>
