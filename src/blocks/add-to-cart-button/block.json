@@ -1,0 +1,63 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "noorifa-core/add-to-cart-button",
+	"title": "Add to Cart Button",
+	"category": "noorifa-core",
+	"icon": "cart",
+	"description": "A styled Add to Cart (or Buy Now) button for a chosen product, with the same look and controls as the Advanced Button.",
+	"keywords": [ "add to cart", "buy now", "button", "cta", "woocommerce" ],
+	"version": "1.0.0",
+	"textdomain": "noorifa-core",
+	"attributes": {
+		"productId": {
+			"type": "number",
+			"default": 0
+		},
+		"quantity": {
+			"type": "number",
+			"default": 1
+		},
+		"action": {
+			"type": "string",
+			"default": "add"
+		},
+		"text": {
+			"type": "string",
+			"default": ""
+		},
+		"textAlign": {
+			"type": "string"
+		},
+		"fullWidth": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"html": false,
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"typography": {
+			"fontSize": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"width": true
+		},
+		"shadow": true
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"editorStyle": "file:./index.css",
+	"render": "file:./render.php"
+}

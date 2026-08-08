@@ -1,0 +1,47 @@
+// Base look for the Add to Cart Button, mirroring the Advanced Button so the
+// two are visually consistent. The theme overrides these with its own .btn
+// look and Buttons > Style presets (see the theme's main.css, where this
+// block's link selector is grouped with the Advanced Button's).
+.wp-block-noorifa-core-add-to-cart-button__wrap {
+
+	&.has-text-align-left {
+		text-align: left;
+	}
+
+	&.has-text-align-center {
+		text-align: center;
+	}
+
+	&.has-text-align-right {
+		text-align: right;
+	}
+
+	.noorifa-core-add-to-cart-button__link {
+		display: inline-block;
+		padding: 0.6em 1.4em;
+		background-color: #2c6ecb;
+		border-radius: 4px;
+		color: #fff;
+		text-decoration: none;
+		cursor: pointer;
+		transition: opacity 0.15s ease-in-out;
+
+		&:hover,
+		&:focus {
+			color: #fff;
+			opacity: 0.9;
+		}
+	}
+
+	// Full-width: flex so the label stays centered both horizontally and
+	// vertically even if the button grows past one line — matches the
+	// Advanced Button's full-width behaviour.
+	&.is-full-width .noorifa-core-add-to-cart-button__link {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		box-sizing: border-box;
+		text-align: center;
+	}
+}
