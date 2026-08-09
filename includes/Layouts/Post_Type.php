@@ -54,7 +54,9 @@ class Post_Type {
 				),
 				'public'          => false,
 				'show_ui'         => true,
-				'show_in_menu'    => Dashboard::PAGE_SLUG,
+				// Under a Noorifa theme, sit in its shared "Noorifa" menu;
+				// otherwise fall back to the plugin's own "Noorifa Core" menu.
+				'show_in_menu'    => defined( 'NOORIFA_ADMIN_MENU_SLUG' ) ? NOORIFA_ADMIN_MENU_SLUG : Dashboard::PAGE_SLUG,
 				'show_in_rest'    => true,
 				'supports'        => array( 'title', 'editor' ),
 				'capability_type' => 'post',

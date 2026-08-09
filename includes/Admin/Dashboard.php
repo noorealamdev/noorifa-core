@@ -30,7 +30,9 @@ class Dashboard {
 	 * Hooks the admin menu and settings handling.
 	 */
 	protected function __construct() {
-		add_action( 'admin_menu', array( $this, 'register_menu' ) );
+		// Priority 20 so an active Noorifa theme's top-level "Noorifa" menu
+		// (registered at priority 10/11) already exists when we attach to it.
+		add_action( 'admin_menu', array( $this, 'register_menu' ), 20 );
 		add_action( 'admin_init', array( $this, 'handle_save' ) );
 	}
 
@@ -40,6 +42,23 @@ class Dashboard {
 	 * @return void
 	 */
 	public function register_menu() {
+		// Under an active Noorifa theme, attach as a submenu of its shared
+		// top-level "Noorifa" menu instead of registering a separate one, so
+		// all Noorifa admin lives in one place (Theme Settings, Product
+		// Layouts, Core Settings, Migrate URLs).
+		if ( defined( 'NOORIFA_ADMIN_MENU_SLUG' ) ) {
+			add_submenu_page(
+				NOORIFA_ADMIN_MENU_SLUG,
+				__( 'Noorifa Core Settings', 'noorifa-core' ),
+				__( 'Core Settings', 'noorifa-core' ),
+				'manage_options',
+				self::PAGE_SLUG,
+				array( $this, 'render_page' )
+			);
+			return;
+		}
+
+		// Standalone (a non-Noorifa theme): keep our own top-level menu.
 		add_menu_page(
 			__( 'Noorifa Core', 'noorifa-core' ),
 			__( 'Noorifa Core', 'noorifa-core' ),
@@ -53,13 +72,12 @@ class Dashboard {
 		// add_menu_page() alone doesn't make the top-level menu link open
 		// this page — without a submenu explicitly matching the parent
 		// slug, WordPress instead links it to whichever submenu registers
-		// first under 'noorifa-core' (here, Layouts\Post_Type's own
-		// "Product Layouts" CPT menu, added via show_in_menu). This
+		// first under 'noorifa-core' (the Product Layouts CPT). This
 		// duplicate submenu is the standard WordPress fix for that.
 		add_submenu_page(
 			self::PAGE_SLUG,
 			__( 'Noorifa Core', 'noorifa-core' ),
-			__( 'Dashboard', 'noorifa-core' ),
+			__( 'Core Settings', 'noorifa-core' ),
 			'manage_options',
 			self::PAGE_SLUG,
 			array( $this, 'render_page' )
