@@ -9,6 +9,7 @@ export default function save( { attributes } ) {
 	const {
 		heading,
 		subheading,
+		highlights,
 		backgroundType,
 		backgroundImage,
 		backgroundVideo,
@@ -85,6 +86,14 @@ export default function save( { attributes } ) {
 					} }
 					value={ subheading }
 				/>
+				{ highlights && (
+					<RichText.Content
+						tagName="ul"
+						multiline="li"
+						className="noorifa-core-hero__highlights"
+						value={ highlights }
+					/>
+				) }
 				<div className="noorifa-core-hero__actions">
 					<InnerBlocks.Content />
 				</div>

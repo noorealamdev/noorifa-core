@@ -71,6 +71,22 @@
 		color: inherit;
 	}
 
+	// Highlight/feature lines — a clean, marker-less list centered under the
+	// subheading (each line typed with its own leading emoji/icon).
+	.noorifa-core-hero__highlights {
+		display: grid;
+		gap: 0.5rem;
+		max-width: 40em;
+		margin: 0 auto 1.5rem;
+		padding: 0;
+		list-style: none;
+		color: inherit;
+
+		li {
+			margin: 0;
+		}
+	}
+
 	.noorifa-core-hero__actions {
 		display: flex;
 		justify-content: center;
@@ -80,7 +96,8 @@
 
 	&.has-text-align-left {
 
-		.noorifa-core-hero__subheading {
+		.noorifa-core-hero__subheading,
+		.noorifa-core-hero__highlights {
 			margin-left: 0;
 			margin-right: auto;
 		}
@@ -92,7 +109,8 @@
 
 	&.has-text-align-right {
 
-		.noorifa-core-hero__subheading {
+		.noorifa-core-hero__subheading,
+		.noorifa-core-hero__highlights {
 			margin-left: auto;
 			margin-right: 0;
 		}

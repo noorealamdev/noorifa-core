@@ -42,6 +42,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	const {
 		heading,
 		subheading,
+		highlights,
 		backgroundType,
 		backgroundImage,
 		backgroundVideo,
@@ -409,6 +410,19 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 						placeholder={ __(
 							'Add a supporting subheading…',
+							'noorifa-core'
+						) }
+					/>
+					<RichText
+						tagName="ul"
+						multiline="li"
+						className="noorifa-core-hero__highlights"
+						value={ highlights }
+						onChange={ ( value ) =>
+							setAttributes( { highlights: value } )
+						}
+						placeholder={ __(
+							'Add highlight lines (press Enter for each)…',
 							'noorifa-core'
 						) }
 					/>
