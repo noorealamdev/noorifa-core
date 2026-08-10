@@ -1,0 +1,252 @@
+/**
+ * Video Testimonials block styles (front end + editor).
+ */
+
+.noorifa-core-video-testimonials {
+	--noorifa-video-cols: 3;
+
+	.noorifa-core-video-testimonials__list {
+		margin-inline: auto;
+	}
+
+	&.is-boxed .noorifa-core-video-testimonials__list,
+	.noorifa-core-video-testimonials__list.is-boxed {
+		margin-inline: auto;
+	}
+
+	/* --- Grid layout --- */
+	.noorifa-core-video-testimonials__grid {
+		display: grid;
+		grid-template-columns: repeat(var(--noorifa-video-cols), 1fr);
+		gap: 28px;
+	}
+
+	/* --- Carousel layout --- */
+	.noorifa-core-video-testimonials__stage {
+		position: relative;
+	}
+
+	.noorifa-core-video-testimonials__viewport {
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		&.is-dragging {
+			cursor: grabbing;
+			scroll-snap-type: none;
+		}
+	}
+
+	.noorifa-core-video-testimonials__track {
+		display: flex;
+		gap: 28px;
+	}
+
+	/* --- Card --- */
+	.noorifa-core-video-testimonials__item {
+		position: relative;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		background: var(--noorifa-video-card-bg, transparent);
+		border-radius: 16px;
+		overflow: hidden;
+	}
+
+	&.is-carousel .noorifa-core-video-testimonials__item {
+		scroll-snap-align: start;
+		flex: 0 0 calc((100% - 56px) / 3);
+	}
+
+	/* Poster + play facade, and the swapped-in player, share this box. */
+	.noorifa-core-video-testimonials__media {
+		position: relative;
+		display: block;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		aspect-ratio: 16 / 9;
+		background-color: #1c1c1c;
+		background-size: cover;
+		background-position: center;
+		border-radius: 16px;
+		overflow: hidden;
+		cursor: pointer;
+
+		&.has-no-poster {
+			background-image: linear-gradient(135deg, #2b2b2b, #454545);
+		}
+
+		&::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: rgba(0, 0, 0, 0.15);
+			transition: background 0.2s ease;
+		}
+
+		&:hover::before,
+		&:focus-visible::before {
+			background: rgba(0, 0, 0, 0.3);
+		}
+	}
+
+	/* Play triangle in a circular button. */
+	.noorifa-core-video-testimonials__play {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.92);
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+		transition: transform 0.2s ease, background 0.2s ease;
+
+		&::after {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 54%;
+			transform: translate(-50%, -50%);
+			border-style: solid;
+			border-width: 11px 0 11px 18px;
+			border-color: transparent transparent transparent #1c1c1c;
+		}
+	}
+
+	.noorifa-core-video-testimonials__media:hover
+	.noorifa-core-video-testimonials__play {
+		transform: translate(-50%, -50%) scale(1.08);
+		background: #fff;
+	}
+
+	/* The real player after a click. */
+	.noorifa-core-video-testimonials__media.is-playing {
+		cursor: default;
+
+		&::before {
+			display: none;
+		}
+	}
+
+	.noorifa-core-video-testimonials__player {
+		display: block;
+		width: 100%;
+		height: 100%;
+		aspect-ratio: 16 / 9;
+		border: 0;
+		background: #000;
+	}
+
+	/* --- Text --- */
+	.noorifa-core-video-testimonials__body {
+		padding: 18px 16px 16px;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.noorifa-core-video-testimonials__quote {
+		margin: 0 0 6px;
+		font-size: 1rem;
+		line-height: 1.6;
+	}
+
+	.noorifa-core-video-testimonials__name {
+		font-weight: 700;
+	}
+
+	.noorifa-core-video-testimonials__role {
+		opacity: 0.7;
+		font-size: 0.9em;
+	}
+
+	/* --- Arrows --- */
+	.noorifa-core-video-testimonials__arrow {
+		position: absolute;
+		top: calc(50% - 30px);
+		transform: translateY(-50%);
+		width: 44px;
+		height: 44px;
+		border: 0;
+		border-radius: 50%;
+		background: #fff;
+		color: #1c1c1c;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+		cursor: pointer;
+		font-size: 18px;
+		line-height: 1;
+		z-index: 2;
+
+		&--prev {
+			left: -10px;
+		}
+
+		&--next {
+			right: -10px;
+		}
+	}
+
+	/* --- Editor-only controls --- */
+	.noorifa-core-video-testimonials__controls {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 12px 0;
+	}
+
+	.noorifa-core-video-testimonials__remove {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		z-index: 3;
+		background: rgba(255, 255, 255, 0.9);
+		border-radius: 50%;
+	}
+
+	.noorifa-core-video-testimonials__add {
+		margin-top: 16px;
+	}
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+
+	.noorifa-core-video-testimonials .noorifa-core-video-testimonials__grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.noorifa-core-video-testimonials.is-carousel
+	.noorifa-core-video-testimonials__item {
+		flex-basis: calc((100% - 28px) / 2);
+	}
+}
+
+@media (max-width: 600px) {
+
+	.noorifa-core-video-testimonials .noorifa-core-video-testimonials__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.noorifa-core-video-testimonials.is-carousel
+	.noorifa-core-video-testimonials__item {
+		flex-basis: 85%;
+	}
+
+	.noorifa-core-video-testimonials__arrow {
+		display: none;
+	}
+
+	.noorifa-core-video-testimonials__play {
+		width: 54px;
+		height: 54px;
+	}
+}
