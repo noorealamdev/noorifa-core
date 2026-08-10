@@ -53,10 +53,6 @@
             "type": "number",
             "default": 0
         },
-        "lineHeight": {
-            "type": "string",
-            "default": ""
-        },
         "imageWidth": {
             "type": "number",
             "default": 0

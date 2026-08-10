@@ -18,11 +18,6 @@ import {
 	RangeControl,
 	BaseControl,
 	ToggleControl,
-	// No stable/public equivalent — same line-height primitive WP core's
-	// own typography supports wrap internally (also used in this plugin's
-	// Hero block).
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalNumberControl as NumberControl,
 	// No stable/public equivalent — same segmented-control primitive WP
 	// core's own inspector panels use throughout (e.g. Hero's background
 	// type toggle already in this plugin).
@@ -70,7 +65,6 @@ export default function Edit( { attributes, setAttributes } ) {
 		cardBackgroundGradient,
 		cardRadius,
 		cardPadding,
-		lineHeight,
 		imageWidth,
 		imageAlign,
 		boxed,
@@ -272,16 +266,6 @@ export default function Edit( { attributes, setAttributes } ) {
 						min={ 0 }
 						max={ 60 }
 					/>
-					<NumberControl
-						__next40pxDefaultSize
-						label={ __( 'Text line height', 'noorifa-core' ) }
-						value={ lineHeight }
-						min={ 0 }
-						step={ 0.1 }
-						onChange={ ( value ) =>
-							setAttributes( { lineHeight: value || '' } )
-						}
-					/>
 					<RangeControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
@@ -451,10 +435,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							<RichText
 								tagName="div"
 								className="noorifa-core-feature-cards__text"
-								style={ {
-									...textStyle,
-									...( lineHeight ? { lineHeight } : {} ),
-								} }
+								style={ textStyle }
 								value={ item.text }
 								onChange={ ( value ) =>
 									updateItem( index, 'text', value )
