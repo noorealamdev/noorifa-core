@@ -66,6 +66,13 @@ $noorifa_core_card_style = sprintf(
 $noorifa_core_has_own_text_color = ! empty( $attributes['textColor'] ) || ! empty( $attributes['style']['color']['text'] );
 $noorifa_core_text_style         = $noorifa_core_has_own_text_color ? '' : 'color:#fff;';
 
+// Optional line height for the card body text (heading keeps its own).
+$noorifa_core_line_height     = isset( $attributes['lineHeight'] ) ? (float) $attributes['lineHeight'] : 0;
+$noorifa_core_text_body_style = $noorifa_core_text_style;
+if ( $noorifa_core_line_height > 0 ) {
+	$noorifa_core_text_body_style .= 'line-height:' . $noorifa_core_line_height . ';';
+}
+
 // Self-contained max-width instead of relying on the theme/template to
 // constrain block content — applied to the inner `__list` grid, not this
 // block's own wrapper, since the wrapper only carries the columns CSS
@@ -102,7 +109,7 @@ $noorifa_core_wrapper = get_block_wrapper_attributes(
 					</div>
 				<?php endif; ?>
 				<div class="noorifa-core-feature-cards__heading" style="<?php echo esc_attr( $noorifa_core_text_style ); ?>"><?php echo wp_kses_post( $noorifa_core_item['heading'] ?? '' ); ?></div>
-				<div class="noorifa-core-feature-cards__text" style="<?php echo esc_attr( $noorifa_core_text_style ); ?>"><?php echo wp_kses_post( $noorifa_core_item['text'] ?? '' ); ?></div>
+				<div class="noorifa-core-feature-cards__text" style="<?php echo esc_attr( $noorifa_core_text_body_style ); ?>"><?php echo wp_kses_post( $noorifa_core_item['text'] ?? '' ); ?></div>
 			</div>
 		<?php endforeach; ?>
 	</div>
