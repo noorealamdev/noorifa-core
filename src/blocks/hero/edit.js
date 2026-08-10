@@ -16,7 +16,6 @@ import {
 	BaseControl,
 	FontSizePicker,
 	RangeControl,
-	ColorPalette,
 	ToggleControl,
 	// No stable/public equivalent — this is the same primitive WP core's
 	// own native supports.typography.lineHeight control wraps internally,
@@ -58,11 +57,6 @@ export default function Edit( { attributes, setAttributes } ) {
 		boxedWidth,
 	} = attributes;
 	const [ fontSizes ] = useSettings( 'typography.fontSizes' );
-	const [ colors = [] ] = useSettings( 'color.palette' );
-	const overlayColorControlId = useInstanceId(
-		Edit,
-		'noorifa-core-hero-overlay-color'
-	);
 	const headingTypographyControlId = useInstanceId(
 		Edit,
 		'noorifa-core-hero-heading-typography'
@@ -236,23 +230,6 @@ export default function Edit( { attributes, setAttributes } ) {
 						min={ 0 }
 						max={ 100 }
 					/>
-					{ showOverlay && (
-						<BaseControl
-							__nextHasNoMarginBottom
-							id={ overlayColorControlId }
-							label={ __( 'Color', 'noorifa-core' ) }
-						>
-							<ColorPalette
-								colors={ colors }
-								value={ overlayColor }
-								onChange={ ( value ) =>
-									setAttributes( {
-										overlayColor: value || '#000000',
-									} )
-								}
-							/>
-						</BaseControl>
-					) }
 				</PanelBody>
 
 				<PanelBody title={ __( 'Typography', 'noorifa-core' ) }>
