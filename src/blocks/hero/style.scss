@@ -71,11 +71,15 @@
 		color: inherit;
 	}
 
-	// Highlight/feature lines — a clean, marker-less list centered under the
-	// subheading (each line typed with its own leading emoji/icon).
+	// Highlight/feature lines — a clean, marker-less list under the
+	// subheading (each line typed with its own leading emoji/icon). Two
+	// columns on desktop (the group stays centered), collapsing to one on
+	// small screens; each line keeps its icon and text on one aligned row.
 	.noorifa-core-hero__highlights {
 		display: grid;
-		gap: 0.5rem;
+		grid-template-columns: repeat(2, auto);
+		justify-content: center;
+		gap: 0.6rem 2.5rem;
 		max-width: 40em;
 		margin: 0 auto 1.5rem;
 		padding: 0;
@@ -83,7 +87,15 @@
 		color: inherit;
 
 		li {
+			display: flex;
+			align-items: center;
+			gap: 0.5em;
 			margin: 0;
+			text-align: left;
+		}
+
+		@media (max-width: 600px) {
+			grid-template-columns: 1fr;
 		}
 	}
 
@@ -102,6 +114,10 @@
 			margin-right: auto;
 		}
 
+		.noorifa-core-hero__highlights {
+			justify-content: start;
+		}
+
 		.noorifa-core-hero__actions {
 			justify-content: flex-start;
 		}
@@ -113,6 +129,10 @@
 		.noorifa-core-hero__highlights {
 			margin-left: auto;
 			margin-right: 0;
+		}
+
+		.noorifa-core-hero__highlights {
+			justify-content: end;
 		}
 
 		.noorifa-core-hero__actions {
