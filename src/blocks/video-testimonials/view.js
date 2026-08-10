@@ -119,6 +119,34 @@ function initCarousel( block ) {
 		nextButton.addEventListener( 'click', () => scrollByCard( 1 ) );
 	}
 
+	// Center the arrows on the video (media) area, not on the whole card:
+	// card height varies with the amount of caption text, so a fixed CSS
+	// percentage drifts. The media has a fixed 16:9 aspect ratio, so its
+	// height is known once laid out — align each arrow's own center to the
+	// media's vertical center (paired with translateY(-50%) in CSS).
+	const arrows = [ prevButton, nextButton ].filter( Boolean );
+	const firstMedia = block.querySelector( `.${ BLOCK }__media` );
+
+	const positionArrows = () => {
+		if ( ! firstMedia || ! arrows.length ) {
+			return;
+		}
+		const center = firstMedia.getBoundingClientRect().height / 2;
+		if ( center > 0 ) {
+			arrows.forEach( ( arrow ) => {
+				arrow.style.top = `${ center }px`;
+			} );
+		}
+	};
+
+	positionArrows();
+
+	let arrowResizeTimeout;
+	window.addEventListener( 'resize', () => {
+		clearTimeout( arrowResizeTimeout );
+		arrowResizeTimeout = setTimeout( positionArrows, 150 );
+	} );
+
 	// Mouse click-and-drag (touch already scrolls natively with momentum).
 	let isDragging = false;
 	let dragMoved = false;
