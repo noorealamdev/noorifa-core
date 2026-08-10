@@ -10,6 +10,7 @@ export default function save( { attributes } ) {
 		heading,
 		subheading,
 		highlights,
+		highlightsFontSize,
 		backgroundType,
 		backgroundImage,
 		backgroundVideo,
@@ -91,6 +92,11 @@ export default function save( { attributes } ) {
 						tagName="ul"
 						multiline="li"
 						className="noorifa-core-hero__highlights"
+						style={
+							highlightsFontSize
+								? { fontSize: highlightsFontSize }
+								: undefined
+						}
 						value={ highlights }
 					/>
 				) }

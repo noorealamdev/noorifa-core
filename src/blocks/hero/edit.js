@@ -51,6 +51,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		textAlign,
 		headingFontSize,
 		subheadingFontSize,
+		highlightsFontSize,
 		headingLineHeight,
 		subheadingLineHeight,
 		boxed,
@@ -69,6 +70,10 @@ export default function Edit( { attributes, setAttributes } ) {
 	const subheadingTypographyControlId = useInstanceId(
 		Edit,
 		'noorifa-core-hero-subheading-typography'
+	);
+	const highlightsTypographyControlId = useInstanceId(
+		Edit,
+		'noorifa-core-hero-highlights-typography'
 	);
 
 	const blockProps = useBlockProps( {
@@ -307,6 +312,22 @@ export default function Edit( { attributes, setAttributes } ) {
 							}
 						/>
 					</BaseControl>
+					<BaseControl
+						__nextHasNoMarginBottom
+						id={ highlightsTypographyControlId }
+						label={ __( 'Highlights', 'noorifa-core' ) }
+					>
+						<FontSizePicker
+							__nextHasNoMarginBottom
+							value={ highlightsFontSize }
+							fontSizes={ fontSizes }
+							onChange={ ( value ) =>
+								setAttributes( {
+									highlightsFontSize: value || '',
+								} )
+							}
+						/>
+					</BaseControl>
 				</PanelBody>
 
 				<PanelBody
@@ -417,6 +438,11 @@ export default function Edit( { attributes, setAttributes } ) {
 						tagName="ul"
 						multiline="li"
 						className="noorifa-core-hero__highlights"
+						style={
+							highlightsFontSize
+								? { fontSize: highlightsFontSize }
+								: undefined
+						}
 						value={ highlights }
 						onChange={ ( value ) =>
 							setAttributes( { highlights: value } )
