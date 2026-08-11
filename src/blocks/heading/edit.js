@@ -46,7 +46,6 @@ export default function Edit( { attributes, setAttributes } ) {
 		content,
 		level,
 		textAlign,
-		lineHeight,
 		showSubheading,
 		subheading,
 		subheadingPosition,
@@ -68,9 +67,6 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	const blockProps = useBlockProps( {
 		className: textAlign ? `has-text-align-${ textAlign }` : undefined,
-		// Merged with the style block supports generates (font size, etc.),
-		// so this only adds line-height without clobbering the rest.
-		style: lineHeight ? { lineHeight } : undefined,
 	} );
 
 	const subheadingEl = (
@@ -103,16 +99,6 @@ export default function Edit( { attributes, setAttributes } ) {
 						options={ LEVEL_OPTIONS }
 						onChange={ ( value ) =>
 							setAttributes( { level: Number( value ) } )
-						}
-					/>
-					<NumberControl
-						__next40pxDefaultSize
-						label={ __( 'Line height', 'noorifa-core' ) }
-						value={ lineHeight }
-						min={ 0 }
-						step={ 0.1 }
-						onChange={ ( value ) =>
-							setAttributes( { lineHeight: value || '' } )
 						}
 					/>
 				</PanelBody>

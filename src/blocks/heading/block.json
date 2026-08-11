@@ -27,10 +27,6 @@
         "textAlign": {
             "type": "string"
         },
-        "lineHeight": {
-            "type": "string",
-            "default": ""
-        },
         "showSubheading": {
             "type": "boolean",
             "default": false
@@ -70,6 +66,7 @@
         },
         "typography": {
             "fontSize": true,
+            "lineHeight": true,
             "__experimentalFontFamily": true,
             "__experimentalFontWeight": true,
             "__experimentalLetterSpacing": true,

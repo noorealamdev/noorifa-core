@@ -6,7 +6,6 @@ export default function save( { attributes } ) {
 		content,
 		level,
 		textAlign,
-		lineHeight,
 		showSubheading,
 		subheading,
 		subheadingPosition,
@@ -15,7 +14,6 @@ export default function save( { attributes } ) {
 
 	const blockProps = useBlockProps.save( {
 		className: textAlign ? `has-text-align-${ textAlign }` : undefined,
-		style: lineHeight ? { lineHeight } : undefined,
 	} );
 
 	// Off state renders exactly the historical markup (block wrapper IS the
