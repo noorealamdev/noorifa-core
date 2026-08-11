@@ -15,6 +15,12 @@
     ],
     "version": "1.0.0",
     "textdomain": "noorifa-core",
+    "attributes": {
+        "showCount": {
+            "type": "boolean",
+            "default": false
+        }
+    },
     "supports": {
         "anchor": true,
         "html": false,
