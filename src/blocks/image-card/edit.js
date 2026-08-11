@@ -1,4 +1,4 @@
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	RichText,
@@ -179,6 +179,45 @@ export default function Edit( { attributes, setAttributes } ) {
 						/>
 					) }
 				</PanelBody>
+
+				{ items.map( ( item, index ) => (
+					<PanelBody
+						key={ index }
+						title={ sprintf(
+							/* translators: %d: card number. */
+							__( 'Card %d', 'noorifa-core' ),
+							index + 1
+						) }
+						initialOpen={ false }
+					>
+						<TextControl
+							__nextHasNoMarginBottom
+							label={ __( 'Link URL', 'noorifa-core' ) }
+							value={ item.linkUrl }
+							onChange={ ( value ) =>
+								updateItem( index, 'linkUrl', value )
+							}
+							placeholder="https://"
+						/>
+						<BaseControl
+							__nextHasNoMarginBottom
+							id={ `${ colorInstanceId }-${ index }` }
+							label={ __( 'Text color', 'noorifa-core' ) }
+						>
+							<ColorPalette
+								colors={ colors }
+								value={ item.textColor }
+								onChange={ ( value ) =>
+									updateItem(
+										index,
+										'textColor',
+										value || ''
+									)
+								}
+							/>
+						</BaseControl>
+					</PanelBody>
+				) ) }
 			</InspectorControls>
 
 			<div { ...blockProps }>
@@ -297,15 +336,6 @@ export default function Edit( { attributes, setAttributes } ) {
 										) }
 									/>
 								</MediaUploadCheck>
-								<TextControl
-									__nextHasNoMarginBottom
-									label={ __( 'Link URL', 'noorifa-core' ) }
-									value={ item.linkUrl }
-									onChange={ ( value ) =>
-										updateItem( index, 'linkUrl', value )
-									}
-									placeholder="https://"
-								/>
 								<RangeControl
 									__nextHasNoMarginBottom
 									__next40pxDefaultSize
@@ -324,23 +354,6 @@ export default function Edit( { attributes, setAttributes } ) {
 									min={ 0 }
 									max={ 100 }
 								/>
-								<BaseControl
-									__nextHasNoMarginBottom
-									id={ `${ colorInstanceId }-${ index }` }
-									label={ __( 'Text color', 'noorifa-core' ) }
-								>
-									<ColorPalette
-										colors={ colors }
-										value={ item.textColor }
-										onChange={ ( value ) =>
-											updateItem(
-												index,
-												'textColor',
-												value || ''
-											)
-										}
-									/>
-								</BaseControl>
 							</div>
 						</div>
 					) ) }
