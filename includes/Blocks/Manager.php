@@ -29,6 +29,23 @@ class Manager {
 	protected function __construct() {
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_filter( 'block_categories_all', array( $this, 'register_category' ), 10, 1 );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'editor_inserter_styles' ) );
+	}
+
+	/**
+	 * Tints every Noorifa Core block's inserter icon a deep yellow so the
+	 * plugin's blocks are easy to spot among all the other blocks in the
+	 * inserter / block list. The `editor-block-list-item-{name}` class WP
+	 * puts on each inserter item lets one attribute selector cover them all.
+	 *
+	 * @return void
+	 */
+	public function editor_inserter_styles() {
+		$css = '[class*="editor-block-list-item-noorifa-core-"] .block-editor-block-icon,'
+			. '[class*="editor-block-list-item-noorifa-core-"] .block-editor-block-icon svg'
+			. '{color:#c99a00;fill:currentColor}';
+
+		wp_add_inline_style( 'wp-edit-blocks', $css );
 	}
 
 	/**
