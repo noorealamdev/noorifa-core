@@ -176,8 +176,12 @@
 		   media center once laid out (card height varies with caption text). */
 		top: 30%;
 		transform: translateY(-50%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width: 44px;
 		height: 44px;
+		padding: 0;
 		border: 0;
 		border-radius: 50%;
 		background: #fff;
