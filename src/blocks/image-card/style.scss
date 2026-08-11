@@ -1,0 +1,144 @@
+/**
+ * Image Card block styles (front end + editor).
+ */
+
+.noorifa-core-image-card {
+	--noorifa-image-card-cols: 2;
+	--noorifa-image-card-min-height: 480px;
+
+	.noorifa-core-image-card__grid {
+		display: grid;
+		grid-template-columns: repeat(var(--noorifa-image-card-cols), 1fr);
+		gap: 24px;
+
+		&.is-boxed {
+			margin-inline: auto;
+		}
+	}
+
+	.noorifa-core-image-card__card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		min-height: var(--noorifa-image-card-min-height);
+		padding: 48px;
+		border-radius: 16px;
+		overflow: hidden;
+		background-color: #f0ece4;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+
+		&.is-valign-top {
+			justify-content: flex-start;
+		}
+
+		&.is-valign-center {
+			justify-content: center;
+		}
+
+		&.is-valign-bottom {
+			justify-content: flex-end;
+		}
+
+		&.is-align-left {
+			align-items: flex-start;
+			text-align: left;
+		}
+
+		&.is-align-center {
+			align-items: center;
+			text-align: center;
+		}
+
+		&.is-align-right {
+			align-items: flex-end;
+			text-align: right;
+		}
+	}
+
+	.noorifa-core-image-card__overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background: #000;
+	}
+
+	.noorifa-core-image-card__content {
+		position: relative;
+		z-index: 2;
+		max-width: 520px;
+	}
+
+	.noorifa-core-image-card__heading {
+		margin: 0 0 10px;
+		font-size: clamp(1.8rem, 3vw, 2.6rem);
+		font-weight: 700;
+		line-height: 1.12;
+	}
+
+	.noorifa-core-image-card__text {
+		margin: 0 0 20px;
+		font-size: 1.05rem;
+		opacity: 0.85;
+	}
+
+	.noorifa-core-image-card__link {
+		display: inline-block;
+		padding-bottom: 3px;
+		border-bottom: 1px solid currentcolor;
+		color: inherit;
+		font-weight: 600;
+		text-decoration: none;
+		transition: opacity 0.2s ease;
+
+		&:hover,
+		&:focus {
+			opacity: 0.7;
+		}
+	}
+
+	/* --- Editor-only controls --- */
+	.noorifa-core-image-card__remove {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		z-index: 4;
+		background: rgba(255, 255, 255, 0.9);
+		border-radius: 50%;
+	}
+
+	.noorifa-core-image-card__controls {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 4;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 12px;
+		background: rgba(255, 255, 255, 0.96);
+		color: #1e1e1e;
+	}
+
+	.noorifa-core-image-card__add {
+		margin-top: 16px;
+	}
+}
+
+/* --- Responsive --- */
+@media (max-width: 781px) {
+
+	.noorifa-core-image-card .noorifa-core-image-card__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.noorifa-core-image-card .noorifa-core-image-card__card {
+		padding: 32px;
+	}
+
+	.noorifa-core-image-card .noorifa-core-image-card__content {
+		max-width: 100%;
+	}
+}
