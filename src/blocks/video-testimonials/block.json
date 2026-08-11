@@ -21,8 +21,7 @@
 					"posterId": 0,
 					"posterUrl": "",
 					"name": "Customer name",
-					"role": "Verified buyer",
-					"quote": "Share what this customer loved in a sentence or two."
+					"role": "Verified buyer"
 				}
 			]
 		},

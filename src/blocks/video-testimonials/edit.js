@@ -81,7 +81,6 @@ export default function Edit( { attributes, setAttributes } ) {
 					posterUrl: '',
 					name: '',
 					role: '',
-					quote: '',
 				},
 			],
 		} );
@@ -342,18 +341,6 @@ export default function Edit( { attributes, setAttributes } ) {
 									) }
 								</div>
 
-								<RichText
-									tagName="p"
-									className="noorifa-core-video-testimonials__quote"
-									value={ item.quote }
-									onChange={ ( value ) =>
-										updateItem( index, 'quote', value )
-									}
-									placeholder={ __(
-										'Testimonial quote…',
-										'noorifa-core'
-									) }
-								/>
 								<RichText
 									tagName="span"
 									className="noorifa-core-video-testimonials__name"

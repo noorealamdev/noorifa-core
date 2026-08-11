@@ -50,7 +50,6 @@ $noorifa_core_render_card = static function ( $item, $thumb ) {
 	$video_url = isset( $item['videoUrl'] ) ? trim( (string) $item['videoUrl'] ) : '';
 	$file_url  = isset( $item['videoFileUrl'] ) ? trim( (string) $item['videoFileUrl'] ) : '';
 	$poster    = ! empty( $item['posterUrl'] ) ? $item['posterUrl'] : ( 'url' === $type ? $thumb( $video_url ) : '' );
-	$quote     = isset( $item['quote'] ) ? $item['quote'] : '';
 	$name      = isset( $item['name'] ) ? $item['name'] : '';
 	$role      = isset( $item['role'] ) ? $item['role'] : '';
 
@@ -80,15 +79,11 @@ $noorifa_core_render_card = static function ( $item, $thumb ) {
 		// Only render the caption when there's actually text — an empty,
 		// padded figcaption would otherwise add height below every card and
 		// inflate the visible gap between grid rows.
-		$has_quote = '' !== trim( wp_strip_all_tags( $quote ) );
-		$has_name  = '' !== trim( wp_strip_all_tags( $name ) );
-		$has_role  = '' !== trim( wp_strip_all_tags( $role ) );
-		if ( $has_quote || $has_name || $has_role ) :
+		$has_name = '' !== trim( wp_strip_all_tags( $name ) );
+		$has_role = '' !== trim( wp_strip_all_tags( $role ) );
+		if ( $has_name || $has_role ) :
 			?>
 			<figcaption class="noorifa-core-video-testimonials__body">
-				<?php if ( $has_quote ) : ?>
-					<p class="noorifa-core-video-testimonials__quote"><?php echo wp_kses_post( $quote ); ?></p>
-				<?php endif; ?>
 				<?php if ( $has_name ) : ?>
 					<span class="noorifa-core-video-testimonials__name"><?php echo wp_kses_post( $name ); ?></span>
 				<?php endif; ?>
