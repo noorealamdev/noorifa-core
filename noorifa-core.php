@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Noorifa Core
  * Description:       The business-logic layer of the Noorifa Theme — pairs with the Noorifa theme to build custom WooCommerce single product pages from premade templates, using blocks that wrap WooCommerce's own rendering.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce
@@ -17,7 +17,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Plugin constants.
-define( 'NOORIFA_CORE_VERSION', '1.0.0' );
+define( 'NOORIFA_CORE_VERSION', '1.0.1' );
 define( 'NOORIFA_CORE_FILE', __FILE__ );
 define( 'NOORIFA_CORE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NOORIFA_CORE_URL', plugin_dir_url( __FILE__ ) );
