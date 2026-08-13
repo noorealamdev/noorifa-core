@@ -60,12 +60,43 @@ if ( 'latest' !== $noorifa_core_relation && empty( $noorifa_core_ids ) ) {
 }
 
 // Self-contained max-width instead of relying on the theme/template to
-// constrain block content — applied to this block's own wrapper (rather
-// than an inner div, like other blocks in this plugin) because that
-// wrapper is also the CSS grid container itself; an extra nested div would
-// separate `display: grid` from the item children it needs to apply to.
+// constrain block content.
 $noorifa_core_boxed       = ! isset( $attributes['boxed'] ) || (bool) $attributes['boxed'];
 $noorifa_core_boxed_width = isset( $attributes['boxedWidth'] ) ? absint( $attributes['boxedWidth'] ) : 1200;
+$noorifa_core_columns     = max( 1, min( 4, absint( $attributes['columns'] ) ) );
+
+// When the Noorifa theme is active, render each product through the theme's
+// own shop card template (inside its .wrapper-shop grid) so this grid looks
+// identical to the Shop page. Any other theme falls back to the block's own
+// self-contained card markup further below.
+if ( locate_template( 'template-parts/product/card-product.php' ) ) :
+	$noorifa_core_wrapper    = get_block_wrapper_attributes( array( 'class' => 'is-theme-card' ) );
+	$noorifa_core_grid_style = $noorifa_core_boxed
+		? ' style="max-width:' . esc_attr( $noorifa_core_boxed_width ) . 'px;margin-left:auto;margin-right:auto"'
+		: '';
+	?>
+	<div <?php echo $noorifa_core_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>>
+		<?php if ( ! $noorifa_core_query->have_posts() ) : ?>
+			<p class="noorifa-core-product-grid__empty"><?php esc_html_e( 'No products found.', 'noorifa-core' ); ?></p>
+		<?php else : ?>
+			<div class="wrapper-shop grid-layout mk-col-<?php echo esc_attr( $noorifa_core_columns ); ?>"<?php echo $noorifa_core_grid_style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from esc_attr()'d values above. ?>>
+				<?php
+				while ( $noorifa_core_query->have_posts() ) :
+					$noorifa_core_query->the_post();
+					$noorifa_core_product = wc_get_product( get_the_ID() );
+					if ( ! $noorifa_core_product ) {
+						continue;
+					}
+					get_template_part( 'template-parts/product/card-product', null, array( 'product' => $noorifa_core_product ) );
+				endwhile;
+				?>
+			</div>
+		<?php endif; ?>
+	</div>
+	<?php
+	wp_reset_postdata();
+	return;
+endif;
 
 $noorifa_core_wrapper_args = array( 'class' => 'columns-' . absint( $attributes['columns'] ) );
 
