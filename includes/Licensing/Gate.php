@@ -1,13 +1,12 @@
 <?php
 /**
- * Single source of truth for free/pro feature gating.
+ * Single source of truth for feature gating.
  *
- * Modeled directly on NoorQuiz's Core\Licensing (see that plugin's
- * developer-guide.html): the free plugin never contains pro logic that's
- * physically removed — it's a single codebase that only exposes filter
- * points a separately-installed Noorifa Core Pro add-on hooks into to
- * unlock behavior. This keeps the core repo genuinely free-to-inspect and
- * the upgrade path additive rather than crippled.
+ * Noorifa Core is distributed completely free — every feature is unlocked,
+ * so `is_pro()` returns true by default and each gate in the codebase is
+ * open. The `noorifa_core_is_pro` / `noorifa_core_feature_*` filters are
+ * kept purely as override points (e.g. to restrict a feature on a specific
+ * site); the plugin ships with the full feature set available to everyone.
  *
  * @package Noorifa Core
  */
@@ -23,15 +22,15 @@ defined( 'ABSPATH' ) || exit;
 class Gate {
 
 	/**
-	 * Whether an active Noorifa Core Pro license is present. Defaults to
-	 * `false` — the Noorifa Core Pro add-on plugin hooks
-	 * `noorifa_core_is_pro` and returns true once it verifies a real
-	 * Freemius license, at which point every gate in this codebase opens.
+	 * Whether Noorifa Core's full feature set is available. The plugin is
+	 * free, so this defaults to `true` and every gate in the codebase is
+	 * open for all users. The `noorifa_core_is_pro` filter is retained only
+	 * as an override hook and is not required for any feature to work.
 	 *
 	 * @return bool
 	 */
 	public static function is_pro() {
-		return (bool) apply_filters( 'noorifa_core_is_pro', false );
+		return (bool) apply_filters( 'noorifa_core_is_pro', true );
 	}
 
 	/**
