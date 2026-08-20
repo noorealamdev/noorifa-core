@@ -46,7 +46,8 @@ if ( is_array( $noorifa_core_terms ) ) {
 // Split test data. Order line-item meta (`_noorifa_core_split_layout_id`)
 // is left alone — it's historical order data, not plugin configuration.
 global $wpdb;
-$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}noorifa_core_split_stats" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- static table name built from $wpdb->prefix, no user input.
+// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- static table name built from $wpdb->prefix, no user input; uninstall-time cleanup, not a runtime query.
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}noorifa_core_split_stats" );
 
 delete_post_meta_by_key( '_noorifa_core_split_test_status' );
 delete_post_meta_by_key( '_noorifa_core_split_test_layout_a' );

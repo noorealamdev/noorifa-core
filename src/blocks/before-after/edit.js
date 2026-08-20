@@ -134,9 +134,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 			<div { ...blockProps }>
 				<div className="noorifa-core-before-after__image noorifa-core-before-after__image--before">
-					{ beforeImageUrl && (
-						<img src={ beforeImageUrl } alt="" />
-					) }
+					{ beforeImageUrl && <img src={ beforeImageUrl } alt="" /> }
 					<MediaUploadCheck>
 						<MediaUpload
 							onSelect={ ( media ) =>

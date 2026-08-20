@@ -95,6 +95,9 @@ class Stats {
 
 		$table_name = self::table_name();
 
+		// A custom table has no wp_* API of its own to route this through,
+		// and per-event counters would defeat the point of caching anyway.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->query(
 			$wpdb->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table_name is built from $wpdb->prefix, not user input.
@@ -128,11 +131,11 @@ class Stats {
 			self::EVENT_PURCHASE    => 0,
 		);
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table_name is built from $wpdb->prefix, not user input.
-				"SELECT event_type, SUM(count) AS total
-				FROM {$table_name}
+				"SELECT event_type, SUM(count) AS total FROM {$table_name}
 				WHERE product_id = %d AND layout_id = %d
 				GROUP BY event_type",
 				$product_id,

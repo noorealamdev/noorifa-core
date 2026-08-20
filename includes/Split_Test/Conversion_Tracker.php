@@ -37,7 +37,7 @@ class Conversion_Tracker {
 	 * Hooks the WooCommerce cart/checkout/order events.
 	 */
 	protected function __construct() {
-		add_filter( 'woocommerce_add_cart_item_data', array( $this, 'stash_variant_on_cart_item' ), 10, 3 );
+		add_filter( 'woocommerce_add_cart_item_data', array( $this, 'stash_variant_on_cart_item' ), 10, 2 );
 		add_action( 'woocommerce_add_to_cart', array( $this, 'log_add_to_cart' ), 10, 6 );
 		add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'persist_variant_on_order_item' ), 10, 4 );
 		add_action( 'woocommerce_order_status_changed', array( $this, 'maybe_log_purchase' ), 10, 4 );
@@ -52,10 +52,9 @@ class Conversion_Tracker {
 	 *
 	 * @param array $cart_item_data Existing cart item data.
 	 * @param int   $product_id     Product ID.
-	 * @param int   $variation_id   Variation ID, if any.
 	 * @return array
 	 */
-	public function stash_variant_on_cart_item( $cart_item_data, $product_id, $variation_id ) {
+	public function stash_variant_on_cart_item( $cart_item_data, $product_id ) {
 		$layout_id = Bucketer::instance()->get_or_assign_variant_layout_id( $product_id );
 
 		if ( $layout_id ) {

@@ -114,7 +114,7 @@ class Split_Test_Dashboard {
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Split Tests', 'noorifa-core' ); ?></h1>
 
-			<?php if ( isset( $_GET['noorifa_core_winner_declared'] ) ) : ?>
+			<?php if ( isset( $_GET['noorifa_core_winner_declared'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- purely a display flag from our own redirect after handle_declare_winner()'s real nonce check; reading it triggers no state change. ?>
 				<div class="notice notice-success is-dismissible">
 					<p><?php esc_html_e( 'Winner declared. The product now uses the winning layout for every visitor.', 'noorifa-core' ); ?></p>
 				</div>

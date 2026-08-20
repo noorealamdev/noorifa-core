@@ -36,7 +36,7 @@
 		// change this (static) block's saved markup and invalidate every
 		// button already saved in existing content.
 		&::after {
-			content: '';
+			content: "";
 			position: absolute;
 			top: 0;
 			left: -100%;

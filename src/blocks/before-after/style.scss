@@ -31,9 +31,7 @@
 	}
 
 	.noorifa-core-before-after__image--after {
-		clip-path: inset(
-			0 0 0 var(--noorifa-before-after-position)
-		);
+		clip-path: inset(0 0 0 var(--noorifa-before-after-position));
 	}
 
 	.noorifa-core-before-after__badge {
@@ -56,25 +54,6 @@
 
 	.noorifa-core-before-after__badge--after {
 		right: 16px;
-	}
-
-	.noorifa-core-before-after__handle-wrap {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: var(--noorifa-before-after-position);
-		z-index: 3;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 40px;
-		margin-left: -20px;
-		cursor: ew-resize;
-
-		&:focus-visible .noorifa-core-before-after__handle {
-			outline: 2px solid #fff;
-			outline-offset: 2px;
-		}
 	}
 
 	.noorifa-core-before-after__line {
@@ -100,6 +79,25 @@
 		background: var(--noorifa-before-after-handle);
 		color: #fff;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+	}
+
+	.noorifa-core-before-after__handle-wrap {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: var(--noorifa-before-after-position);
+		z-index: 3;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		margin-left: -20px;
+		cursor: ew-resize;
+
+		&:focus-visible .noorifa-core-before-after__handle {
+			outline: 2px solid #fff;
+			outline-offset: 2px;
+		}
 	}
 
 	/* --- Editor-only controls --- */
