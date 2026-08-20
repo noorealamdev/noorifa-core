@@ -100,6 +100,19 @@
 		}
 	}
 
+	// The description-paragraph spacing above is a blanket `p` rule, so it
+	// also caught the review author's real name/date — both are genuinely
+	// `<p>` tags too (`<p class="h6 author__name">` / `<p class="author_date">`
+	// in the theme's own `woocommerce/single-product/review.php` override,
+	// used here since this theme overrides the review templates rather
+	// than falling back to WooCommerce's own `.comment_container`/
+	// `.commentlist` markup below). The extra ~20px bottom margin fought
+	// `.info_author`'s own 4px grid gap (see main.css), spacing name and
+	// date far apart. Reset it back to 0 specifically there.
+	.comment_info p {
+		margin: 0;
+	}
+
 	// Additional Information table. `display: block` on the table itself
 	// (rows/cells keep their normal table layout) lets it scroll
 	// horizontally instead of squeezing illegibly or overflowing the page

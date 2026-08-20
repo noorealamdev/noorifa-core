@@ -15,11 +15,14 @@
 		}
 	}
 
-	// Simple products render quantity + button as direct children of
-	// form.cart; variable products instead nest them inside
-	// .woocommerce-variation-add-to-cart (added once a variation is
-	// selected) — both need the same inline row treatment.
-	form.cart,
+	// Simple products' `form.cart` gets its real row layout from the
+	// theme's own `.product-variant form.cart { display: grid; gap: 20px; }`
+	// (render.php nests this block's output in `.product-variant` for
+	// exactly this) — a second, more specific rule here for `form.cart`
+	// itself would win over that and silently swap it back to flex, so
+	// this only covers `.woocommerce-variation-add-to-cart`: the row
+	// WooCommerce adds once a variation is selected, which the theme
+	// doesn't style at all on its own default variable-product page.
 	.woocommerce-variation-add-to-cart {
 		display: flex;
 		flex-wrap: wrap;
@@ -35,90 +38,16 @@
 		width: 100%;
 	}
 
-	// The stepper buttons (view.js) sit either side of the number input,
-	// all three sharing one pill-shaped border instead of the input having
-	// its own — matches the +/- stepper look of the reference design.
-	.noorifa-core-quantity {
-		display: flex;
-		align-items: stretch;
-		flex-shrink: 0;
-		border: 1px solid #ddd;
-		border-radius: 12px;
-		overflow: hidden;
-
-		.qty {
-			box-sizing: border-box;
-			width: 3rem;
-			padding: 0.75em 0;
-			text-align: center;
-			border: 0;
-			background: none;
-			font: inherit;
-
-			&:focus {
-				outline: none;
-			}
-		}
-	}
-
-	.noorifa-core-quantity-step {
-		width: 2.75rem;
-		padding: 0;
-		background: #f7f7f7;
-		border: 0;
-		color: #333;
-		font: inherit;
-		font-size: 1.1rem;
-		line-height: 1;
-		cursor: pointer;
-
-		&:hover,
-		&:focus {
-			background: #ececec;
-		}
-	}
-
-	.single_add_to_cart_button {
-		flex: 1;
-		padding: 0.85em 2.25em;
-		background-color: #2c6ecb;
-		border: 0;
-		border-radius: 12px;
-		color: #fff;
-		font: inherit;
-		font-weight: 600;
-		text-align: center;
-		cursor: pointer;
-		transition: opacity 0.15s ease-in-out;
-
-		&:hover,
-		&:focus {
-			opacity: 0.9;
-			color: #fff;
-		}
-	}
-
-	// Forces its own row below the quantity/Add to Cart row (a 100%-basis
-	// flex item can't fit beside anything else, so flex-wrap pushes it down).
-	.noorifa-core-buy-now-button {
-		flex: 0 0 100%;
-		padding: 0.85em 2.25em;
-		background-color: #6b7280;
-		border: 0;
-		border-radius: 12px;
-		color: #fff;
-		font: inherit;
-		font-weight: 600;
-		text-align: center;
-		cursor: pointer;
-		transition: opacity 0.15s ease-in-out;
-
-		&:hover,
-		&:focus {
-			opacity: 0.9;
-			color: #fff;
-		}
-	}
+	// Deliberately no custom quantity-stepper or Add to Cart/Buy It Now
+	// button styling here (unlike an earlier version of this block) — the
+	// theme's own `.product-info-wrap`/`.product-variant`-scoped rules in
+	// main.css already style both correctly (the same real +/- stepper via
+	// Noorifa\WooCommerce\QuantityStepper, the same button colors), and
+	// render.php wraps this block's output in `product-info-wrap` so they
+	// apply here exactly as they do on the theme's own default product
+	// page. A second, block-local design system here just fought that one
+	// for every real render (a plain blue Add to Cart button, a duplicate
+	// pair of +/- buttons alongside the theme's own).
 
 	// Stacks each attribute row (label above its swatches) instead of
 	// WooCommerce's default label-beside-dropdown table layout — the

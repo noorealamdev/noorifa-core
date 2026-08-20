@@ -6,7 +6,6 @@ import {
 	AlignmentControl,
 	InspectorControls,
 	useSettings,
-	ColorPalette,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -50,16 +49,10 @@ export default function Edit( { attributes, setAttributes } ) {
 		subheading,
 		subheadingPosition,
 		subheadingFontSize,
-		subheadingColor,
 		subheadingFontWeight,
 	} = attributes;
 	const TagName = `h${ level }`;
 	const [ fontSizes ] = useSettings( 'typography.fontSizes' );
-	const [ colors = [] ] = useSettings( 'color.palette' );
-	const subheadingColorId = useInstanceId(
-		Edit,
-		'noorifa-core-heading-subheading-color'
-	);
 	const subheadingFontSizeId = useInstanceId(
 		Edit,
 		'noorifa-core-heading-subheading-font-size'
@@ -180,22 +173,6 @@ export default function Edit( { attributes, setAttributes } ) {
 									} )
 								}
 							/>
-
-							<BaseControl
-								__nextHasNoMarginBottom
-								id={ subheadingColorId }
-								label={ __( 'Text color', 'noorifa-core' ) }
-							>
-								<ColorPalette
-									colors={ colors }
-									value={ subheadingColor }
-									onChange={ ( value ) =>
-										setAttributes( {
-											subheadingColor: value || '',
-										} )
-									}
-								/>
-							</BaseControl>
 						</>
 					) }
 				</PanelBody>

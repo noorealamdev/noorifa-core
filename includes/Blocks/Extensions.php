@@ -157,15 +157,98 @@ class Extensions {
 			return $block_content;
 		}
 
-		if ( false === strpos( $block_content, 'style=' ) ) {
-			return $block_content;
+		if ( false !== strpos( $block_content, 'style=' ) ) {
+			$block_content = (string) preg_replace_callback(
+				'/(padding(?:-top|-right|-bottom|-left)?|font-size)\s*:\s*([\d.]+)(px|rem|em)\s*;?/',
+				array( $this, 'clamp_declaration' ),
+				$block_content
+			);
 		}
 
-		return (string) preg_replace_callback(
-			'/(padding(?:-top|-right|-bottom|-left)?|font-size)\s*:\s*([\d.]+)(px|rem|em)\s*;?/',
-			array( $this, 'clamp_declaration' ),
-			$block_content
-		);
+		if ( false !== strpos( $block_content, '-font-size' ) ) {
+			$block_content = $this->apply_fluid_preset_font_size( $block_content );
+		}
+
+		return $block_content;
+	}
+
+	/**
+	 * Picking a font size PRESET (the S/M/L/XL picker, backed by
+	 * `typography.fontSizes` in settings — see `useSettings(
+	 * 'typography.fontSizes' )` in heading/hero/icon-list's edit.js)
+	 * gets a block a `has-{slug}-font-size` CLASS, not the inline
+	 * `font-size` style a CUSTOM size gets — so `apply_fluid_sizing()`'s
+	 * regex above, which only ever looks at inline styles, silently
+	 * skipped every preset size while custom sizes already got the
+	 * fluid treatment. This resolves each preset slug actually present
+	 * on a Noorifa Core block's outer tag to its real pixel value (from
+	 * the exact same merged settings the editor's own picker reads) and
+	 * adds an inline fluid `font-size` alongside the class — inline
+	 * styles outrank the class's own (non-fluid) rule by specificity,
+	 * so the class itself is left in place rather than stripped.
+	 *
+	 * @param string $block_content Rendered block HTML.
+	 * @return string
+	 */
+	private function apply_fluid_preset_font_size( $block_content ) {
+		$tags = new \WP_HTML_Tag_Processor( $block_content );
+
+		while ( $tags->next_tag() ) {
+			$class_name = $tags->get_attribute( 'class' );
+			if ( ! is_string( $class_name ) || ! preg_match( '/\bhas-([a-z0-9-]+)-font-size\b/', $class_name, $slug_match ) ) {
+				continue;
+			}
+
+			$existing_style = (string) $tags->get_attribute( 'style' );
+			if ( false !== stripos( $existing_style, 'font-size' ) ) {
+				continue; // Already has its own inline font-size — leave it to the regex pass above.
+			}
+
+			$px = $this->resolve_font_size_slug( $slug_match[1] );
+			if ( null === $px ) {
+				continue; // Not a real registered preset slug.
+			}
+
+			$declaration = $this->clamp_declaration( array( '', 'font-size', $px, 'px' ) );
+			$tags->set_attribute(
+				'style',
+				'' !== $existing_style ? rtrim( $existing_style, ';' ) . ';' . $declaration : $declaration
+			);
+		}
+
+		return $tags->get_updated_html();
+	}
+
+	/**
+	 * Resolves a font-size preset slug (e.g. 'large') to its pixel
+	 * value, reading the same merged theme.json settings — origins
+	 * 'default' (WordPress core's own Small/Medium/Large/Extra Large),
+	 * 'theme' and 'custom' — the block editor's FontSizePicker itself
+	 * reads via `useSettings( 'typography.fontSizes' )`.
+	 *
+	 * @param string $slug Preset slug.
+	 * @return float|null Pixel value, or null if not a real registered preset.
+	 */
+	private function resolve_font_size_slug( $slug ) {
+		$settings = \WP_Theme_JSON_Resolver::get_merged_data()->get_settings();
+		$origins  = $settings['typography']['fontSizes'] ?? array();
+
+		foreach ( $origins as $font_sizes ) {
+			foreach ( (array) $font_sizes as $font_size ) {
+				if ( ( $font_size['slug'] ?? '' ) !== $slug ) {
+					continue;
+				}
+
+				$size = trim( (string) ( $font_size['size'] ?? '' ) );
+				if ( ! preg_match( '/^([\d.]+)(px|rem|em)$/', $size, $m ) ) {
+					return null; // Already fluid (e.g. contains clamp()) or otherwise not a plain value.
+				}
+
+				return 'px' === $m[2] ? (float) $m[1] : (float) $m[1] * self::FLUID_PX_PER_REM;
+			}
+		}
+
+		return null;
 	}
 
 	/**

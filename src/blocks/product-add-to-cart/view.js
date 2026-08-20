@@ -132,50 +132,14 @@ function buildSwatches( select ) {
 	select.classList.add( 'noorifa-core-visually-hidden-select' );
 }
 
-function buildQuantityStepper( quantityWrapper ) {
-	const input = quantityWrapper.querySelector( 'input.qty' );
-
-	if ( ! input ) {
-		return;
-	}
-
-	const min = input.min ? Number( input.min ) : 1;
-	const max = input.max ? Number( input.max ) : Infinity;
-
-	const makeStepButton = ( label, delta ) => {
-		const button = document.createElement( 'button' );
-		button.type = 'button';
-		button.className = 'noorifa-core-quantity-step';
-		button.textContent = label;
-		button.setAttribute(
-			'aria-label',
-			delta > 0 ? 'Increase quantity' : 'Decrease quantity'
-		);
-
-		button.addEventListener( 'click', () => {
-			const current = Number( input.value ) || min;
-			const next = Math.min( max, Math.max( min, current + delta ) );
-
-			if ( next !== current ) {
-				input.value = next;
-				input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
-			}
-		} );
-
-		return button;
-	};
-
-	quantityWrapper.classList.add( 'noorifa-core-quantity' );
-	input.insertAdjacentElement( 'beforebegin', makeStepButton( '−', -1 ) );
-	input.insertAdjacentElement( 'afterend', makeStepButton( '+', 1 ) );
-}
+// No block-local quantity-stepper here: Noorifa\WooCommerce\QuantityStepper
+// already progressively enhances every real `.quantity` input site-wide
+// (including this block's, since render.php renders it inside the theme's
+// own `product-info-wrap` context) — a second stepper here just duplicated
+// its +/- buttons alongside the theme's own.
 
 document
 	.querySelectorAll(
 		'.wp-block-noorifa-core-product-add-to-cart .variations select'
 	)
 	.forEach( buildSwatches );
-
-document
-	.querySelectorAll( '.wp-block-noorifa-core-product-add-to-cart .quantity' )
-	.forEach( buildQuantityStepper );

@@ -33,6 +33,20 @@ $noorifa_core_boxed_width = isset( $attributes['boxedWidth'] ) ? absint( $attrib
 			style="max-width:<?php echo esc_attr( $noorifa_core_boxed_width ); ?>px"
 		<?php endif; ?>
 	>
-		<?php woocommerce_output_product_data_tabs(); ?>
+		<?php
+		/*
+		 * WooCommerce's own description panel prints a second real
+		 * "Description" <h2> above the content — redundant with the tab
+		 * nav button right above it (also labelled "Description"), and
+		 * unstyled/oversized here since nothing in this block scopes a
+		 * heading size down for it. `__return_false` (not `''`) because
+		 * the description template's own check is a truthy test, and
+		 * `''` is falsy too but `__return_false` is WordPress's real,
+		 * canonical no-op-filter callback for this.
+		 */
+		add_filter( 'woocommerce_product_description_heading', '__return_false' );
+		woocommerce_output_product_data_tabs();
+		remove_filter( 'woocommerce_product_description_heading', '__return_false' );
+		?>
 	</div>
 </div>

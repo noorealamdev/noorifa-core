@@ -78,10 +78,22 @@ class Manager {
 
 	/**
 	 * Small, universal safety-net styles a Layout needs regardless of which
-	 * theme is active. Both halves exist because the relevant behavior is
+	 * theme is active. All three exist because the relevant behavior is
 	 * NOT guaranteed by WordPress core — it's ordinarily up to the active
 	 * theme, and this plugin can't assume any particular theme is running:
 	 *
+	 * - A default content width for every top-level block that ISN'T
+	 *   `alignfull` — without this, a block with no alignment set simply
+	 *   renders at whatever width `.noorifa-core-layout` itself happens to
+	 *   be (often the full viewport, if the active theme's own template
+	 *   doesn't wrap Layouts in a boxed container), so "None" alignment
+	 *   looked identical to "Full width" on desktop. Reads the active
+	 *   theme's own configured container width via `--noorifa-container-width`
+	 *   (Noorifa theme: Layout settings) so a Layout's default width always
+	 *   matches the rest of the site, falling back to a sane 1440px for any
+	 *   other theme that doesn't define that variable. `alignfull`'s own
+	 *   rule below is more specific (two classes vs. this rule's one), so
+	 *   it still wins there regardless of source order.
 	 * - A horizontal gutter on small screens for normal (non-`alignfull`)
 	 *   content, regardless of whether individual blocks/groups were given
 	 *   their own padding.
@@ -98,7 +110,12 @@ class Manager {
 		wp_enqueue_style( 'noorifa-core-layout-base' );
 		wp_add_inline_style(
 			'noorifa-core-layout-base',
-			'.noorifa-core-layout .alignfull {
+			'.noorifa-core-layout > * {
+				max-width: var(--noorifa-container-width, 1440px);
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.noorifa-core-layout .alignfull {
 				margin-left: calc(50% - 50vw);
 				margin-right: calc(50% - 50vw);
 				max-width: 100vw;

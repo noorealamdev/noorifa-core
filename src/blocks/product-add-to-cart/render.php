@@ -20,44 +20,32 @@ if ( ! $product ) {
 	return;
 }
 
-// Injected only around this exact call (added, then immediately removed
-// after) so it appears once, right after WooCommerce's own Add to Cart
-// button, without leaking onto any other add-to-cart form the theme
-// might render elsewhere on the site.
-$noorifa_core_buy_now_button = function () use ( $product ) {
-	/*
-	 * WooCommerce's add-to-cart handler (WC_Form_Handler::add_to_cart_action())
-	 * bails out immediately unless $_REQUEST['add-to-cart'] is set — for a
-	 * simple product that field only exists as the *default* Add to Cart
-	 * button's own name/value, so it's only submitted when THAT button is
-	 * the one clicked (per normal HTML form semantics: only the activated
-	 * submit button's name/value pair is included). Buy Now needs its own
-	 * hidden copy so it's submitted regardless of which button was clicked
-	 * — matching what WooCommerce's own variable-product template already
-	 * does for its cart button, which is why Buy Now happened to work for
-	 * variable products without this despite not working for simple ones.
-	 */
-	?>
-	<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" />
-	<button
-		type="submit"
-		name="<?php echo esc_attr( \Noorifa\Core\Blocks\Buy_Now::FIELD ); ?>"
-		value="1"
-		class="noorifa-core-buy-now-button"
-	>
-		<?php esc_html_e( 'Buy Now', 'noorifa-core' ); ?>
-	</button>
-	<?php
-};
-
-add_action( 'woocommerce_after_add_to_cart_button', $noorifa_core_buy_now_button );
+/*
+ * NOT injecting a separate "Buy Now" button here: the theme's own
+ * `woocommerce/single-product/add-to-cart/simple.php` (and the variable
+ * equivalent), rendered below via `woocommerce_template_single_add_to_cart()`,
+ * already includes a real, fully-styled "Buy It Now" button wired to the
+ * theme's own working checkout-redirect (`Noorifa\WooCommerce\BuyItNow`).
+ * A second, separately-styled button here (the plugin's own
+ * `Noorifa\Core\Blocks\Buy_Now`) just duplicated it.
+ *
+ * The wrapper below nests `product-info-wrap` > `product-variant` — the
+ * SAME two ancestor classes `template-parts/product/summary.php` wraps
+ * `woocommerce_template_single_add_to_cart()` in on the theme's own
+ * default product page. Every real style for this markup lives in
+ * main.css scoped under one or the other of those two classes, not
+ * written generically (the quantity pill's `display:flex`/border under
+ * `.product-variant`, the Add to Cart/Buy It Now row's `display:grid`
+ * under `.product-info-wrap`) — without both, this block rendered with
+ * none of that styling at all.
+ */
 ?>
-<div <?php echo get_block_wrapper_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>>
-	<?php woocommerce_template_single_add_to_cart(); ?>
+<div <?php echo get_block_wrapper_attributes( array( 'class' => 'product-info-wrap' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>>
+	<div class="product-variant">
+		<?php woocommerce_template_single_add_to_cart(); ?>
+	</div>
 </div>
 <?php
-remove_action( 'woocommerce_after_add_to_cart_button', $noorifa_core_buy_now_button );
-
 /*
  * WooCommerce's own default callbacks on this hook — the product data
  * tabs, upsells, and related products — are temporarily removed before

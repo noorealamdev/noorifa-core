@@ -1,0 +1,175 @@
+/**
+ * Before / After block styles (front end + editor).
+ */
+
+.noorifa-core-before-after {
+	--noorifa-before-after-position: 50%;
+	--noorifa-before-after-height: 480px;
+	--noorifa-before-after-badge-bg: rgba(0, 0, 0, 0.85);
+	--noorifa-before-after-badge-text: #fff;
+	--noorifa-before-after-handle: #0f0f0f;
+
+	position: relative;
+	overflow: hidden;
+	height: var(--noorifa-before-after-height);
+	user-select: none;
+	touch-action: pan-y;
+
+	.noorifa-core-before-after__image {
+		position: absolute;
+		inset: 0;
+		margin: 0;
+		background: #f0ece4; // Fallback until an image is selected.
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			pointer-events: none;
+		}
+	}
+
+	.noorifa-core-before-after__image--after {
+		clip-path: inset(
+			0 0 0 var(--noorifa-before-after-position)
+		);
+	}
+
+	.noorifa-core-before-after__badge {
+		position: absolute;
+		top: 16px;
+		z-index: 2;
+		padding: 8px 18px;
+		border-radius: 999px;
+		background: var(--noorifa-before-after-badge-bg);
+		color: var(--noorifa-before-after-badge-text);
+		font-size: 13px;
+		font-weight: 600;
+		letter-spacing: 0.01em;
+		pointer-events: none;
+	}
+
+	.noorifa-core-before-after__badge--before {
+		left: 16px;
+	}
+
+	.noorifa-core-before-after__badge--after {
+		right: 16px;
+	}
+
+	.noorifa-core-before-after__handle-wrap {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: var(--noorifa-before-after-position);
+		z-index: 3;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		margin-left: -20px;
+		cursor: ew-resize;
+
+		&:focus-visible .noorifa-core-before-after__handle {
+			outline: 2px solid #fff;
+			outline-offset: 2px;
+		}
+	}
+
+	.noorifa-core-before-after__line {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 50%;
+		width: 4px;
+		background: var(--noorifa-before-after-handle);
+		transform: translateX(-50%);
+	}
+
+	.noorifa-core-before-after__handle {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 2px;
+		width: 40px;
+		height: 40px;
+		border: 3px solid #fff;
+		border-radius: 50%;
+		background: var(--noorifa-before-after-handle);
+		color: #fff;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+	}
+
+	/* --- Editor-only controls --- */
+	.noorifa-core-before-after__select {
+		position: absolute;
+		bottom: 12px;
+		z-index: 4;
+	}
+
+	.noorifa-core-before-after__image--before .noorifa-core-before-after__select {
+		left: 12px;
+	}
+
+	.noorifa-core-before-after__image--after .noorifa-core-before-after__select {
+		right: 12px;
+	}
+}
+
+@media (max-width: 781px) {
+
+	.noorifa-core-before-after {
+		// A height chosen for a wide desktop crop (often 400–600px) reads
+		// as an oddly tall, zoomed-in portrait strip at phone/tablet
+		// widths — min() caps it without overriding a shorter height an
+		// editor deliberately set.
+		height: min(var(--noorifa-before-after-height), 360px);
+	}
+
+	.noorifa-core-before-after__badge {
+		top: 12px;
+		padding: 6px 14px;
+		font-size: 12px;
+	}
+
+	.noorifa-core-before-after__badge--before {
+		left: 12px;
+	}
+
+	.noorifa-core-before-after__badge--after {
+		right: 12px;
+	}
+}
+
+@media (max-width: 480px) {
+
+	.noorifa-core-before-after {
+		height: min(var(--noorifa-before-after-height), 280px);
+	}
+
+	.noorifa-core-before-after__badge {
+		top: 10px;
+		padding: 5px 12px;
+		font-size: 11px;
+	}
+
+	.noorifa-core-before-after__badge--before {
+		left: 10px;
+	}
+
+	.noorifa-core-before-after__badge--after {
+		right: 10px;
+	}
+
+	.noorifa-core-before-after__handle-wrap {
+		width: 32px;
+		margin-left: -16px;
+	}
+
+	.noorifa-core-before-after__handle {
+		width: 32px;
+		height: 32px;
+	}
+}

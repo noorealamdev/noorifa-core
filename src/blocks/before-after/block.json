@@ -1,0 +1,71 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "noorifa-core/before-after",
+	"title": "Before / After",
+	"category": "noorifa-core",
+	"icon": "images-alt2",
+	"description": "A drag-to-reveal slider comparing two images — before and after.",
+	"keywords": [ "before", "after", "compare", "slider", "reveal" ],
+	"version": "1.0.0",
+	"textdomain": "noorifa-core",
+	"attributes": {
+		"beforeImageId": {
+			"type": "number",
+			"default": 0
+		},
+		"beforeImageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"beforeLabel": {
+			"type": "string",
+			"default": "Before"
+		},
+		"afterImageId": {
+			"type": "number",
+			"default": 0
+		},
+		"afterImageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"afterLabel": {
+			"type": "string",
+			"default": "After"
+		},
+		"initialPosition": {
+			"type": "number",
+			"default": 50
+		},
+		"height": {
+			"type": "number",
+			"default": 480
+		},
+		"badgeBackground": {
+			"type": "string",
+			"default": ""
+		},
+		"badgeTextColor": {
+			"type": "string",
+			"default": ""
+		},
+		"handleColor": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"anchor": true,
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}
