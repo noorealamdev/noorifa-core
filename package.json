@@ -19,7 +19,9 @@
 		"format": "wp-scripts format",
 		"packages-update": "wp-scripts packages-update",
 		"plugin-zip": "wp-scripts plugin-zip",
-		"release": "npm run build && npm run plugin-zip"
+		"restore-main-file": "git checkout -- noorifa-core.php",
+		"remove-main-file": "node -e \"try{require('fs').unlinkSync('noorifa-core.php')}catch(e){}\"",
+		"release": "npm run restore-main-file && npm run build && npm run plugin-zip && npm run remove-main-file"
 	},
 	"devDependencies": {
 		"@wordpress/icons": "^15.1.0",
