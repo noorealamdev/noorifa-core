@@ -60,6 +60,18 @@ class Resolver {
 			return $preview_id;
 		}
 
+		// Split_Test_Router is in this same namespace and resolves/logs a
+		// visitor's variant earlier in the request (template_include
+		// priority 90, before Template_Override's 100) — reading its
+		// per-request cache here keeps this the single place every other
+		// part of the plugin (Resolver callers, Assets\Manager, etc.)
+		// asks for "the" layout, split test or not.
+		$variant_id = Split_Test_Router::instance()->get_resolved_layout_id( $product_id );
+
+		if ( $variant_id ) {
+			return $variant_id;
+		}
+
 		$product_layout = (int) get_post_meta( $product_id, self::PRODUCT_META_KEY, true );
 
 		if ( $this->is_published_layout( $product_layout ) ) {

@@ -8,6 +8,7 @@
 namespace Noorifa\Core;
 
 use Noorifa\Core\Templates\Repository;
+use Noorifa\Core\Split_Test\Stats as Split_Test_Stats;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,6 +37,11 @@ class Install {
 	 * @return void
 	 */
 	public static function activate() {
+		// Unconditional: maybe_upgrade()'s migration loop below only runs
+		// for a version already recorded in the DB (`'' !== $installed`),
+		// so a fresh install would otherwise never create this table.
+		Split_Test_Stats::create_table();
+
 		self::maybe_upgrade();
 	}
 
@@ -85,6 +91,8 @@ class Install {
 	 * @return array<string, callable>
 	 */
 	private static function get_migrations() {
-		return array();
+		return array(
+			'1.1.0' => array( Split_Test_Stats::class, 'create_table' ),
+		);
 	}
 }

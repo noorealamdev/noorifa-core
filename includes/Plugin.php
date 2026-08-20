@@ -23,6 +23,9 @@ use Noorifa\Core\Layouts\Meta_Box as Layouts_Meta_Box;
 use Noorifa\Core\Layouts\Template_Override as Layouts_Template_Override;
 use Noorifa\Core\Layouts\Duplicate as Layouts_Duplicate;
 use Noorifa\Core\Layouts\Preview as Layouts_Preview;
+use Noorifa\Core\Layouts\Split_Test_Router;
+use Noorifa\Core\Split_Test\Conversion_Tracker as Split_Test_Conversion_Tracker;
+use Noorifa\Core\Admin\Split_Test_Dashboard;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -100,9 +103,12 @@ class Plugin {
 		Layouts_Template_Override::instance();
 		Layouts_Duplicate::instance();
 		Layouts_Preview::instance();
+		Split_Test_Router::instance();
+		Split_Test_Conversion_Tracker::instance();
 
 		if ( is_admin() ) {
 			Dashboard::instance();
+			Split_Test_Dashboard::instance();
 		}
 
 		/**

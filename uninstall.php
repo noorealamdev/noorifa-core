@@ -42,3 +42,15 @@ if ( is_array( $noorifa_core_terms ) ) {
 		delete_term_meta( $noorifa_core_term_id, 'noorifa_core_layout_id' );
 	}
 }
+
+// Split test data. Order line-item meta (`_noorifa_core_split_layout_id`)
+// is left alone — it's historical order data, not plugin configuration.
+global $wpdb;
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}noorifa_core_split_stats" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- static table name built from $wpdb->prefix, no user input.
+
+delete_post_meta_by_key( '_noorifa_core_split_test_status' );
+delete_post_meta_by_key( '_noorifa_core_split_test_layout_a' );
+delete_post_meta_by_key( '_noorifa_core_split_test_layout_b' );
+delete_post_meta_by_key( '_noorifa_core_split_test_started' );
+delete_post_meta_by_key( '_noorifa_core_split_test_ended' );
+delete_post_meta_by_key( '_noorifa_core_split_test_winner' );
