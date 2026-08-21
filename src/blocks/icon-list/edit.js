@@ -17,14 +17,17 @@ import { closeSmall } from '@wordpress/icons';
 import IconPicker from '../../utils/icon-picker';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { rows, lineHeight } = attributes;
+	const { rows, lineHeight, iconSize } = attributes;
 	const blockProps = useBlockProps( {
-		// Exposed as a CSS variable the row text consumes directly (see
-		// style.scss) rather than a plain inherited line-height, which the
+		// Exposed as CSS variables the row text/icon consume directly (see
+		// style.scss) rather than plain inherited values, which the
 		// theme's own span/li rules would otherwise override.
-		style: lineHeight
-			? { '--noorifa-icon-list-lh': lineHeight }
-			: undefined,
+		style: {
+			...( lineHeight ? { '--noorifa-icon-list-lh': lineHeight } : {} ),
+			...( iconSize
+				? { '--noorifa-icon-list-icon-size': `${ iconSize }em` }
+				: {} ),
+		},
 	} );
 
 	const updateRow = ( index, field, value ) => {
@@ -56,6 +59,21 @@ export default function Edit( { attributes, setAttributes } ) {
 						step={ 0.1 }
 						onChange={ ( value ) =>
 							setAttributes( { lineHeight: value || '' } )
+						}
+					/>
+					<NumberControl
+						__next40pxDefaultSize
+						label={ __( 'Icon size (em)', 'noorifa-core' ) }
+						help={ __(
+							'Relative to the text size — 1.25 (the default) makes the icon 1.25× the row text.',
+							'noorifa-core'
+						) }
+						value={ iconSize }
+						min={ 0.25 }
+						max={ 5 }
+						step={ 0.05 }
+						onChange={ ( value ) =>
+							setAttributes( { iconSize: value || '' } )
 						}
 					/>
 				</PanelBody>

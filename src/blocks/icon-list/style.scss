@@ -23,11 +23,14 @@
 	// block supports typography/color controls on its own wrapper, and a
 	// directly-targeted rule here would always beat that inherited value.
 	// Size is in `em` (not a fixed rem) so the icon scales together with
-	// the text whenever the block's Font Size is changed.
+	// the text whenever the block's Font Size is changed. The CSS var
+	// (set from the Icon Size control, see edit.js/render.php) overrides
+	// that default ratio without giving up the "scales with text" behavior
+	// — it's still an em value, just a different multiple of it.
 	.noorifa-core-icon-list__icon {
 		flex-shrink: 0;
-		width: 1.25em;
-		height: 1.25em;
+		width: var(--noorifa-icon-list-icon-size, 1.25em);
+		height: var(--noorifa-icon-list-icon-size, 1.25em);
 		display: flex;
 		align-items: center;
 		color: inherit;

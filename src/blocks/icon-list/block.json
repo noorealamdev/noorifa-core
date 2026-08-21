@@ -20,6 +20,10 @@
 		"lineHeight": {
 			"type": "string",
 			"default": ""
+		},
+		"iconSize": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"supports": {

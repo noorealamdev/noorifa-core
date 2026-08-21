@@ -15,14 +15,22 @@ if ( empty( $noorifa_core_rows ) ) {
 	return;
 }
 
-// Hand-rolled line-height (the native typography control needs a
-// theme.json opt-in this classic theme doesn't use). Exposed as a CSS
-// variable the row text consumes directly (see style.scss) rather than a
-// plain inherited line-height, which the theme's own span/li rules would
+// Hand-rolled line-height/icon-size (the native typography control needs a
+// theme.json opt-in this classic theme doesn't use). Exposed as CSS
+// variables the row text/icon consume directly (see style.scss) rather
+// than plain inherited values, which the theme's own span/li rules would
 // otherwise override.
-$noorifa_core_wrapper_args = array();
+$noorifa_core_wrapper_style = '';
 if ( ! empty( $attributes['lineHeight'] ) ) {
-	$noorifa_core_wrapper_args['style'] = '--noorifa-icon-list-lh:' . esc_attr( $attributes['lineHeight'] ) . ';';
+	$noorifa_core_wrapper_style .= '--noorifa-icon-list-lh:' . esc_attr( $attributes['lineHeight'] ) . ';';
+}
+if ( ! empty( $attributes['iconSize'] ) ) {
+	$noorifa_core_wrapper_style .= '--noorifa-icon-list-icon-size:' . esc_attr( $attributes['iconSize'] ) . 'em;';
+}
+
+$noorifa_core_wrapper_args = array();
+if ( '' !== $noorifa_core_wrapper_style ) {
+	$noorifa_core_wrapper_args['style'] = $noorifa_core_wrapper_style;
 }
 ?>
 <div <?php echo get_block_wrapper_attributes( $noorifa_core_wrapper_args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-escaped. ?>>
