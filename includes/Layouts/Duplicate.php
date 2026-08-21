@@ -85,16 +85,27 @@ class Duplicate {
 		}
 
 		$new_id = wp_insert_post(
-			array(
-				'post_type'    => Post_Type::SLUG,
-				/* translators: %s: original layout title. */
-				'post_title'   => sprintf( __( '%s (Copy)', 'noorifa-core' ), $source->post_title ),
-				'post_content' => $source->post_content,
-				// Draft, not published/matching the original's status —
-				// a duplicate is for safely experimenting on, and should
-				// never silently start applying itself to any product.
-				'post_status'  => 'draft',
-				'post_author'  => get_current_user_id(),
+			// wp_insert_post() unslashes its input internally (it expects
+			// data shaped like $_POST) — $source's fields come from
+			// get_post(), which are already unslashed, so passing them
+			// straight through here would double-unslash and corrupt any
+			// backslash sequence in the content (e.g. the <-style
+			// escapes Gutenberg uses for literal < > & inside a block's
+			// plain-string JSON attributes). wp_slash() re-adds exactly
+			// what wp_insert_post() is about to remove, so the round trip
+			// is a no-op instead of lossy.
+			wp_slash(
+				array(
+					'post_type'    => Post_Type::SLUG,
+					/* translators: %s: original layout title. */
+					'post_title'   => sprintf( __( '%s (Copy)', 'noorifa-core' ), $source->post_title ),
+					'post_content' => $source->post_content,
+					// Draft, not published/matching the original's status —
+					// a duplicate is for safely experimenting on, and should
+					// never silently start applying itself to any product.
+					'post_status'  => 'draft',
+					'post_author'  => get_current_user_id(),
+				)
 			),
 			true
 		);
