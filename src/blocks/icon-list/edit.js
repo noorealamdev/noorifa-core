@@ -49,7 +49,12 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<div { ...blockProps }>
-			<InspectorControls>
+			{ /* group="styles" is what actually lands this in the Styles
+			     tab (next to the native Typography/Color/Dimensions panels)
+			     instead of the Settings tab — a plain <InspectorControls>
+			     with no group always renders in Settings, regardless of
+			     the panel's own title. */ }
+			<InspectorControls group="styles">
 				<PanelBody title={ __( 'Typography', 'noorifa-core' ) }>
 					<NumberControl
 						__next40pxDefaultSize
