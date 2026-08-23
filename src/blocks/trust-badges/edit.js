@@ -49,29 +49,26 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<div { ...blockProps }>
-			{ /* group="styles" is what actually lands this in the Styles
-			     tab (next to the native Typography/Color/Dimensions panels)
-			     instead of the Settings tab — a plain <InspectorControls>
-			     with no group always renders in Settings, regardless of
-			     the panel's own title. */ }
-			<InspectorControls group="styles">
-				<PanelBody
-					title={ __( 'Icon', 'noorifa-core' ) }
-					initialOpen={ false }
-				>
-					<NumberControl
-						__next40pxDefaultSize
-						label={ __( 'Icon size (px)', 'noorifa-core' ) }
-						help={ __( 'Default is 28px.', 'noorifa-core' ) }
-						value={ iconSize }
-						min={ 12 }
-						max={ 96 }
-						step={ 1 }
-						onChange={ ( value ) =>
-							setAttributes( { iconSize: value || '' } )
-						}
-					/>
-				</PanelBody>
+			{ /* The Styles tab's own "styles" slot always renders last —
+			     after Typography/Color/Background/Dimensions/Border/Elements
+			     — since WordPress's StylesTab component hardcodes that
+			     sequence with no way for third parties to slot in earlier.
+			     Targeting group="typography" directly instead lands this
+			     control inside the native Typography panel itself, right
+			     after Font Size. */ }
+			<InspectorControls group="typography">
+				<NumberControl
+					__next40pxDefaultSize
+					label={ __( 'Icon size (px)', 'noorifa-core' ) }
+					help={ __( 'Default is 28px.', 'noorifa-core' ) }
+					value={ iconSize }
+					min={ 12 }
+					max={ 96 }
+					step={ 1 }
+					onChange={ ( value ) =>
+						setAttributes( { iconSize: value || '' } )
+					}
+				/>
 			</InspectorControls>
 			<InspectorControls>
 				<PanelBody
