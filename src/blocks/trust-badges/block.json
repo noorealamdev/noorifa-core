@@ -26,6 +26,10 @@
 		"boxedWidth": {
 			"type": "number",
 			"default": 1200
+		},
+		"iconSize": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"supports": {

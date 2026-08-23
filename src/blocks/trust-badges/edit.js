@@ -9,13 +9,23 @@ import {
 	PanelBody,
 	ToggleControl,
 	RangeControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
 import { closeSmall } from '@wordpress/icons';
 import IconPicker from '../../utils/icon-picker';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { items, boxed, boxedWidth } = attributes;
-	const blockProps = useBlockProps();
+	const { items, boxed, boxedWidth, iconSize } = attributes;
+	const blockProps = useBlockProps( {
+		// Exposed as a CSS variable the icon consumes directly (see
+		// style.scss) rather than a plain inherited size, which would need
+		// a dedicated attribute-to-inline-style path anyway since icon
+		// dimensions aren't part of any native block support.
+		style: iconSize
+			? { '--noorifa-trust-badges-icon-size': `${ iconSize }rem` }
+			: undefined,
+	} );
 
 	const updateItem = ( index, field, value ) => {
 		const next = items.slice();
@@ -74,6 +84,18 @@ export default function Edit( { attributes, setAttributes } ) {
 							step={ 10 }
 						/>
 					) }
+					<NumberControl
+						__next40pxDefaultSize
+						label={ __( 'Icon size (rem)', 'noorifa-core' ) }
+						help={ __( 'Default is 1.75rem.', 'noorifa-core' ) }
+						value={ iconSize }
+						min={ 0.5 }
+						max={ 6 }
+						step={ 0.25 }
+						onChange={ ( value ) =>
+							setAttributes( { iconSize: value || '' } )
+						}
+					/>
 				</PanelBody>
 			</InspectorControls>
 			<ul
