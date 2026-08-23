@@ -51,8 +51,8 @@
 	// a CSS var (see the Icon size control in edit.js/render.php), falling
 	// back to the original 1.75rem when unset.
 	.noorifa-core-trust-badges__icon {
-		width: var(--noorifa-trust-badges-icon-size, 1.75rem);
-		height: var(--noorifa-trust-badges-icon-size, 1.75rem);
+		width: var(--noorifa-trust-badges-icon-size, 28px);
+		height: var(--noorifa-trust-badges-icon-size, 28px);
 		color: inherit;
 
 		svg {

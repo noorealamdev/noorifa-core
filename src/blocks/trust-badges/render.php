@@ -27,7 +27,7 @@ if ( empty( $noorifa_core_items ) ) {
  */
 $noorifa_core_wrapper_args = array();
 if ( ! empty( $attributes['iconSize'] ) ) {
-	$noorifa_core_wrapper_args['style'] = '--noorifa-trust-badges-icon-size:' . esc_attr( $attributes['iconSize'] ) . 'rem;';
+	$noorifa_core_wrapper_args['style'] = '--noorifa-trust-badges-icon-size:' . esc_attr( $attributes['iconSize'] ) . 'px;';
 }
 
 $noorifa_core_wrapper = get_block_wrapper_attributes( $noorifa_core_wrapper_args );

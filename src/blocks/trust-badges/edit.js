@@ -23,7 +23,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		// a dedicated attribute-to-inline-style path anyway since icon
 		// dimensions aren't part of any native block support.
 		style: iconSize
-			? { '--noorifa-trust-badges-icon-size': `${ iconSize }rem` }
+			? { '--noorifa-trust-badges-icon-size': `${ iconSize }px` }
 			: undefined,
 	} );
 
@@ -50,6 +50,23 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<PanelBody
+					title={ __( 'Typography', 'noorifa-core' ) }
+					initialOpen={ false }
+				>
+					<NumberControl
+						__next40pxDefaultSize
+						label={ __( 'Icon size (px)', 'noorifa-core' ) }
+						help={ __( 'Default is 28px.', 'noorifa-core' ) }
+						value={ iconSize }
+						min={ 12 }
+						max={ 96 }
+						step={ 1 }
+						onChange={ ( value ) =>
+							setAttributes( { iconSize: value || '' } )
+						}
+					/>
+				</PanelBody>
 				<PanelBody
 					title={ __( 'Layout', 'noorifa-core' ) }
 					initialOpen={ false }
@@ -84,18 +101,6 @@ export default function Edit( { attributes, setAttributes } ) {
 							step={ 10 }
 						/>
 					) }
-					<NumberControl
-						__next40pxDefaultSize
-						label={ __( 'Icon size (rem)', 'noorifa-core' ) }
-						help={ __( 'Default is 1.75rem.', 'noorifa-core' ) }
-						value={ iconSize }
-						min={ 0.5 }
-						max={ 6 }
-						step={ 0.25 }
-						onChange={ ( value ) =>
-							setAttributes( { iconSize: value || '' } )
-						}
-					/>
 				</PanelBody>
 			</InspectorControls>
 			<ul

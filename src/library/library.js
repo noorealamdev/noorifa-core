@@ -508,10 +508,7 @@ export default function Library() {
 
 			{ isOpen && (
 				<Modal
-					title={ __(
-						'Noorifa Core Layout Library',
-						'noorifa-core'
-					) }
+					title={ __( 'Noorifa Layout Library', 'noorifa-core' ) }
 					onRequestClose={ () => setOpen( false ) }
 					className="noorifa-core-library__modal"
 					isFullScreen
