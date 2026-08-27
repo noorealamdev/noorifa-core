@@ -6,7 +6,6 @@ import {
 } from '@wordpress/block-editor';
 import {
 	Button,
-	PanelBody,
 	// No stable/public equivalent — the native line-height control only
 	// surfaces when the theme opts in via theme.json, which this classic
 	// theme intentionally doesn't use, so it's hand-rolled here.
@@ -49,39 +48,37 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<div { ...blockProps }>
-			{ /* group="styles" is what actually lands this in the Styles
-			     tab (next to the native Typography/Color/Dimensions panels)
-			     instead of the Settings tab — a plain <InspectorControls>
-			     with no group always renders in Settings, regardless of
-			     the panel's own title. */ }
-			<InspectorControls group="styles">
-				<PanelBody title={ __( 'Typography', 'noorifa-core' ) }>
-					<NumberControl
-						__next40pxDefaultSize
-						label={ __( 'Line height', 'noorifa-core' ) }
-						value={ lineHeight }
-						min={ 0 }
-						step={ 0.1 }
-						onChange={ ( value ) =>
-							setAttributes( { lineHeight: value || '' } )
-						}
-					/>
-					<NumberControl
-						__next40pxDefaultSize
-						label={ __( 'Icon size (em)', 'noorifa-core' ) }
-						help={ __(
-							'Relative to the text size — 1.25 (the default) makes the icon 1.25× the row text.',
-							'noorifa-core'
-						) }
-						value={ iconSize }
-						min={ 0.25 }
-						max={ 5 }
-						step={ 0.05 }
-						onChange={ ( value ) =>
-							setAttributes( { iconSize: value || '' } )
-						}
-					/>
-				</PanelBody>
+			{ /* Targets the native "Typography" slot directly instead of
+			     rendering a second, separately-titled "Typography" panel
+			     via group="styles" (which always lands after every native
+			     panel anyway) — this way Line height and Icon size sit
+			     inside the same panel as the block's own Font Size. */ }
+			<InspectorControls group="typography">
+				<NumberControl
+					__next40pxDefaultSize
+					label={ __( 'Line height', 'noorifa-core' ) }
+					value={ lineHeight }
+					min={ 0 }
+					step={ 0.1 }
+					onChange={ ( value ) =>
+						setAttributes( { lineHeight: value || '' } )
+					}
+				/>
+				<NumberControl
+					__next40pxDefaultSize
+					label={ __( 'Icon size (em)', 'noorifa-core' ) }
+					help={ __(
+						'Relative to the text size — 1.25 (the default) makes the icon 1.25× the row text.',
+						'noorifa-core'
+					) }
+					value={ iconSize }
+					min={ 0.25 }
+					max={ 5 }
+					step={ 0.05 }
+					onChange={ ( value ) =>
+						setAttributes( { iconSize: value || '' } )
+					}
+				/>
 			</InspectorControls>
 			<ul className="noorifa-core-icon-list__list">
 				{ rows.map( ( row, index ) => (
