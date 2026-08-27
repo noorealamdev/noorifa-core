@@ -22,6 +22,8 @@ import {
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
 import { closeSmall } from '@wordpress/icons';
@@ -35,6 +37,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		textAlign,
 		boxed,
 		boxedWidth,
+		borderRadius,
 	} = attributes;
 	const [ colors = [] ] = useSettings( 'color.palette' );
 	const colorInstanceId = useInstanceId( Edit, 'noorifa-image-card-color' );
@@ -44,6 +47,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		style: {
 			'--noorifa-image-card-cols': columns,
 			'--noorifa-image-card-min-height': `${ minHeight }px`,
+			'--noorifa-image-card-radius': `${ borderRadius || 0 }px`,
 		},
 	} );
 
@@ -85,6 +89,23 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<>
+			{ /* Targets the native "Border" slot directly (same reasoning
+			     as Trust Badges' icon-size control targeting "typography")
+			     so this lands inside WordPress's own Border panel instead
+			     of a separate custom panel stuck at the bottom of Styles. */ }
+			<InspectorControls group="border">
+				<NumberControl
+					__next40pxDefaultSize
+					label={ __( 'Corner radius (px)', 'noorifa-core' ) }
+					value={ borderRadius }
+					min={ 0 }
+					max={ 64 }
+					step={ 1 }
+					onChange={ ( value ) =>
+						setAttributes( { borderRadius: value || 0 } )
+					}
+				/>
+			</InspectorControls>
 			<InspectorControls>
 				<PanelBody title={ __( 'Layout', 'noorifa-core' ) }>
 					<RangeControl

@@ -58,6 +58,10 @@
 		"boxedWidth": {
 			"type": "number",
 			"default": 1200
+		},
+		"borderRadius": {
+			"type": "number",
+			"default": 0
 		}
 	},
 	"supports": {

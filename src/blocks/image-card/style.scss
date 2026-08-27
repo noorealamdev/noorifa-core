@@ -22,7 +22,7 @@
 		flex-direction: column;
 		min-height: var(--noorifa-image-card-min-height);
 		padding: 48px;
-		border-radius: 16px;
+		border-radius: var(--noorifa-image-card-radius, 0);
 		overflow: hidden;
 		background-color: #f0ece4;
 		background-repeat: no-repeat;
@@ -55,13 +55,6 @@
 			align-items: flex-end;
 			text-align: right;
 		}
-	}
-
-	// Rounded corners only make sense for the boxed (contained) layout —
-	// once the grid isn't boxed the cards are meant to read as a flush,
-	// edge-to-edge full-width banner, so the radius drops to 0 there.
-	.noorifa-core-image-card__grid:not(.is-boxed) .noorifa-core-image-card__card {
-		border-radius: 0;
 	}
 
 	.noorifa-core-image-card__overlay {

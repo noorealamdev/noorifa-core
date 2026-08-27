@@ -15,8 +15,9 @@ if ( empty( $noorifa_core_items ) ) {
 	return;
 }
 
-$noorifa_core_columns    = ! empty( $attributes['columns'] ) ? max( 1, min( 4, (int) $attributes['columns'] ) ) : 2;
-$noorifa_core_min_height = ! empty( $attributes['minHeight'] ) ? (int) $attributes['minHeight'] : 480;
+$noorifa_core_columns       = ! empty( $attributes['columns'] ) ? max( 1, min( 4, (int) $attributes['columns'] ) ) : 2;
+$noorifa_core_min_height    = ! empty( $attributes['minHeight'] ) ? (int) $attributes['minHeight'] : 480;
+$noorifa_core_border_radius = isset( $attributes['borderRadius'] ) ? max( 0, (int) $attributes['borderRadius'] ) : 0;
 
 $noorifa_core_valign = in_array( $attributes['verticalAlign'] ?? 'center', array( 'top', 'center', 'bottom' ), true )
 	? $attributes['verticalAlign']
@@ -96,7 +97,7 @@ if ( '' === trim( $noorifa_core_cards ) ) {
 $noorifa_core_wrapper = get_block_wrapper_attributes(
 	array(
 		'class' => 'noorifa-core-image-card',
-		'style' => '--noorifa-image-card-cols:' . $noorifa_core_columns . ';--noorifa-image-card-min-height:' . $noorifa_core_min_height . 'px;',
+		'style' => '--noorifa-image-card-cols:' . $noorifa_core_columns . ';--noorifa-image-card-min-height:' . $noorifa_core_min_height . 'px;--noorifa-image-card-radius:' . $noorifa_core_border_radius . 'px;',
 	)
 );
 
