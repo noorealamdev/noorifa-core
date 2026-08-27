@@ -20,9 +20,12 @@
 
 	.related.products {
 
+		// em, not inherit — scales off the block's own Font Size control
+		// (same as the product title/price below) while still reading as
+		// a heading instead of matching the body-sized product text.
 		> h2 {
-			font-size: inherit;
-			font-weight: inherit;
+			font-size: 1.75em;
+			font-weight: 600;
 			color: inherit;
 			margin: 0 0 1.5rem;
 		}
