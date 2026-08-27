@@ -62,6 +62,10 @@
 		"borderRadius": {
 			"type": "number",
 			"default": 0
+		},
+		"subheadingFontSize": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"supports": {

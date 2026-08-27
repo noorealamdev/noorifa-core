@@ -38,9 +38,14 @@ export default function Edit( { attributes, setAttributes } ) {
 		boxed,
 		boxedWidth,
 		borderRadius,
+		subheadingFontSize,
 	} = attributes;
 	const [ colors = [] ] = useSettings( 'color.palette' );
 	const colorInstanceId = useInstanceId( Edit, 'noorifa-image-card-color' );
+	const overlayColorInstanceId = useInstanceId(
+		Edit,
+		'noorifa-image-card-overlay-color'
+	);
 
 	const blockProps = useBlockProps( {
 		className: 'noorifa-core-image-card',
@@ -48,6 +53,9 @@ export default function Edit( { attributes, setAttributes } ) {
 			'--noorifa-image-card-cols': columns,
 			'--noorifa-image-card-min-height': `${ minHeight }px`,
 			'--noorifa-image-card-radius': `${ borderRadius || 0 }px`,
+			...( subheadingFontSize
+				? { '--noorifa-image-card-sub-size': `${ subheadingFontSize }em` }
+				: {} ),
 		},
 	} );
 
@@ -78,6 +86,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					linkUrl: '#',
 					textColor: '',
 					overlay: 0,
+					overlayColor: '#000000',
 				},
 			],
 		} );
@@ -105,6 +114,37 @@ export default function Edit( { attributes, setAttributes } ) {
 						setAttributes( { borderRadius: value || 0 } )
 					}
 				/>
+			</InspectorControls>
+			{ /* A bare control targeting group="typography" only renders
+			     once a native item (Size, Line height, …) is already
+			     active — the whole native panel collapses to a "+" until
+			     then, hiding any plain children along with it. Wrapping
+			     in ToolsPanelItem doesn't fix this either: Slot/Fill
+			     content isn't a real descendant of that panel's own
+			     context provider, so it can't register as an item. A
+			     small dedicated panel via group="styles" (distinct title
+			     from "Typography", so it doesn't repeat Icon List's
+			     duplicate-panel issue) stays reliably visible instead. */ }
+			<InspectorControls group="styles">
+				<PanelBody title={ __( 'Subheading', 'noorifa-core' ) }>
+					<NumberControl
+						__next40pxDefaultSize
+						label={ __( 'Font size (em)', 'noorifa-core' ) }
+						help={ __(
+							'Independent from the heading — 1.05 is the default.',
+							'noorifa-core'
+						) }
+						value={ subheadingFontSize }
+						min={ 0.5 }
+						max={ 3 }
+						step={ 0.05 }
+						onChange={ ( value ) =>
+							setAttributes( {
+								subheadingFontSize: value || '',
+							} )
+						}
+					/>
+				</PanelBody>
 			</InspectorControls>
 			<InspectorControls>
 				<PanelBody title={ __( 'Layout', 'noorifa-core' ) }>
@@ -211,6 +251,67 @@ export default function Edit( { attributes, setAttributes } ) {
 						) }
 						initialOpen={ false }
 					>
+						<MediaUploadCheck>
+							<MediaUpload
+								onSelect={ ( media ) =>
+									updateItemFields( index, {
+										imageId: media.id,
+										imageUrl: media.url,
+									} )
+								}
+								allowedTypes={ [ 'image' ] }
+								value={ item.imageId }
+								render={ ( { open } ) => (
+									<Button
+										variant="secondary"
+										onClick={ open }
+										style={ { marginBottom: '16px' } }
+									>
+										{ item.imageUrl
+											? __(
+													'Replace image',
+													'noorifa-core'
+											  )
+											: __(
+													'Select image',
+													'noorifa-core'
+											  ) }
+									</Button>
+								) }
+							/>
+						</MediaUploadCheck>
+						<RangeControl
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							label={ __( 'Image overlay', 'noorifa-core' ) }
+							value={ item.overlay || 0 }
+							onChange={ ( value ) =>
+								updateItem( index, 'overlay', value || 0 )
+							}
+							min={ 0 }
+							max={ 100 }
+						/>
+						<BaseControl
+							__nextHasNoMarginBottom
+							id={ `${ overlayColorInstanceId }-${ index }` }
+							label={ __( 'Overlay color', 'noorifa-core' ) }
+							help={ __(
+								'Pick a light overlay for dark text, or a dark overlay for light text — the two need to contrast.',
+								'noorifa-core'
+							) }
+						>
+							<ColorPalette
+								colors={ colors }
+								value={ item.overlayColor || '#000000' }
+								onChange={ ( value ) =>
+									updateItem(
+										index,
+										'overlayColor',
+										value || '#000000'
+									)
+								}
+							/>
+						</BaseControl>
 						<TextControl
 							__nextHasNoMarginBottom
 							label={ __( 'Link URL', 'noorifa-core' ) }
@@ -277,7 +378,11 @@ export default function Edit( { attributes, setAttributes } ) {
 							{ item.overlay > 0 && (
 								<span
 									className="noorifa-core-image-card__overlay"
-									style={ { opacity: item.overlay / 100 } }
+									style={ {
+										opacity: item.overlay / 100,
+										backgroundColor:
+											item.overlayColor || '#000000',
+									} }
 									aria-hidden="true"
 								/>
 							) }
@@ -325,55 +430,6 @@ export default function Edit( { attributes, setAttributes } ) {
 										'Link label',
 										'noorifa-core'
 									) }
-								/>
-							</div>
-
-							<div className="noorifa-core-image-card__controls">
-								<MediaUploadCheck>
-									<MediaUpload
-										onSelect={ ( media ) =>
-											updateItemFields( index, {
-												imageId: media.id,
-												imageUrl: media.url,
-											} )
-										}
-										allowedTypes={ [ 'image' ] }
-										value={ item.imageId }
-										render={ ( { open } ) => (
-											<Button
-												variant="secondary"
-												onClick={ open }
-											>
-												{ item.imageUrl
-													? __(
-															'Replace image',
-															'noorifa-core'
-													  )
-													: __(
-															'Select image',
-															'noorifa-core'
-													  ) }
-											</Button>
-										) }
-									/>
-								</MediaUploadCheck>
-								<RangeControl
-									__nextHasNoMarginBottom
-									__next40pxDefaultSize
-									label={ __(
-										'Image overlay',
-										'noorifa-core'
-									) }
-									value={ item.overlay || 0 }
-									onChange={ ( value ) =>
-										updateItem(
-											index,
-											'overlay',
-											value || 0
-										)
-									}
-									min={ 0 }
-									max={ 100 }
 								/>
 							</div>
 						</div>

@@ -21,7 +21,7 @@
 		display: flex;
 		flex-direction: column;
 		min-height: var(--noorifa-image-card-min-height);
-		padding: 48px;
+		padding: 26px;
 		border-radius: var(--noorifa-image-card-radius, 0);
 		overflow: hidden;
 		background-color: #f0ece4;
@@ -81,7 +81,7 @@
 
 	.noorifa-core-image-card__text {
 		margin: 0 0 20px;
-		font-size: 1.05em;
+		font-size: var(--noorifa-image-card-sub-size, 1.05em);
 		opacity: 0.85;
 	}
 
@@ -108,20 +108,6 @@
 		z-index: 4;
 		background: rgba(255, 255, 255, 0.9);
 		border-radius: 50%;
-	}
-
-	.noorifa-core-image-card__controls {
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		z-index: 4;
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		padding: 12px;
-		background: rgba(255, 255, 255, 0.96);
-		color: #1e1e1e;
 	}
 
 	.noorifa-core-image-card__add {
