@@ -57,6 +57,13 @@
 		}
 	}
 
+	// Rounded corners only make sense for the boxed (contained) layout —
+	// once the grid isn't boxed the cards are meant to read as a flush,
+	// edge-to-edge full-width banner, so the radius drops to 0 there.
+	.noorifa-core-image-card__grid:not(.is-boxed) .noorifa-core-image-card__card {
+		border-radius: 0;
+	}
+
 	.noorifa-core-image-card__overlay {
 		position: absolute;
 		inset: 0;
